@@ -1,0 +1,95 @@
+package com.hibit2.hibit2.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hibit2.hibit2.BaseTimeEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+
+import javax.persistence.*;
+
+@NoArgsConstructor
+@Getter
+@Entity
+@DynamicInsert
+public class Post extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idx;
+
+    /*
+    유저 api 나오면 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "user_idx")
+    private Users user;
+    */
+
+
+    @Column(length = 50, nullable = false)
+    @Schema(description = "제목", example = "전시회 관람 같이가요")
+    private String title;
+
+    @Column(length = 200, nullable = false)
+    @Schema(description = "본문", example = "본문내용내용")
+    private String content;
+
+    @Column(nullable = false, columnDefinition = "varchar(10) default Holding")
+    @Schema(description = "게시글 상태", example = "Holding, Pending, Completed")
+    private Post_status post_status;
+
+    @Column(nullable = false)
+    @Schema(description = "선호인원", example = "3")
+    private int number;
+
+    @Column(length = 100, nullable = false)
+    @Schema(description = "오픈채팅url", example = "http://kakao~~")
+    private String openchat;
+
+    @Column(nullable = false)
+    @Schema(description = "전시보고뭐할래", example = "EAT, CAFE")
+    private What_do what_do;
+
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Schema(description = "조회수", example = "default 0 = 자동 카운트")
+    private int view;
+
+    @Column(nullable = false, columnDefinition = "varchar(1) default N")
+    @Schema(description = "제목", example = "default N (작성 N, 삭제 Y)")
+    private char deleteYn;
+
+
+
+
+    @Builder
+    public Post(String title, String content, Post_status post_status, int number, String openchat,
+                int view, char deleteYn, What_do what_do){
+        this.title=title;
+        this.content=content;
+        this.post_status=post_status;
+        this.number=number;
+        this.openchat=openchat;
+        this.view=view;
+        this.deleteYn=deleteYn;
+        this.what_do=what_do;
+    }
+
+    public void update(String title, String content, Post_status post_status, int number, String openchat, What_do what_do){
+        this.title=title;
+        this.content=content;
+        this.post_status=post_status;
+        this.number=number;
+        this.openchat=openchat;
+        this.what_do=what_do;
+    }
+    public void increaseView(){
+        this.view++;
+    }
+    public void delete(){
+        this.deleteYn = 'Y';
+    }
+
+}
