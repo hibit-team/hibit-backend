@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -19,6 +20,8 @@ public class PostResponseDto {
     private String openchat;
     private What_do what_do;
     private int view;
+    private LocalDateTime createdDate;
+    private char deleteYn;
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
@@ -29,6 +32,8 @@ public class PostResponseDto {
         this.openchat=entity.getOpenchat();
         this.what_do=entity.getWhat_do();
         this.view=entity.getView();
+        this.createdDate = entity.getCreatedDate();
+        this.deleteYn = entity.getDeleteYn();
     }
 
 }

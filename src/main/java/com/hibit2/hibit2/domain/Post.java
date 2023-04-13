@@ -37,7 +37,7 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "본문", example = "본문내용내용")
     private String content;
 
-    @Column(nullable = false, columnDefinition = "varchar(10) default Holding")
+    @Column(nullable = false)
     @Schema(description = "게시글 상태", example = "Holding, Pending, Completed")
     private Post_status post_status;
 
@@ -57,8 +57,8 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "조회수", example = "default 0 = 자동 카운트")
     private int view;
 
-    @Column(nullable = false, columnDefinition = "varchar(1) default N")
-    @Schema(description = "제목", example = "default N (작성 N, 삭제 Y)")
+    @Column(nullable = false)
+    @Schema(description = "삭제여부", example = "default N (작성 N, 삭제 Y)")
     private char deleteYn;
 
 
@@ -77,10 +77,9 @@ public class Post extends BaseTimeEntity {
         this.what_do=what_do;
     }
 
-    public void update(String title, String content, Post_status post_status, int number, String openchat, What_do what_do){
+    public void update(String title, String content, int number, String openchat, What_do what_do){
         this.title=title;
         this.content=content;
-        this.post_status=post_status;
         this.number=number;
         this.openchat=openchat;
         this.what_do=what_do;
