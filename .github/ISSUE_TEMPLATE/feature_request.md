@@ -1,27 +1,19 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
+about: 구현할 기능을 이슈에 등록한다.
+title: '이슈의 제목을 입력해주세요.'
 labels: ''
 assignees: ''
-
 ---
 
----
-name: "✅Feature"
-about: Feature 작업 사항을 입력해주세요.
-title: ''
-labels: ''
-assignees: ''
+## 💁🏻‍♂️ 구현할 기능
 
----
+> 구현할 기능에 대해 설명해 주세요.
 
-## Description
-설명을 작성하세요.
+## 🎤 세부 작업 내용
 
-## To- do
-- [ ] todo
-- [ ] todo
+- [ ] To-do 1
+- [ ] To-do 2
+- [ ] To-do 3
 
-## ETC
-기타사항
+## 📚참고 자료
