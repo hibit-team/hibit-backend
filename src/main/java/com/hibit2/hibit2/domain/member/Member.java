@@ -23,28 +23,30 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column
+    private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false)
-    private boolean gender;
-
-    @Column(nullable = false)
-    private int age;
-
-
     protected Member() {
     }
 
-    public  Member(final String email, final boolean gender, final int age, final Role role) {
+    public  Member(final String email, final String name, final String profileImageUrl, final Role role) {
         validateEmail(email);
 
         this.email = email;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
         this.role = role;
-        this.gender = gender;
-        this.age = age;
     }
 
     private void validateEmail(final String email) {
