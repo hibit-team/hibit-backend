@@ -1,30 +1,31 @@
 package com.hibit2.hibit2.auth;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.hibit2.hibit2.auth.dto.TokenResponse;
+import com.hibit2.hibit2.infrastructure.oauth.endpoint.OAuthEndpoint;
+import com.hibit2.hibit2.infrastructure.client.OAuthClient;
+import com.hibit2.hibit2.infrastructure.dto.OAuthMember;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
-    private static final String GOOGLE_OAUTH_END_POINT = "https://accounts.google.com/o/oauth2/v2/auth";
 
-    private final String googleRedirectUri;
-    private final String googleClientId;
-    private final String googleClientSecret;
+    private final OAuthEndpoint oAuthEndpoint;
+    private final OAuthClient oAuthClient;
 
-    public AuthService(@Value("${oauth.google.redirect_uri}") final String googleRedirectUri,
-        @Value("${oauth.google.client_id}") final String googleClientId,
-        @Value("${oauth.google.client_secret}") final String googleClientSecret) {
-        this.googleRedirectUri = googleRedirectUri;
-        this.googleClientId = googleClientId;
-        this.googleClientSecret = googleClientSecret;
+
+    public AuthService(final OAuthEndpoint oAuthEndpoint, final OAuthClient oAuthClient) {
+        this.oAuthEndpoint = oAuthEndpoint;
+        this.oAuthClient = oAuthClient;
     }
 
     public String generateGoogleLink() {
-        return GOOGLE_OAUTH_END_POINT + "?"
-            + "client_id=" + googleClientId + "&"
-            + "redirect_uri=" + googleRedirectUri + "&"
-            + "response_type=code&"
-            + "scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
+            return oAuthEndpoint.generate();
+    }
+
+    public TokenResponse generateTokenWithCode(final String code) {
+        OAuthMember oAuthMember = oAuthClient.getOAuthMember(code);
+        return null;
     }
 }
