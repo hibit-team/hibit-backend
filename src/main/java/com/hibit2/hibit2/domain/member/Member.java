@@ -21,7 +21,7 @@ import lombok.Getter;
 @Entity
 public class Member {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
-    private static final int MAX_DISPLAY_NAME_LENGTH = 10;
+    private static final int MAX_NICK_NAME_LENGTH = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +31,11 @@ public class Member {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "gender", nullable = false)
+    private String gender;
+
+    @Column(name = "age", nullable = false)
+    private int age;
 
     @Column(name = "profile_image_url", nullable = false)
     private String profileImageUrl;
@@ -44,11 +47,12 @@ public class Member {
     protected Member() {
     }
 
-    public  Member(final String email, final String name, final String profileImageUrl, final Role role) {
+    public  Member(final String email, final String gender, final int age, final String profileImageUrl, final Role role) {
         validateEmail(email);
 
         this.email = email;
-        this.name = name;
+        this.gender = gender;
+        this.age = age;
         this.profileImageUrl = profileImageUrl;
         this.role = role;
     }
