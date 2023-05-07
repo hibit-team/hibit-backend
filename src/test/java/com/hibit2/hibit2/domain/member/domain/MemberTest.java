@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.domain.member;
+package com.hibit2.hibit2.domain.member.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.hibit2.hibit2.domain.member.domain.Member;
+import com.hibit2.hibit2.domain.member.domain.Role;
 import com.hibit2.hibit2.domain.member.exception.InvalidMemberException;
 
 class MemberTest {
