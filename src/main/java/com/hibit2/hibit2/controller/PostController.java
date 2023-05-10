@@ -32,7 +32,7 @@ public class PostController {
                 @Parameter(name = "openchat", description = "오픈채팅 url", example =  "http://kakao"),
                 @Parameter(name = "what_do", description = "전시보고뭐할래", example =  "EAT")
     })
-    public int save(@RequestBody PostSaveDto requestDto){
+    public Post save(@RequestBody PostSaveDto requestDto){
         //Users user = (Users) authentication.getPrincipal();
         return postService.save(requestDto);
     }

@@ -22,13 +22,11 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    /*
-    유저 api 나오면 추가
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    //@JsonIgnore
     @JoinColumn(name = "user_idx")
     private Users user;
-    */
+
 
 
     @Column(length = 50, nullable = false)
@@ -67,8 +65,9 @@ public class Post extends BaseTimeEntity {
 
 
     @Builder
-    public Post(String title, String content, Post_status post_status, int number, String openchat,
+    public Post(Users user,String title, String content, Post_status post_status, int number, String openchat,
                 int view, char deleteYn, What_do what_do){
+        this.user=user;
         this.title=title;
         this.content=content;
         this.post_status=post_status;

@@ -1,10 +1,12 @@
 package com.hibit2.hibit2.service;
 
 import com.hibit2.hibit2.domain.Post;
+import com.hibit2.hibit2.domain.Users;
 import com.hibit2.hibit2.dto.PostResponseDto;
 import com.hibit2.hibit2.dto.PostSaveDto;
 import com.hibit2.hibit2.dto.PostUpdateDto;
 import com.hibit2.hibit2.repository.PostRepository;
+import com.hibit2.hibit2.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,15 +20,19 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    //UserRepository userrepository
+    private final UsersRepository usersRepository;
 
     @Transactional
-    public int save(PostSaveDto postSaveDto){
+    public Post save(PostSaveDto postSaveDto){
 
-        //postSaveDto.setUser(user) 위에 Users user추가
+        Users user = new Users();
+        user.setId("a");
+        usersRepository.save(user);
+        postSaveDto.setUser(user);
+
         Post post = postSaveDto.toEntity();
         postRepository.save(post);
-        return post.getIdx();
+        return post;
     }
 
     @Transactional

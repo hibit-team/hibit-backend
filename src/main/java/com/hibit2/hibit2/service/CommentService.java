@@ -2,13 +2,16 @@ package com.hibit2.hibit2.service;
 
 import com.hibit2.hibit2.domain.Comment;
 import com.hibit2.hibit2.domain.Post;
+import com.hibit2.hibit2.domain.Users;
 import com.hibit2.hibit2.repository.CommentRepository;
 import com.hibit2.hibit2.repository.PostRepository;
+import com.hibit2.hibit2.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,8 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UsersRepository usersRepository;
+
     // 댓글 작성
     public Comment createComment(int post_idx, String content) {
         Post post = postRepository.findById(post_idx)
@@ -56,5 +61,27 @@ public class CommentService {
         Comment comment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
         commentRepository.delete(comment);
+    }
+    public Comment likeComment(int comment_idx, String userId){
+        Comment comment = commentRepository.findById(comment_idx)
+                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 사용자가 이미 좋아요를 눌렀는지 확인
+        Optional<Users> existingLike = comment.getLikeUsers().stream()
+                .filter(likeUser -> likeUser.getId().equals(userId))
+                .findFirst();
+
+        if (!existingLike.isPresent()) {
+            // 좋아요 추가
+            comment.getLikeUsers().add(user);
+            comment.increaseLike();
+        } else {
+            // 좋아요 취소
+            comment.getLikeUsers().remove(existingLike.get());
+            comment.decreaseLike();
+        }
+        return commentRepository.save(comment);
     }
 }

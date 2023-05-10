@@ -21,7 +21,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    // 댓글 작
+    // 댓글 작성
     @PostMapping("/{post_idx}")
     public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @RequestBody String content) {
         Comment comment = commentService.createComment(post_idx, content);
@@ -60,5 +60,14 @@ public class CommentController {
         commentService.deleteComment(comment_idx);
         return ResponseEntity.noContent().build();
     }
+
+    //댓글 좋아요
+    @GetMapping("/like/{comment_idx}")
+    public ResponseEntity<Comment> likeComment(@PathVariable int comment_idx){
+        String user_id = "b"; //나중에는 현재 로그인한 유저의 id 찾아오기
+        Comment comment = commentService.likeComment(comment_idx, user_id);
+        return ResponseEntity.ok(comment);
+    }
+
 
 }

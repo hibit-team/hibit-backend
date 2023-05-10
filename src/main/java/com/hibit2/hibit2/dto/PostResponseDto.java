@@ -2,6 +2,7 @@ package com.hibit2.hibit2.dto;
 
 import com.hibit2.hibit2.domain.Post;
 import com.hibit2.hibit2.domain.Post_status;
+import com.hibit2.hibit2.domain.Users;
 import com.hibit2.hibit2.domain.What_do;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 public class PostResponseDto {
     private int idx;
+    private Users user;
     private String title;
     private String content;
     private Post_status post_status;
@@ -25,6 +27,7 @@ public class PostResponseDto {
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
+        this.user = entity.getUser();
         this.title=entity.getTitle();
         this.content=entity.getContent();
         this.post_status=entity.getPost_status();
