@@ -21,10 +21,10 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    // 댓글 작성
-    @PostMapping("/{post_idx}")
-    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @RequestBody String content) {
-        Comment comment = commentService.createComment(post_idx, content);
+    // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
+    @PostMapping("/{post_idx}/{user_idx}")
+    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody String content) {
+        Comment comment = commentService.createComment(post_idx, user_idx, content);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
 

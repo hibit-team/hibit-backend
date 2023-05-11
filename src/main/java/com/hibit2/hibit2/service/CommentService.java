@@ -1,9 +1,8 @@
 package com.hibit2.hibit2.service;
 
-import com.hibit2.hibit2.domain.Comment;
-import com.hibit2.hibit2.domain.Post;
-import com.hibit2.hibit2.domain.Users;
+import com.hibit2.hibit2.domain.*;
 import com.hibit2.hibit2.repository.CommentRepository;
+import com.hibit2.hibit2.repository.MatchingRepository;
 import com.hibit2.hibit2.repository.PostRepository;
 import com.hibit2.hibit2.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +19,28 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
-
+    private final MatchingRepository matchingRepository;
+    private final MatchingService matchingService;
     // 댓글 작성
-    public Comment createComment(int post_idx, String content) {
+    public Comment createComment(int post_idx, int user_idx, String content) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        //추후 이 부분 삭제하고, 로그인 한 유저로 변경
+        Users user = usersRepository.findById(user_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setContent(content);
+        //매칭 신청여부 확인
+        if (!matchingService.exitMatching(user, post)) {
+            Matching matching = new Matching(user, post);
+            matchingRepository.save(matching);
+        }
+
         return commentRepository.save(comment);
     }
+    //매칭 신청 여부 확인인
 
     // 대댓글 작성
     public Comment createReply(int comment_idx, String content) {
@@ -84,4 +95,5 @@ public class CommentService {
         }
         return commentRepository.save(comment);
     }
+
 }
