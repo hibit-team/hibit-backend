@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.hibit2.hibit2.infrastructure.oauth.endpoint.OAuthEndpoint;
 
 @Component
 public class GoogleOAuthEndpoint implements OAuthEndpoint {

@@ -1,12 +1,14 @@
 package com.hibit2.hibit2.infrastructure.oauth.client;
 
+import org.springframework.stereotype.Component;
+
 import com.hibit2.hibit2.infrastructure.client.OAuthClient;
 import com.hibit2.hibit2.infrastructure.dto.OAuthMember;
 
-public class StubOAuthClient implements OAuthClient {
-
+@Component
+public class GoogleOAuthClient implements OAuthClient {
     @Override
     public OAuthMember getOAuthMember(final String code) {
-        return new OAuthMember("fancy.junyongmoon@gmail.com", "Fake gender", 28, "Fake email", "Fake Profile Image Url");
+        return null;
     }
 }
