@@ -3,7 +3,7 @@ package com.hibit2.hibit2.config;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
-import com.hibit2.hibit2.infrastructure.client.OAuthClient;
+import com.hibit2.hibit2.auth.support.OAuthClient;
 import com.hibit2.hibit2.infrastructure.oauth.client.StubOAuthClient;
 
 @TestConfiguration

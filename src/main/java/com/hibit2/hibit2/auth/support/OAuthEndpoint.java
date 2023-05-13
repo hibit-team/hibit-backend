@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.infrastructure.oauth.endpoint;
+package com.hibit2.hibit2.auth.support;
 
 @FunctionalInterface
 public interface OAuthEndpoint {
