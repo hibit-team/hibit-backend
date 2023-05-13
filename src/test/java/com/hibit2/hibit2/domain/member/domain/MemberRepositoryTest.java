@@ -21,7 +21,6 @@ class MemberRepositoryTest {
         String email = "fancy.junyongmoon@gmail.com";
         String gender = "남";
         int age = 28;
-        String profileImageUrl = "/image.png";
         Member member = new Member(email, gender, age, Role.USER);
         memberRepository.save(member);
 
