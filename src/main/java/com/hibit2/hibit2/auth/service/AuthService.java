@@ -43,20 +43,24 @@ public class AuthService {
 
         String email = oAuthMember.getEmail();
 
-        if(!memberService.existByEmail(email)) {
-            memberService.save(generateMemberBy(oAuthMember));
-        }
+        saveMemberIfNotExists(oAuthMember, email);
+
         Member foundMember = memberService.findByEmail(email);
         String accessToken = jwtTokenProvider.createToken(String.valueOf(foundMember.getId()));
 
         return new TokenResponse(accessToken);
     }
 
+    private void saveMemberIfNotExists(final OAuthMember oAuthMember, final String email) {
+        if (!memberService.existByEmail(email)) {
+            memberService.save(generateMemberBy(oAuthMember));
+        }
+    }
+
     private Member generateMemberBy(final OAuthMember oAuthMember) {
         return new Member(oAuthMember.getEmail(),
             oAuthMember.getGender(),
             oAuthMember.getAge(),
-            oAuthMember.getProfileImageUrl(),
             Role.USER);
     }
 }
