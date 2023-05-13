@@ -22,7 +22,7 @@ class MemberRepositoryTest {
         String gender = "남";
         int age = 28;
         String profileImageUrl = "/image.png";
-        Member member = new Member(email, gender, age, profileImageUrl, Role.USER);
+        Member member = new Member(email, gender, age, Role.USER);
         memberRepository.save(member);
 
         // when

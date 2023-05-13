@@ -37,9 +37,6 @@ public class Member {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "profile_image_url", nullable = false)
-    private String profileImageUrl;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
@@ -47,13 +44,12 @@ public class Member {
     protected Member() {
     }
 
-    public  Member(final String email, final String gender, final int age, final String profileImageUrl, final Role role) {
+    public  Member(final String email, final String gender, final int age, final Role role) {
         validateEmail(email);
 
         this.email = email;
         this.gender = gender;
         this.age = age;
-        this.profileImageUrl = profileImageUrl;
         this.role = role;
     }
 

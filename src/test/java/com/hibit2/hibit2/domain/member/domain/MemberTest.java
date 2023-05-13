@@ -20,11 +20,10 @@ class MemberTest {
         String email = "fancy.junyongmoon@gmail.com";
         String gender = "남";
         int age = 28;
-        String profileImageUrl = "https://avatars.githubusercontent.com/u/83820185?v=4";
         Role role = Role.USER;
 
         // when & then
-        assertDoesNotThrow(() -> new Member(email, gender, age, profileImageUrl, role));
+        assertDoesNotThrow(() -> new Member(email, gender, age, role));
     }
 
 
@@ -35,11 +34,10 @@ class MemberTest {
         // given
         String gender = "남";
         int age = 28;
-        String profileImageUrl = "https://avatars.githubusercontent.com/u/83820185?v=4";
         Role role = Role.USER;
 
         // when & then
-        assertThatThrownBy(() -> new Member(email, gender, age, profileImageUrl, role))
+        assertThatThrownBy(() -> new Member(email, gender, age, role))
             .isInstanceOf(InvalidMemberException.class)
             .hasMessage("이메일 형식이 올바르지 않습니다.");
     }
