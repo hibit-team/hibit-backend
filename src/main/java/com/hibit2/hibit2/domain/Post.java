@@ -8,8 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -61,12 +65,13 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "삭제여부", example = "default N (작성 N, 삭제 Y)")
     private char deleteYn;
 
-
-
+    @ElementCollection
+    @CollectionTable(name = "post_date_time_slots", joinColumns = @JoinColumn(name = "post_idx"))
+    private List<DateTimeSlot> dateTimeSlots;
 
     @Builder
     public Post(Users user,String title, String content, Post_status post_status, int number, String openchat,
-                int view, char deleteYn, What_do what_do){
+                int view, char deleteYn, What_do what_do, List<DateTimeSlot> dateTimeSlots){
         this.user=user;
         this.title=title;
         this.content=content;
@@ -76,14 +81,16 @@ public class Post extends BaseTimeEntity {
         this.view=view;
         this.deleteYn=deleteYn;
         this.what_do=what_do;
+        this.dateTimeSlots=dateTimeSlots;
     }
 
-    public void update(String title, String content, int number, String openchat, What_do what_do){
+    public void update(String title, String content, int number, String openchat, What_do what_do,List<DateTimeSlot> dateTimeSlots){
         this.title=title;
         this.content=content;
         this.number=number;
         this.openchat=openchat;
         this.what_do=what_do;
+        this.dateTimeSlots=dateTimeSlots;
     }
     public void increaseView(){
         this.view++;
@@ -91,5 +98,8 @@ public class Post extends BaseTimeEntity {
     public void delete(){
         this.deleteYn = 'Y';
     }
+
+
+
 
 }

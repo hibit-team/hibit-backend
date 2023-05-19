@@ -1,14 +1,12 @@
 package com.hibit2.hibit2.dto;
 
-import com.hibit2.hibit2.domain.Post;
-import com.hibit2.hibit2.domain.Post_status;
-import com.hibit2.hibit2.domain.Users;
-import com.hibit2.hibit2.domain.What_do;
+import com.hibit2.hibit2.domain.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -24,6 +22,7 @@ public class PostResponseDto {
     private int view;
     private LocalDateTime createdDate;
     private char deleteYn;
+    private List<DateTimeSlot> dateTimeSlots;
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
@@ -37,6 +36,7 @@ public class PostResponseDto {
         this.view=entity.getView();
         this.createdDate = entity.getCreatedDate();
         this.deleteYn = entity.getDeleteYn();
+        this.dateTimeSlots = entity.getDateTimeSlots();  // 매개변수에서 전달받은 dateTimeSlots를 사용
     }
 
 }

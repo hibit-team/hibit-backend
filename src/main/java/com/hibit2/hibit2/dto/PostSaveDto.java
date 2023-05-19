@@ -1,12 +1,11 @@
 package com.hibit2.hibit2.dto;
 
-import com.hibit2.hibit2.domain.Post;
-import com.hibit2.hibit2.domain.Post_status;
-import com.hibit2.hibit2.domain.Users;
-import com.hibit2.hibit2.domain.What_do;
+import com.hibit2.hibit2.domain.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 import static com.hibit2.hibit2.domain.Post_status.Holding;
 
@@ -21,10 +20,11 @@ public class PostSaveDto {
     private String openchat;
     private What_do what_do;
     private char deleteYn;
+    private List<DateTimeSlot> dateTimeSlots;
 
     @Builder
     public PostSaveDto(Users user, String title, String content, Post_status post_status,
-                       int number, String openchat, What_do what_do, char deleteYn){
+                       int number, String openchat, What_do what_do, char deleteYn, List<DateTimeSlot> dateTimeSlots){
         this.user = user;
         this.title=title;
         this.content=content;
@@ -33,6 +33,7 @@ public class PostSaveDto {
         this.openchat=openchat;
         this.what_do=what_do;
         this.deleteYn = deleteYn;
+        this.dateTimeSlots = dateTimeSlots;
     }
     public Post toEntity(){
         return Post.builder()
@@ -44,6 +45,7 @@ public class PostSaveDto {
                 .openchat(openchat)
                 .what_do(what_do)
                 .deleteYn('N')
+                .dateTimeSlots(dateTimeSlots)
                 .build();
     }
 

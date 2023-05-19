@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.service;
 
+import com.hibit2.hibit2.domain.DateTimeSlot;
 import com.hibit2.hibit2.domain.Post;
 import com.hibit2.hibit2.domain.Users;
 import com.hibit2.hibit2.dto.PostResponseDto;
@@ -46,13 +47,15 @@ public class PostService {
     public PostResponseDto findById(int idx){
         Post entity= postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
         entity.increaseView();
+        System.out.print(entity.getDateTimeSlots()); // datetime 로딩
+
         return new PostResponseDto(entity);
     }
 
     @Transactional
     public int update(int idx, PostUpdateDto requestDto){
         Post post = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
-        post.update(requestDto.getTitle(),requestDto.getContent(), requestDto.getNumber(), requestDto.getOpenchat(), requestDto.getWhat_do());
+        post.update(requestDto.getTitle(),requestDto.getContent(), requestDto.getNumber(), requestDto.getOpenchat(), requestDto.getWhat_do(),requestDto.getDateTimeSlots());
         return idx;
     }
 
@@ -62,7 +65,5 @@ public class PostService {
         entity.delete();
         return idx;
     }
-
-
 
 }

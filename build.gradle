@@ -30,7 +30,6 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	implementation 'org.testng:testng:7.1.0'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.12.6'
-
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
