@@ -86,12 +86,12 @@ public class GoogleOAuthClient implements OAuthClient {
         return new String(Base64.getUrlDecoder().decode(payload), StandardCharsets.UTF_8);
     }
 
-    // 수정 필요 -> userInfo - 이메일, 성별, 나이 담아야 함
+    // 수정 완료
     private OAuthMember generateOAuthMemberBy(final String decodedIdToken) throws JsonProcessingException {
         Map<String, String> userInfo = objectMapper.readValue(decodedIdToken, HashMap.class);
         String email = userInfo.get("email");
         String gender = userInfo.get("gender");
-        int age = userInfo.get("age");
+        int age = Integer.parseInt(userInfo.get("age"));
 
         return new OAuthMember(email, gender, age);
     }
