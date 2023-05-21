@@ -48,7 +48,6 @@ public class PostService {
         Post entity= postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
         entity.increaseView();
         System.out.print(entity.getDateTimeSlots()); // datetime 로딩
-
         return new PostResponseDto(entity);
     }
 

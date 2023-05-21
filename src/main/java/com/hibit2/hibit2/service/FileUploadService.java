@@ -3,6 +3,11 @@ package com.hibit2.hibit2.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.hibit2.hibit2.domain.Post;
+import com.hibit2.hibit2.domain.PostImage;
+import com.hibit2.hibit2.repository.PostImageRepository;
+import com.hibit2.hibit2.repository.PostRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
+@NoArgsConstructor
 @Service
 public class FileUploadService {
 
@@ -23,19 +30,40 @@ public class FileUploadService {
     @Qualifier("s3client")
 
     private AmazonS3 s3Client;
+    @Autowired
 
-    public String uploadFile(MultipartFile file) {
+    private PostImageRepository postImageRepository;
+    @Autowired
+
+    private PostRepository postRepository;
+
+    public String uploadFile(MultipartFile file, int post_idx) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
-            // Upload the file to S3
+            // s3에 업로드
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
             s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
 
-            // Get the URL of the uploaded file
+            // 이미지 url 테이블 저장
             URL fileUrl = s3Client.getUrl(bucketName, fileName);
-            return fileUrl.toString();
+            String imageUrl = fileUrl.toString();
+            PostImage postImage = new PostImage();
+            Optional<Post> postOptional = postRepository.findById(post_idx);
+            if (postOptional.isPresent()) {
+                // 게시글이 존재하는 경우
+                Post post = postOptional.get();
+                postImage.setPost(post);
+                postImage.setImageUrl(imageUrl);
+                postImageRepository.save(postImage);
+            } else {
+                // 게시글이 존재하지 않는 경우
+                throw new RuntimeException("게시글을 찾을 수 없습니다.");
+            }
+
+            return imageUrl;
+
         } catch (IOException e) {
             throw new IllegalStateException("Failed to upload file", e);
         }

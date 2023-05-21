@@ -69,6 +69,10 @@ public class Post extends BaseTimeEntity {
     @CollectionTable(name = "post_date_time_slots", joinColumns = @JoinColumn(name = "post_idx"))
     private List<DateTimeSlot> dateTimeSlots;
 
+    @Column(nullable = true)
+    @Schema(description = "대표이미지 idx", example = "1")
+    private int mainimg;
+
     @Builder
     public Post(Users user,String title, String content, Post_status post_status, int number, String openchat,
                 int view, char deleteYn, What_do what_do, List<DateTimeSlot> dateTimeSlots){
@@ -99,6 +103,7 @@ public class Post extends BaseTimeEntity {
         this.deleteYn = 'Y';
     }
 
+    public void makeMainimg(int idx){this.mainimg= idx;}
 
 
 
