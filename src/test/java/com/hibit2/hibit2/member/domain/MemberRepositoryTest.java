@@ -1,7 +1,8 @@
-package com.hibit2.hibit2.domain.member.domain;
+package com.hibit2.hibit2.member.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.domain.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

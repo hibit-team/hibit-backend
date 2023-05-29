@@ -1,5 +1,6 @@
-package com.hibit2.hibit2.domain.profile.domain;
+package com.hibit2.hibit2.profile.domain;
 
+import com.hibit2.hibit2.profile.domain.Profile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

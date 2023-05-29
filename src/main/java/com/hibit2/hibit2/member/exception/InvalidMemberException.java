@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.domain.member.exception;
+package com.hibit2.hibit2.member.exception;
 
 public class InvalidMemberException extends RuntimeException{
 

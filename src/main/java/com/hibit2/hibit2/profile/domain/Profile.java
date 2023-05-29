@@ -1,6 +1,6 @@
-package com.hibit2.hibit2.domain.profile.domain;
+package com.hibit2.hibit2.profile.domain;
 
-import com.hibit2.hibit2.domain.member.exception.InvalidMemberException;
+import com.hibit2.hibit2.member.exception.InvalidMemberException;
 import lombok.Getter;
 
 import javax.persistence.*;

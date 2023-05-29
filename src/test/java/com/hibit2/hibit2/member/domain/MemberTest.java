@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.domain.member.domain;
+package com.hibit2.hibit2.member.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,9 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.hibit2.hibit2.domain.member.domain.Member;
-import com.hibit2.hibit2.domain.member.domain.Role;
-import com.hibit2.hibit2.domain.member.exception.InvalidMemberException;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.Role;
+import com.hibit2.hibit2.member.exception.InvalidMemberException;
 
 class MemberTest {
     @DisplayName("회원을 생성한다.")
