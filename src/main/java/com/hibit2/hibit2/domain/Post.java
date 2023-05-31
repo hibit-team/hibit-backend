@@ -55,7 +55,7 @@ public class Post extends BaseTimeEntity {
     private String openchat;
 
     @Column(nullable = false)
-    @Schema(description = "전시보고뭐할래", example = "[EAT, CAFE]")
+    @Schema(description = "전시보고뭐할래", example = "[\"EAT\", \"CAFE\"]")
     @ElementCollection(targetClass = What_do.class)
     @Enumerated(EnumType.STRING)
     private List<What_do> what_do;
@@ -71,10 +71,14 @@ public class Post extends BaseTimeEntity {
 
     @ElementCollection
     @CollectionTable(name = "post_date_time_slots", joinColumns = @JoinColumn(name = "post_idx"))
+    @Schema(description = "신청 날짜", example = "[\n" + "{\n" +
+            "    \"date\": \"2023-05-31\",\n" +
+            "    \"timeSlot\": \"AM\"\n" +
+            "  }" +"\n]" )
     private List<DateTimeSlot> dateTimeSlots;
 
     @Column(length = 300, nullable = true)
-    @Schema(description = "대표이미지 idx", example = "1")
+    @Schema(description = "대표이미지 idx", example = "http://hibitbucket")
     private String mainimg;
 
     @Column(nullable = false, columnDefinition = "integer default 0")

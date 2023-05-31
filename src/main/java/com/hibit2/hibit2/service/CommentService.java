@@ -32,7 +32,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setContent(content);
-        //매칭 신청여부 확인
+        //매칭 신청여부 확인, 추후 자신이 쓴 글에는 매칭 신청 불가능하도록 변경
         if (!matchingService.exitMatching(user, post)) {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);

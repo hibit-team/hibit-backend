@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,37 +42,45 @@ public class PostController {
                 @Parameter(name = "content", description = "내용", example =  "본문내용"),
                 @Parameter(name = "number", description = "관람 인원", example =  "3"),
                 @Parameter(name = "openchat", description = "오픈채팅 url", example =  "http://kakao"),
-                @Parameter(name = "what_do", description = "전시보고뭐할래", example =  "EAT")
+                @Parameter(name = "what_do", description = "전시보고뭐할래", example =  "EAT"),
+                @Parameter(name = "dateTimeSlots", description = "날짜", example =  "[\n" + "{\n" +
+                        "    \"date\": \"2023-05-31\",\n" +
+                        "    \"timeSlot\": \"AM\"\n" +
+                        "  }" +"\n]")
     })
-    public Post save(@RequestBody PostSaveDto requestDto){
+    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto){
         //Users user = (Users) authentication.getPrincipal();
-        return postService.save(requestDto);
+        Post post = postService.save(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(post);
+
     }
     //기본 게시글 리스트
     @GetMapping("/list/{pageParam}")
     @Operation(summary = "post/list", description = "매칭글 기본 리스트")
-    public List<PostListDto> findPostsByPage(@PathVariable int pageParam) {
+    public ResponseEntity<List<PostListDto>> findPostsByPage(@PathVariable int pageParam) {
         char flag = 'N';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
         Page<PostListDto> postPage = postService.findPostsByDeleteYn(flag, pageable);
-        return postPage.getContent();
+        return ResponseEntity.status(HttpStatus.CREATED).body(postPage.getContent());
+
     }
 
     //게시글 좋아요 순 리스트
     @GetMapping("/list/like/{pageParam}")
     @Operation(summary = "post/list/like/1", description = "매칭글 좋아요 순서 리스트")
-    public List<PostListDto> findPostsByPageLike(@PathVariable int pageParam) {
+    public ResponseEntity<List<PostListDto>> findPostsByPageLike(@PathVariable int pageParam) {
         char flag = 'N';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "liked").and(Sort.by(Sort.Direction.DESC, "createdDate")));
         Page<PostListDto> postPage = postService.findPostsByDeleteYn(flag, pageable);
-        return postPage.getContent();
+        return ResponseEntity.status(HttpStatus.CREATED).body(postPage.getContent());
+
     }
     //이번주 출발 게시글 리스트
     @GetMapping("/list/thisweek/{pageParam}")
     @Operation(summary = "post/thisweek/1", description = "매칭글 이번주 출발 리스트")
-    public List<PostListDto> findPostsByDateTimeRange(@PathVariable int pageParam) {
+    public ResponseEntity<List<PostListDto>> findPostsByDateTimeRange(@PathVariable int pageParam) {
         char flag = 'N';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
@@ -86,36 +95,44 @@ public class PostController {
 
         Page<PostListDto> postPage = postService.findPostsByDateTimeRange(flag, mondayStr, sundayStr, pageable);
 
-        return postPage.getContent();
+        return ResponseEntity.status(HttpStatus.CREATED).body(postPage.getContent());
+
     }
 
     //게시글 전체보기
     @GetMapping("/listall")
     @Operation(summary = "post/listall", description = "게시글 전체보기, 기본 최신순")
-    public List<PostListDto> findAllPosts(){
+    public ResponseEntity<List<PostListDto>> findAllPosts(){
         char flag = 'N';
-        return postService.findByDeleteYn(flag);
+        List<PostListDto> list = postService.findByDeleteYn(flag);
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 
-    @GetMapping("/{idx}")
+    @GetMapping("/{post_idx}")
     @Operation(summary = "post/{idx}", description = "매칭 글 상세")
-    public PostResponseDto findById(@PathVariable int idx){
-        return postService.findById(idx);
+    public ResponseEntity<PostResponseDto> findById(@PathVariable int post_idx){
+        PostResponseDto dto = postService.findById(post_idx);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+
     }
 
-    @PutMapping("/{idx}")
-    @Operation(summary = "post/{idx}",description = "매칭 글 수정")
-    public int update(@PathVariable int idx, @RequestBody PostUpdateDto requestDto){
-        return postService.update(idx, requestDto);
+    @PutMapping("/{post_idx}")
+    @Operation(summary = "post/{post_idx}",description = "매칭 글 수정")
+    public ResponseEntity<Post> update(@PathVariable int post_idx, @RequestBody PostUpdateDto requestDto){
+        Post post = postService.update(post_idx, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
 
-    @DeleteMapping("/{idx}")
-    @Operation(summary = "post/{idx}", description = "매칭 글 삭제")
-    public int delete(@PathVariable int idx){
-        return postService.delete(idx);
+    @DeleteMapping("/{post_idx}")
+    @Operation(summary = "post/{post_idx}", description = "매칭 글 삭제")
+    public ResponseEntity<Void> delete(@PathVariable int post_idx){
+        postService.delete(post_idx);
+        return ResponseEntity.ok().build();
+
     }
     //게시글 좋아요
     @GetMapping("/{post_idx}/like")
+    @Operation(summary = "post/{post_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
     public ResponseEntity<Post> likeComment(@PathVariable int post_idx){
         String user_id = "b"; //나중에는 현재 로그인한 유저의 id 찾아오기
         Post post = postService.likePost(post_idx, user_id);

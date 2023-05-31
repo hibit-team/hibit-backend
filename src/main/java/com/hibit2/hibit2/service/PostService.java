@@ -71,17 +71,16 @@ public class PostService {
     }
 
     @Transactional
-    public int update(int idx, PostUpdateDto requestDto){
+    public Post update(int idx, PostUpdateDto requestDto){
         Post post = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
         post.update(requestDto.getTitle(),requestDto.getContent(), requestDto.getNumber(), requestDto.getOpenchat(), requestDto.getWhat_do(),requestDto.getDateTimeSlots(),requestDto.getMainimg());
-        return idx;
+        return post;
     }
 
     @Transactional
-    public int delete(int idx){
+    public void delete(int idx){
         Post entity = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
         entity.delete();
-        return idx;
     }
     @Transactional
     public Post likePost(int post_idx, String userId){
