@@ -43,14 +43,26 @@ public class CommentService {
     //매칭 신청 여부 확인인
 
     // 대댓글 작성
-    public Comment createReply(int comment_idx, String content) {
+    public Comment createReply(int comment_idx, int user_idx, String content) {
         Comment parentComment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+        Post post = postRepository.findById(parentComment.getPost().getIdx())
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        Users user = usersRepository.findById(user_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
         Comment reply = new Comment();
         reply.setParentComment(parentComment);
         reply.setContent(content);
         reply.setPost(parentComment.getPost());
         parentComment.addChildComment(reply);
+
+        //매칭 신청여부 확인
+        if (!matchingService.exitMatching(user, post)) {
+            Matching matching = new Matching(user, post);
+            matchingRepository.save(matching);
+        }
+
         return commentRepository.save(reply);
     }
 

@@ -1,6 +1,5 @@
 package com.hibit2.hibit2.service;
 
-import com.hibit2.hibit2.domain.Comment;
 import com.hibit2.hibit2.domain.DateTimeSlot;
 import com.hibit2.hibit2.domain.Post;
 import com.hibit2.hibit2.domain.Users;
@@ -53,22 +52,14 @@ public class PostService {
         Page<Post> postPage = postRepository.findByDeleteYn(flag, pageable);
         return postPage.map(PostListDto::new);
     }
-
+    @Transactional
     public Page<PostListDto> findPostsByDateTimeRange(char flag, String startDate, String endDate, Pageable pageable) {
-        // Convert startDate and endDate strings to LocalDate objects
         LocalDate startLocalDate = LocalDate.parse(startDate);
         LocalDate endLocalDate = LocalDate.parse(endDate);
-
-        // Adjust the endLocalDate to include the full day
         endLocalDate = endLocalDate.plusDays(1);
-
-        // Call the repository method to fetch posts within the specified date range
         Page<Post> postPage = postRepository.findByDateTimeRange(flag, startLocalDate, endLocalDate, pageable);
-
-        // Convert the Page<Post> to Page<PostListDto> using the constructor of PostListDto
         return postPage.map(PostListDto::new);
     }
-
 
 
     @Transactional
@@ -99,17 +90,14 @@ public class PostService {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        // 사용자가 이미 좋아요를 눌렀는지 확인
         Optional<Users> existingLike = post.getLikeUsers().stream()
                 .filter(likeUser -> likeUser.getId().equals(userId))
                 .findFirst();
 
         if (!existingLike.isPresent()) {
-            // 좋아요 추가
             post.getLikeUsers().add(user);
             post.increaseLike();
         } else {
-            // 좋아요 취소
             post.getLikeUsers().remove(existingLike.get());
             post.decreaseLike();
         }

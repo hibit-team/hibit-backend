@@ -29,9 +29,9 @@ public class CommentController {
     }
 
     // 대댓글 작성
-    @PostMapping("/replies/{comment_idx}")
-    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx, @RequestBody String content) {
-        Comment reply = commentService.createReply(comment_idx, content);
+    @PostMapping("/replies/{comment_idx}/{user_idx}")
+    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx,@PathVariable int user_idx, @RequestBody String content) {
+        Comment reply = commentService.createReply(comment_idx, user_idx, content);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply);
     }
 
