@@ -13,6 +13,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -76,9 +77,23 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "대표이미지 idx", example = "1")
     private String mainimg;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Schema(description = "좋아요 수", example = "default 0")
+    private int liked;
+
+    // 좋아요 누른 유저
+    @ManyToMany
+    @JoinTable(
+            name = "post_likes",
+            joinColumns = @JoinColumn(name = "post_idx"),
+            inverseJoinColumns = @JoinColumn(name = "user_idx")
+    )
+    private List<Users> likeUsers = new ArrayList<>();
+
     @Builder
     public Post(Users user,String title, String content, Post_status post_status, int number, String openchat,
-                int view, char deleteYn, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots){
+                int view, char deleteYn, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
+                List<Users> likeUsers){
         this.user=user;
         this.title=title;
         this.content=content;
@@ -89,15 +104,19 @@ public class Post extends BaseTimeEntity {
         this.deleteYn=deleteYn;
         this.what_do=what_do;
         this.dateTimeSlots=dateTimeSlots;
+        this.mainimg=mainimg;
+        this.liked=liked;
+        this.likeUsers =likeUsers;
     }
 
-    public void update(String title, String content, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots){
+    public void update(String title, String content, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
         this.title=title;
         this.content=content;
         this.number=number;
         this.openchat=openchat;
         this.what_do=what_do;
         this.dateTimeSlots=dateTimeSlots;
+        this.mainimg=mainimg;
     }
     public void increaseView(){
         this.view++;
@@ -108,6 +127,11 @@ public class Post extends BaseTimeEntity {
 
     public void makeMainimg(String url){this.mainimg= url;}
 
-
+    public void increaseLike(){
+        this.liked++;
+    }
+    public void decreaseLike() {
+        this.liked--;
+    }
 
 }

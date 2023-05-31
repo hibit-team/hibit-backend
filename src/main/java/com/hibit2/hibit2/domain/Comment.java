@@ -52,8 +52,8 @@ public class Comment extends BaseTimeEntity {
     @ManyToMany
     @JoinTable(
             name = "comment_likes",
-            joinColumns = @JoinColumn(name = "comment_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            joinColumns = @JoinColumn(name = "comment_idx"),
+            inverseJoinColumns = @JoinColumn(name = "user_idx")
     )
     private List<Users> likeUsers = new ArrayList<>();
 

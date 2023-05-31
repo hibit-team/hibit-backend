@@ -16,9 +16,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Tag(name = "post", description = "매칭 게시글 작성")
@@ -44,7 +49,7 @@ public class PostController {
     }
     //기본 게시글 리스트
     @GetMapping("/list/{pageParam}")
-    @Operation(summary = "post/list", description = "매칭 글 리스트")
+    @Operation(summary = "post/list", description = "매칭글 기본 리스트")
     public List<PostListDto> findPostsByPage(@PathVariable int pageParam) {
         char flag = 'N';
         int page = pageParam -1;
@@ -53,9 +58,40 @@ public class PostController {
         return postPage.getContent();
     }
 
+    //게시글 좋아요 순 리스트
+    @GetMapping("/list/like/{pageParam}")
+    @Operation(summary = "post/list/like/1", description = "매칭글 좋아요 순서 리스트")
+    public List<PostListDto> findPostsByPageLike(@PathVariable int pageParam) {
+        char flag = 'N';
+        int page = pageParam -1;
+        Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "liked").and(Sort.by(Sort.Direction.DESC, "createdDate")));
+        Page<PostListDto> postPage = postService.findPostsByDeleteYn(flag, pageable);
+        return postPage.getContent();
+    }
+    //이번주 출발 게시글 리스트
+    @GetMapping("/list/thisweek/{pageParam}")
+    @Operation(summary = "post/thisweek/1", description = "매칭글 이번주 출발 리스트")
+    public List<PostListDto> findPostsByDateTimeRange(@PathVariable int pageParam) {
+        char flag = 'N';
+        int page = pageParam -1;
+        Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
+        // 현재 날짜와 이번 주의 월요일을 가져옴
+        LocalDate currentDate = LocalDate.now();
+        LocalDate monday = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+        // 이번 주 월요일부터 일요일까지의 범위로 날짜를 필터링
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String mondayStr = monday.format(formatter);
+        String sundayStr = monday.plusDays(6).format(formatter);
+
+        Page<PostListDto> postPage = postService.findPostsByDateTimeRange(flag, mondayStr, sundayStr, pageable);
+
+        return postPage.getContent();
+    }
+
     //게시글 전체보기
     @GetMapping("/listall")
-    @Operation(summary = "post/list", description = "게시글 전체보기")
+    @Operation(summary = "post/listall", description = "게시글 전체보기, 기본 최신순")
     public List<PostListDto> findAllPosts(){
         char flag = 'N';
         return postService.findByDeleteYn(flag);
@@ -78,4 +114,12 @@ public class PostController {
     public int delete(@PathVariable int idx){
         return postService.delete(idx);
     }
+    //게시글 좋아요
+    @GetMapping("/{post_idx}/like")
+    public ResponseEntity<Post> likeComment(@PathVariable int post_idx){
+        String user_id = "b"; //나중에는 현재 로그인한 유저의 id 찾아오기
+        Post post = postService.likePost(post_idx, user_id);
+        return ResponseEntity.ok(post);
+    }
+
 }

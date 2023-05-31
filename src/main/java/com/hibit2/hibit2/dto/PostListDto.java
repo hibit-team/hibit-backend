@@ -17,8 +17,8 @@ public class PostListDto {
     private String title;
     private Post_status post_status;
     private List<Object> number_and_What;
-    private int view;
     private String mainimg;
+    private int liked;
 
     public PostListDto(@NotNull Post entity){
         this.idx=entity.getIdx();
@@ -26,8 +26,8 @@ public class PostListDto {
         this.title=entity.getTitle();
         this.post_status=entity.getPost_status();
         this.number_and_What = number_and_What(entity.getNumber(), entity.getWhat_do());
-        this.view=entity.getView();
         this.mainimg=entity.getMainimg();
+        this.liked=entity.getLiked();
     }
 
     private List<Object> number_and_What(int number, List<What_do> what_do) {

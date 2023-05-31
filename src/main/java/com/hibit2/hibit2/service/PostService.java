@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.service;
 
+import com.hibit2.hibit2.domain.Comment;
 import com.hibit2.hibit2.domain.DateTimeSlot;
 import com.hibit2.hibit2.domain.Post;
 import com.hibit2.hibit2.domain.Users;
@@ -12,12 +13,14 @@ import com.hibit2.hibit2.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -46,10 +49,28 @@ public class PostService {
         return list.stream().map(PostListDto::new).collect(Collectors.toList());
     }
     @Transactional
-    public Page<PostListDto> findPostsByDeleteYn(char flag, org.springframework.data.domain.Pageable pageable) {
+    public Page<PostListDto> findPostsByDeleteYn(char flag, Pageable pageable) {
         Page<Post> postPage = postRepository.findByDeleteYn(flag, pageable);
         return postPage.map(PostListDto::new);
     }
+
+    public Page<PostListDto> findPostsByDateTimeRange(char flag, String startDate, String endDate, Pageable pageable) {
+        // Convert startDate and endDate strings to LocalDate objects
+        LocalDate startLocalDate = LocalDate.parse(startDate);
+        LocalDate endLocalDate = LocalDate.parse(endDate);
+
+        // Adjust the endLocalDate to include the full day
+        endLocalDate = endLocalDate.plusDays(1);
+
+        // Call the repository method to fetch posts within the specified date range
+        Page<Post> postPage = postRepository.findByDateTimeRange(flag, startLocalDate, endLocalDate, pageable);
+
+        // Convert the Page<Post> to Page<PostListDto> using the constructor of PostListDto
+        return postPage.map(PostListDto::new);
+    }
+
+
+
     @Transactional
     public PostResponseDto findById(int idx){
         Post entity= postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
@@ -61,7 +82,7 @@ public class PostService {
     @Transactional
     public int update(int idx, PostUpdateDto requestDto){
         Post post = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
-        post.update(requestDto.getTitle(),requestDto.getContent(), requestDto.getNumber(), requestDto.getOpenchat(), requestDto.getWhat_do(),requestDto.getDateTimeSlots());
+        post.update(requestDto.getTitle(),requestDto.getContent(), requestDto.getNumber(), requestDto.getOpenchat(), requestDto.getWhat_do(),requestDto.getDateTimeSlots(),requestDto.getMainimg());
         return idx;
     }
 
@@ -70,6 +91,29 @@ public class PostService {
         Post entity = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
         entity.delete();
         return idx;
+    }
+    @Transactional
+    public Post likePost(int post_idx, String userId){
+        Post post = postRepository.findById(post_idx)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 사용자가 이미 좋아요를 눌렀는지 확인
+        Optional<Users> existingLike = post.getLikeUsers().stream()
+                .filter(likeUser -> likeUser.getId().equals(userId))
+                .findFirst();
+
+        if (!existingLike.isPresent()) {
+            // 좋아요 추가
+            post.getLikeUsers().add(user);
+            post.increaseLike();
+        } else {
+            // 좋아요 취소
+            post.getLikeUsers().remove(existingLike.get());
+            post.decreaseLike();
+        }
+        return postRepository.save(post);
     }
 
 
