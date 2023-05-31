@@ -18,12 +18,12 @@ public class PostResponseDto {
     private Post_status post_status;
     private int number;
     private String openchat;
-    private What_do what_do;
+    private List<What_do> what_do;
     private int view;
     private LocalDateTime createdDate;
     private char deleteYn;
     private List<DateTimeSlot> dateTimeSlots;
-    private int mainimg;
+    private String mainimg;
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();

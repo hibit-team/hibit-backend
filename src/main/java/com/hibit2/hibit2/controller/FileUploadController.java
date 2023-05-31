@@ -23,8 +23,8 @@ public class FileUploadController {
     @Autowired
     private PostRepository postRepository;
 //게시글 사진 업로드 누른 경우
-    @PostMapping("/{post_idx}/upload")
-    public ResponseEntity<List<String>> uploadFiles(@PathVariable int post_idx, @RequestParam("file") List<MultipartFile> files, @RequestParam int mainimg) {
+    @PostMapping("/{post_idx}/upload") //대표이미지 url 스트링값으로 받아오기
+    public ResponseEntity<List<String>> uploadFiles(@PathVariable int post_idx, @RequestParam("file") List<MultipartFile> files, @RequestParam String mainimg) {
         List<String> fileUrls = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);

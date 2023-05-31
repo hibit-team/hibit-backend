@@ -16,12 +16,12 @@ public class PostUpdateDto {
     private String content;
     private int number;
     private String openchat;
-    private What_do what_do;
+    private List<What_do> what_do;
     private List<DateTimeSlot> dateTimeSlots;
 
 
     @Builder
-    public PostUpdateDto(String title, String content, int number, String openchat, What_do what_do,  List<DateTimeSlot> dateTimeSlots){
+    public PostUpdateDto(String title, String content, int number, String openchat, List<What_do> what_do,  List<DateTimeSlot> dateTimeSlots){
         this.title=title;
         this.content=content;
         this.number=number;

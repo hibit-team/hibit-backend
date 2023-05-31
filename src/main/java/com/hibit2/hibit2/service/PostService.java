@@ -3,6 +3,7 @@ package com.hibit2.hibit2.service;
 import com.hibit2.hibit2.domain.DateTimeSlot;
 import com.hibit2.hibit2.domain.Post;
 import com.hibit2.hibit2.domain.Users;
+import com.hibit2.hibit2.dto.PostListDto;
 import com.hibit2.hibit2.dto.PostResponseDto;
 import com.hibit2.hibit2.dto.PostSaveDto;
 import com.hibit2.hibit2.dto.PostUpdateDto;
@@ -10,10 +11,12 @@ import com.hibit2.hibit2.repository.PostRepository;
 import com.hibit2.hibit2.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,12 +40,16 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostResponseDto> findByDeleteYn(final char deleteYn){
+    public List<PostListDto> findByDeleteYn(char flag){
         Sort sort = Sort.by(Sort.Direction.DESC,"createdDate");
-        List<Post> list = postRepository.findALlByDeleteYn(deleteYn, sort);
-        return list.stream().map(PostResponseDto::new).collect(Collectors.toList());
+        List<Post> list = postRepository.findALlByDeleteYn(flag, sort);
+        return list.stream().map(PostListDto::new).collect(Collectors.toList());
     }
-
+    @Transactional
+    public Page<PostListDto> findPostsByDeleteYn(char flag, org.springframework.data.domain.Pageable pageable) {
+        Page<Post> postPage = postRepository.findByDeleteYn(flag, pageable);
+        return postPage.map(PostListDto::new);
+    }
     @Transactional
     public PostResponseDto findById(int idx){
         Post entity= postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
@@ -64,5 +71,7 @@ public class PostService {
         entity.delete();
         return idx;
     }
+
+
 
 }

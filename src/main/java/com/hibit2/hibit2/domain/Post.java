@@ -54,8 +54,11 @@ public class Post extends BaseTimeEntity {
     private String openchat;
 
     @Column(nullable = false)
-    @Schema(description = "전시보고뭐할래", example = "EAT, CAFE")
-    private What_do what_do;
+    @Schema(description = "전시보고뭐할래", example = "[EAT, CAFE]")
+    @ElementCollection(targetClass = What_do.class)
+    @Enumerated(EnumType.STRING)
+    private List<What_do> what_do;
+
 
     @Column(nullable = false, columnDefinition = "integer default 0")
     @Schema(description = "조회수", example = "default 0 = 자동 카운트")
@@ -69,13 +72,13 @@ public class Post extends BaseTimeEntity {
     @CollectionTable(name = "post_date_time_slots", joinColumns = @JoinColumn(name = "post_idx"))
     private List<DateTimeSlot> dateTimeSlots;
 
-    @Column(nullable = true)
+    @Column(length = 300, nullable = true)
     @Schema(description = "대표이미지 idx", example = "1")
-    private int mainimg;
+    private String mainimg;
 
     @Builder
     public Post(Users user,String title, String content, Post_status post_status, int number, String openchat,
-                int view, char deleteYn, What_do what_do, List<DateTimeSlot> dateTimeSlots){
+                int view, char deleteYn, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots){
         this.user=user;
         this.title=title;
         this.content=content;
@@ -88,7 +91,7 @@ public class Post extends BaseTimeEntity {
         this.dateTimeSlots=dateTimeSlots;
     }
 
-    public void update(String title, String content, int number, String openchat, What_do what_do,List<DateTimeSlot> dateTimeSlots){
+    public void update(String title, String content, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots){
         this.title=title;
         this.content=content;
         this.number=number;
@@ -103,7 +106,7 @@ public class Post extends BaseTimeEntity {
         this.deleteYn = 'Y';
     }
 
-    public void makeMainimg(int idx){this.mainimg= idx;}
+    public void makeMainimg(String url){this.mainimg= url;}
 
 
 

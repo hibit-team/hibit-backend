@@ -18,13 +18,13 @@ public class PostSaveDto {
     private Post_status post_status;
     private int number;
     private String openchat;
-    private What_do what_do;
+    private List<What_do> what_do;
     private char deleteYn;
     private List<DateTimeSlot> dateTimeSlots;
 
     @Builder
     public PostSaveDto(Users user, String title, String content, Post_status post_status,
-                       int number, String openchat, What_do what_do, char deleteYn, List<DateTimeSlot> dateTimeSlots){
+                       int number, String openchat, List<What_do> what_do, char deleteYn, List<DateTimeSlot> dateTimeSlots){
         this.user = user;
         this.title=title;
         this.content=content;
