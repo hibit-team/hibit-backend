@@ -4,6 +4,7 @@ import com.hibit2.hibit2.member.exception.InvalidMemberException;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,51 +25,46 @@ public class Profile {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "nickname", length = 10, nullable = false)
+    @Column(name = "nickname", length = 20, nullable = false)
     private String nickname;
 
     @Column(name = "gender", nullable = false)
-    private String gender;
+    private int gender;
 
-    @Column(name = "profile_image_url", length = 254, nullable = false)
-    private String profileImageUrl;
-
-    @Column(name = "address_city", length = 254, nullable = false)
-    private String addressCity;
-
-    @Column(name = "address_distinct", length = 254, nullable = false)
-    private String addressDistinct;
-
-    @Column(name = "style", length = 254, nullable = false)
-    private String style;
-
-    @Column(name = "personality", length = 254, nullable = false)
-    private String personality;
-
-    @Column(name = "job", length = 20, nullable = false)
-    private String job;
+    @Column(name = "personality")
+    private PersonalityType personality;
 
     @Column(name ="introduce", length = 200, nullable = false)
     private String introduce;
+
+    @Column(name = "main_img", length = 100, nullable = false)
+    private String mainImg;
+
+    @Column(name = "job", length = 50, nullable = false)
+    private String job;
+
+    @Column(name = "address_city", nullable = false)
+    private Enum addressCity;
+
+    @Column(name = "address_distinct", nullable = false)
+    private Enum addressDistinct;
 
 
     protected  Profile() {
     }
 
-    public Profile(final int matchingNo, final String email, final String nickname, final String gender,
-                   final String profileImageUrl, final String addressCity, final String addressDistinct, final String style,
-                   final String personality, final String job, final String introduce) {
+    public Profile(final int matchingNo, final String email, final String nickname, final int gender, final PersonalityType personalityType
+    , final String introduce, final String mainImg, final String job, final Enum addressCity, final Enum addressDistinct) {
         this.matchingNo = matchingNo;
         this.email = email;
         this.nickname = nickname;
         this.gender = gender;
-        this.profileImageUrl = profileImageUrl;
+        this.personality = personalityType;
+        this.introduce = introduce;
+        this.mainImg = mainImg;
+        this.job = job;
         this.addressCity = addressCity;
         this.addressDistinct = addressDistinct;
-        this.style = style;
-        this.personality = personality;
-        this.job = job;
-        this.introduce = introduce;
     }
 
     private void validateEmail(final String email) {
