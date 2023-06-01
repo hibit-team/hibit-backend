@@ -1,18 +1,3 @@
 spring:
   profiles:
     include: database
-
-cloud:
-  aws:
-    credentials:
-      access-key: AKIATETNBKI7AEOEIMXI
-      secret-key: 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
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-
-app:
-  aws:
-    s3:
-      bucket: hibit2bucket

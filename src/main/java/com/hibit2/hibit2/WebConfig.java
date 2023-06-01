@@ -14,4 +14,7 @@ public class WebConfig {
             builder.modulesToInstall(new Hibernate5Module());
         };
     }
+
+
+
 }
