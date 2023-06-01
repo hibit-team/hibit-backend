@@ -19,7 +19,7 @@ class MemberRepositoryTest {
     void 중복된_이메일이_존재하는_경우_true를_반환한다() {
         // given
         String email = "fancy.junyongmoon@gmail.com";
-        Member member = new Member(email);
+        Member member = new Member(email, SocialType.GOOGLE);
         memberRepository.save(member);
 
         // when

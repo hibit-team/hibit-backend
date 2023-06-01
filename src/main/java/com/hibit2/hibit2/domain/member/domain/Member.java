@@ -31,13 +31,18 @@ public class Member {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "social_type", nullable = false)
+    private SocialType socialType;
+
     protected Member() {
     }
 
-    public  Member(final String email) {
+    public  Member(final String email, final SocialType socialType) {
         validateEmail(email);
 
         this.email = email;
+        this.socialType = socialType;
     }
 
     private void validateEmail(final String email) {
