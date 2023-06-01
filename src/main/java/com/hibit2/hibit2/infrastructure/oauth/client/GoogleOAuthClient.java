@@ -90,9 +90,7 @@ public class GoogleOAuthClient implements OAuthClient {
     private OAuthMember generateOAuthMemberBy(final String decodedIdToken) throws JsonProcessingException {
         Map<String, String> userInfo = objectMapper.readValue(decodedIdToken, HashMap.class);
         String email = userInfo.get("email");
-        String gender = userInfo.get("gender");
-        int age = Integer.parseInt(userInfo.get("age"));
 
-        return new OAuthMember(email, gender, age);
+        return new OAuthMember(email);
     }
 }

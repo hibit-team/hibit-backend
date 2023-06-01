@@ -31,26 +31,13 @@ public class Member {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "gender", nullable = false)
-    private String gender;
-
-    @Column(name = "age", nullable = false)
-    private int age;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
-
     protected Member() {
     }
 
-    public  Member(final String email, final String gender, final int age, final Role role) {
+    public  Member(final String email) {
         validateEmail(email);
 
         this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.role = role;
     }
 
     private void validateEmail(final String email) {

@@ -58,9 +58,6 @@ public class AuthService {
     }
 
     private Member generateMemberBy(final OAuthMember oAuthMember) {
-        return new Member(oAuthMember.getEmail(),
-            oAuthMember.getGender(),
-            oAuthMember.getAge(),
-            Role.USER);
+        return new Member(oAuthMember.getEmail());
     }
 }
