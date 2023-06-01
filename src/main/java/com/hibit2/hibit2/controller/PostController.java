@@ -55,8 +55,8 @@ public class PostController {
 
     }
     //기본 게시글 리스트
-    @GetMapping("/list/{pageParam}")
-    @Operation(summary = "post/list", description = "매칭글 기본 리스트")
+    @GetMapping("/list/allposts/{pageParam}")
+    @Operation(summary = "post/list/allposts/1", description = "매칭글 기본 리스트")
     public ResponseEntity<List<PostListDto>> findPostsByPage(@PathVariable int pageParam) {
         char flag = 'N';
         int page = pageParam -1;
