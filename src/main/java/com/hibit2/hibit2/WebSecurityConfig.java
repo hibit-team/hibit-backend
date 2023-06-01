@@ -15,6 +15,12 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable();
+
         // 메서드 내용
         http.cors().configurationSource(corsConfigurationSource());
 
@@ -26,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3000", "http://localhost:3000"));
+
         source.registerCorsConfiguration("/**", config);
         return source;
     }
