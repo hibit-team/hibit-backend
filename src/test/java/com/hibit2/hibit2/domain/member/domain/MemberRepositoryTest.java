@@ -19,9 +19,7 @@ class MemberRepositoryTest {
     void 중복된_이메일이_존재하는_경우_true를_반환한다() {
         // given
         String email = "fancy.junyongmoon@gmail.com";
-        String gender = "남";
-        int age = 28;
-        Member member = new Member(email, gender, age, Role.USER);
+        Member member = new Member(email);
         memberRepository.save(member);
 
         // when
