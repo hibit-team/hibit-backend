@@ -66,11 +66,4 @@ public class Profile {
         this.addressCity = addressCity;
         this.addressDistinct = addressDistinct;
     }
-
-    private void validateEmail(final String email) {
-        Matcher matcher = EMAIL_PATTERN.matcher(email);
-        if(!matcher.matches()) {
-            throw new InvalidMemberException("이메일 형식이 올바르지 않습니다");
-        }
-    }
 }
