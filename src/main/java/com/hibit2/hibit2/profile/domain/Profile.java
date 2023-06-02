@@ -49,12 +49,14 @@ public class Profile {
     @Column(name = "address_distinct", nullable = false)
     private Enum addressDistinct;
 
+    @Column(name = "ban")
+    private int ban;
 
     protected  Profile() {
     }
 
     public Profile(final int matchingNo, final String email, final String nickname, final int gender, final PersonalityType personalityType
-    , final String introduce, final String mainImg, final String job, final Enum addressCity, final Enum addressDistinct) {
+    , final String introduce, final String mainImg, final String job, final Enum addressCity, final Enum addressDistinct, final int ban) {
         this.matchingNo = matchingNo;
         this.email = email;
         this.nickname = nickname;
@@ -65,5 +67,6 @@ public class Profile {
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistinct = addressDistinct;
+        this.ban = ban;
     }
 }

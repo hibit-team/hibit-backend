@@ -21,10 +21,11 @@ class ProfileTest {
         String job = "Backend";
         AddressCity addressCity = AddressCity.NEW_YORK;
         AddressDistinct addressDistinct = AddressDistinct.MANHATTAN;
+        int ban = 1;
 
         // when & then
         Assertions.assertDoesNotThrow(() -> new Profile(matchingNo, email, nickname, gender,
-                personalityType, introduce, mainImg, job, addressCity, addressDistinct));
+                personalityType, introduce, mainImg, job, addressCity, addressDistinct, ban));
     }
 
 }
