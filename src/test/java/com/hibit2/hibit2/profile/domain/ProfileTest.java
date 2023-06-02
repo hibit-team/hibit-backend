@@ -11,9 +11,9 @@ class ProfileTest {
     @Test
     void 프로필을_셩상한다() {
         // given
-        int matchingNo = 1;
-        String email = "fancy.junyongmoon@gmail.com";
+        int idx = 1;
         String nickname = "fancy";
+        int age = 28;
         int gender = 1;
         PersonalityType personalityType = PersonalityType.TYPE_1;
         String introduce = "Hi, I'm fancy.";
@@ -24,7 +24,7 @@ class ProfileTest {
         int ban = 1;
 
         // when & then
-        Assertions.assertDoesNotThrow(() -> new Profile(matchingNo, email, nickname, gender,
+        Assertions.assertDoesNotThrow(() -> new Profile(idx, nickname, age, gender,
                 personalityType, introduce, mainImg, job, addressCity, addressDistinct, ban));
     }
 

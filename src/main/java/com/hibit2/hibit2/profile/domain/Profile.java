@@ -17,21 +17,19 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "matching_no")
-    private int matchingNo;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "idx", nullable = false)
+    private int idx;
 
     @Column(name = "nickname", length = 20, nullable = false)
     private String nickname;
 
     @Column(name = "gender", nullable = false)
+    private int age;
+
+    @Column(name = "gender", nullable = false)
     private int gender;
 
-    @Column(name = "personality")
+    @Column(name = "personality", nullable = false)
     private PersonalityType personality;
 
     @Column(name ="introduce", length = 200, nullable = false)
@@ -55,11 +53,11 @@ public class Profile {
     protected  Profile() {
     }
 
-    public Profile(final int matchingNo, final String email, final String nickname, final int gender, final PersonalityType personalityType
+    public Profile(final int idx, final String nickname, final int age, final int gender, final PersonalityType personalityType
     , final String introduce, final String mainImg, final String job, final Enum addressCity, final Enum addressDistinct, final int ban) {
-        this.matchingNo = matchingNo;
-        this.email = email;
+        this.idx = idx;
         this.nickname = nickname;
+        this.age = age;
         this.gender = gender;
         this.personality = personalityType;
         this.introduce = introduce;
