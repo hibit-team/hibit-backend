@@ -15,7 +15,7 @@ class ProfileTest {
         String email = "fancy.junyongmoon@gmail.com";
         String nickname = "fancy";
         int gender = 1;
-        PersonalityType personalityType = PersonalityType.TYPE_A;
+        PersonalityType personalityType = PersonalityType.TYPE_1;
         String introduce = "Hi, I'm fancy.";
         String mainImg = "profile.jpg";
         String job = "Backend";
