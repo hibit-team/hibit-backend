@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.domain.member.domain;
+package com.hibit2.hibit2.member.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

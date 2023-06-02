@@ -1,11 +1,11 @@
-package com.hibit2.hibit2.domain.member.service;
+package com.hibit2.hibit2.member.service;
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hibit2.hibit2.domain.member.domain.Member;
-import com.hibit2.hibit2.domain.member.domain.MemberRepository;
-import com.hibit2.hibit2.domain.member.exception.NoSuchMemberException;
+import com.hibit2.hibit2.member.exception.NoSuchMemberException;
 
 @Transactional(readOnly = true)
 @Service

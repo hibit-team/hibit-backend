@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.domain.member.domain;
+package com.hibit2.hibit2.member.domain;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.hibit2.hibit2.domain.member.exception.InvalidMemberException;
+import com.hibit2.hibit2.member.exception.InvalidMemberException;
 
 import lombok.Getter;
 
