@@ -74,7 +74,7 @@ public class GoogleOAuthClient implements OAuthClient {
         params.add("client_secret", googleClientSecret);
         params.add("code", code);
         params.add("grant_type", "authorization_code");
-        params.add("redirect_uri", googleRedirectUri);
+        params.add("redirect_url", googleRedirectUri);
         return params;
     }
 

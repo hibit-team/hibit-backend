@@ -16,7 +16,7 @@ public class GoogleOAuthEndpoint implements OAuthEndpoint {
     private final String googleRedirectUri;
     private final String googleClientId;
 
-    public GoogleOAuthEndpoint(@Value("${oauth.google.redirect_uri}") final String googleRedirectUri,
+    public GoogleOAuthEndpoint(@Value("${oauth.google.redirect_url}") final String googleRedirectUri,
         @Value("${oauth.google.client_id}") final String googleClientId) {
         this.googleRedirectUri = googleRedirectUri;
         this.googleClientId = googleClientId;
