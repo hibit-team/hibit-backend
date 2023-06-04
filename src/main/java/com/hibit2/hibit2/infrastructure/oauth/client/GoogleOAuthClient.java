@@ -33,7 +33,7 @@ public class GoogleOAuthClient implements OAuthClient {
     private final ObjectMapper objectMapper;
 
     public GoogleOAuthClient(
-        @Value("${oauth.google.redirect_url}") final String googleRedirectUri,
+        @Value("${oauth.google.redirect_uri}") final String googleRedirectUri,
         @Value("${oauth.google.client_id}") final String googleClientId,
         @Value("${oauth.google.client_secret}") final String googleClientSecret,
         @Value("${oauth.google.token_uri}") final String googleTokenUri,
@@ -74,7 +74,7 @@ public class GoogleOAuthClient implements OAuthClient {
         params.add("client_secret", googleClientSecret);
         params.add("code", code);
         params.add("grant_type", "authorization_code");
-        params.add("redirect_url", googleRedirectUri);
+        params.add("redirect_uri", googleRedirectUri);
         return params;
     }
 
