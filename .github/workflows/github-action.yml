@@ -5,7 +5,8 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
+      - 'main'
+      - 'release/**'
 
 permissions:
   contents: read
