@@ -32,6 +32,8 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setContent(content);
+
+        post.increaseCommentNumber();
         //매칭 신청여부 확인, 추후 자신이 쓴 글에는 매칭 신청 불가능하도록 변경
         if (!matchingService.exitMatching(user, post)) {
             Matching matching = new Matching(user, post);
@@ -40,7 +42,6 @@ public class CommentService {
 
         return commentRepository.save(comment);
     }
-    //매칭 신청 여부 확인인
 
     // 대댓글 작성
     public Comment createReply(int comment_idx, int user_idx, String content) {
@@ -56,6 +57,7 @@ public class CommentService {
         reply.setContent(content);
         reply.setPost(parentComment.getPost());
         parentComment.addChildComment(reply);
+        post.increaseCommentNumber();
 
         //매칭 신청여부 확인
         if (!matchingService.exitMatching(user, post)) {
@@ -83,6 +85,25 @@ public class CommentService {
     public void deleteComment(int comment_idx) {
         Comment comment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+        if (comment.getParentComment() != null) {
+            // 대댓글 삭제 -> -1
+            Comment parentComment = comment.getParentComment();
+            Post post = parentComment.getPost();
+            int count =1;
+            post.decreaseCommentNumber(count);
+        } else {
+            // 댓글 삭제 -> 대댓글 수도 같이 -
+            Post post = comment.getPost();
+
+            int count = 1;
+            List<Comment> childComments = comment.getChildComments();
+            for (Comment childComment : childComments) {
+                count++;
+            }
+            post.decreaseCommentNumber(count);
+        }
+
+
         commentRepository.delete(comment);
     }
     public Comment likeComment(int comment_idx, String userId){
@@ -107,5 +128,7 @@ public class CommentService {
         }
         return commentRepository.save(comment);
     }
+
+
 
 }

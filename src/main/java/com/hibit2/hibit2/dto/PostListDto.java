@@ -15,19 +15,21 @@ public class PostListDto {
     private int idx;
     private Users user;
     private String title;
-    private Post_status post_status;
+    private char status;
     private List<Object> number_and_What;
     private String mainimg;
     private int liked;
+    private int comment_number;
 
     public PostListDto(@NotNull Post entity){
         this.idx=entity.getIdx();
         this.user = entity.getUser();
         this.title=entity.getTitle();
-        this.post_status=entity.getPost_status();
+        this.status=entity.getStatus();
         this.number_and_What = number_and_What(entity.getNumber(), entity.getWhat_do());
         this.mainimg=entity.getMainimg();
         this.liked=entity.getLiked();
+        this.comment_number=entity.getComment_number();
     }
 
     private List<Object> number_and_What(int number, List<What_do> what_do) {

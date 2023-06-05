@@ -61,7 +61,7 @@ public class PostController {
         char flag = 'N';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Page<PostListDto> postPage = postService.findPostsByDeleteYn(flag, pageable);
+        Page<PostListDto> postPage = postService.findPostsByPost_status(flag, pageable);
         return ResponseEntity.status(HttpStatus.CREATED).body(postPage.getContent());
 
     }
@@ -73,7 +73,7 @@ public class PostController {
         char flag = 'N';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "liked").and(Sort.by(Sort.Direction.DESC, "createdDate")));
-        Page<PostListDto> postPage = postService.findPostsByDeleteYn(flag, pageable);
+        Page<PostListDto> postPage = postService.findPostsByPost_status(flag, pageable);
         return ResponseEntity.status(HttpStatus.CREATED).body(postPage.getContent());
 
     }
@@ -104,7 +104,7 @@ public class PostController {
     @Operation(summary = "post/listall", description = "게시글 전체보기, 기본 최신순")
     public ResponseEntity<List<PostListDto>> findAllPosts(){
         char flag = 'N';
-        List<PostListDto> list = postService.findByDeleteYn(flag);
+        List<PostListDto> list = postService.findByPost_status(flag);
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 

@@ -20,15 +20,14 @@ public class PostSaveDto {
     @Schema(description = "내용", example = "내용내용")
     private String content;
     @Schema(description = "매칭 상태", example = "Holding")
-    private Post_status post_status;
+    private char status;
     @Schema(description = "전시관람 인원", example = "1")
     private int number;
     @Schema(description = "오픈채팅 url", example = "http://open")
     private String openchat;
     @Schema(description = "전시이후뭐할래", example = "[\"EAT\", \"CAFE\"]")
     private List<What_do> what_do;
-    @Schema(description = "삭제여부", example = "N")
-    private char deleteYn;
+
     @Schema(description = "관람일자", example = "[\n" + "{\n" +
             "    \"date\": \"2023-05-31\",\n" +
             "    \"timeSlot\": \"AM\"\n" +
@@ -36,16 +35,15 @@ public class PostSaveDto {
     private List<DateTimeSlot> dateTimeSlots;
 
     @Builder
-    public PostSaveDto(Users user, String title, String content, Post_status post_status,
-                       int number, String openchat, List<What_do> what_do, char deleteYn, List<DateTimeSlot> dateTimeSlots){
+    public PostSaveDto(Users user, String title, String content, char status,
+                       int number, String openchat, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots){
         this.user = user;
         this.title=title;
         this.content=content;
-        this.post_status = post_status;
+        this.status = status;
         this.number=number;
         this.openchat=openchat;
         this.what_do=what_do;
-        this.deleteYn = deleteYn;
         this.dateTimeSlots = dateTimeSlots;
     }
     public Post toEntity(){
@@ -53,11 +51,10 @@ public class PostSaveDto {
                 .user(user)
                 .title(title)
                 .content(content)
-                .post_status(Holding)
+                .status('N')
                 .number(number)
                 .openchat(openchat)
                 .what_do(what_do)
-                .deleteYn('N')
                 .dateTimeSlots(dateTimeSlots)
                 .build();
     }
