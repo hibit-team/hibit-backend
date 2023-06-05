@@ -43,10 +43,6 @@ public class Post extends BaseTimeEntity {
     private String content;
 
     @Column(nullable = false)
-    @Schema(description = "게시글 상태", example = "Holding, Pending, Completed")
-    private Post_status post_status;
-
-    @Column(nullable = false)
     @Schema(description = "선호인원", example = "3")
     private int number;
 
@@ -66,8 +62,8 @@ public class Post extends BaseTimeEntity {
     private int view;
 
     @Column(nullable = false)
-    @Schema(description = "삭제여부", example = "default N (작성 N, 삭제 Y)")
-    private char deleteYn;
+    @Schema(description = "글 상태 (작성 N, 삭제 D, 완료 C)", example = "N")
+    private char status;
 
     @ElementCollection
     @CollectionTable(name = "post_date_time_slots", joinColumns = @JoinColumn(name = "post_idx"))
@@ -94,23 +90,27 @@ public class Post extends BaseTimeEntity {
     )
     private List<Users> likeUsers = new ArrayList<>();
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Schema(description = "댓글수", example = "15")
+    private int comment_number;
+
     @Builder
-    public Post(Users user,String title, String content, Post_status post_status, int number, String openchat,
-                int view, char deleteYn, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
-                List<Users> likeUsers){
+    public Post(Users user,String title, String content, int number, String openchat,
+                int view, char status, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
+                List<Users> likeUsers, int comment_number){
         this.user=user;
         this.title=title;
         this.content=content;
-        this.post_status=post_status;
         this.number=number;
         this.openchat=openchat;
         this.view=view;
-        this.deleteYn=deleteYn;
+        this.status=status;
         this.what_do=what_do;
         this.dateTimeSlots=dateTimeSlots;
         this.mainimg=mainimg;
         this.liked=liked;
         this.likeUsers =likeUsers;
+        this.comment_number = comment_number;
     }
 
     public void update(String title, String content, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
@@ -126,7 +126,10 @@ public class Post extends BaseTimeEntity {
         this.view++;
     }
     public void delete(){
-        this.deleteYn = 'Y';
+        this.status = 'D';
+    }
+    public void complete(){
+        this.status = 'C';
     }
 
     public void makeMainimg(String url){this.mainimg= url;}
@@ -137,5 +140,14 @@ public class Post extends BaseTimeEntity {
     public void decreaseLike() {
         this.liked--;
     }
+    public void increaseCommentNumber(){
+        this.comment_number++;
+    }
+    public void decreaseCommentNumber(int count){
+        this.comment_number= this.comment_number-count;
+    }
+
+
+
 
 }

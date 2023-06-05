@@ -42,14 +42,14 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostListDto> findByDeleteYn(char flag){
+    public List<PostListDto> findByPost_status(char flag){
         Sort sort = Sort.by(Sort.Direction.DESC,"createdDate");
-        List<Post> list = postRepository.findALlByDeleteYn(flag, sort);
+        List<Post> list = postRepository.findALlByStatus(flag, sort);
         return list.stream().map(PostListDto::new).collect(Collectors.toList());
     }
     @Transactional
-    public Page<PostListDto> findPostsByDeleteYn(char flag, Pageable pageable) {
-        Page<Post> postPage = postRepository.findByDeleteYn(flag, pageable);
+    public Page<PostListDto> findPostsByPost_status(char flag, Pageable pageable) {
+        Page<Post> postPage = postRepository.findByStatus(flag, pageable);
         return postPage.map(PostListDto::new);
     }
     @Transactional

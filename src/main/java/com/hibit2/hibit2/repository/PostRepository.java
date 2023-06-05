@@ -12,9 +12,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    List<Post> findALlByDeleteYn(char deleteYn, Sort sort);
-    Page<Post> findByDeleteYn(char flag, Pageable pageable);
-    @Query("SELECT p FROM Post p JOIN p.dateTimeSlots dts WHERE p.deleteYn = :flag AND dts.date >= :startDate AND dts.date < :endDate")
+    List<Post> findALlByStatus(char flag, Sort sort);
+    Page<Post> findByStatus(char flag, Pageable pageable);
+
+    @Query("SELECT p FROM Post p JOIN p.dateTimeSlots dts WHERE p.status = :flag AND dts.date >= :startDate AND dts.date < :endDate")
     Page<Post> findByDateTimeRange(@Param("flag") char flag, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, Pageable pageable);
 
 
