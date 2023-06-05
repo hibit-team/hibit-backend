@@ -5,9 +5,9 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
-      - release/server_test
-
+      - 'main'
+      - 'releases/**'
+      
 permissions:
   contents: read
 
