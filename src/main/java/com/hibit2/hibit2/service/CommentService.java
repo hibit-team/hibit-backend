@@ -75,7 +75,6 @@ public class CommentService {
 
     // 댓글 수정
     public Comment updateComment(int comment_idx, String newContent) {
-        
         Comment comment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
         comment.setContent(newContent);
