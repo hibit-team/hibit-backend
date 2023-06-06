@@ -25,7 +25,7 @@ public class Users {
     private String id;
 
     @Builder
-    public Users(String id, String password, String status){
+    public Users(String id){
         this.id=id;
     }
 }

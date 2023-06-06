@@ -15,6 +15,7 @@ public class PostListDto {
     private int idx;
     private Users user;
     private String title;
+    private String exhibition;
     private char status;
     private List<Object> number_and_What;
     private String mainimg;
@@ -25,6 +26,7 @@ public class PostListDto {
         this.idx=entity.getIdx();
         this.user = entity.getUser();
         this.title=entity.getTitle();
+        this.exhibition=entity.getExhibition();
         this.status=entity.getStatus();
         this.number_and_What = number_and_What(entity.getNumber(), entity.getWhat_do());
         this.mainimg=entity.getMainimg();
