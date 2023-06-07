@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,12 +49,30 @@ public class MatchingService {
             matchRequest.setStatus(MatchStatus.PENDING);
         }
     }
-    //매칭 완료 변경
-    public void completeMatch(int matching_idx) {
+    //매칭 수락 (알림에서 수락 누른 경우)
+    public void okMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
-        matching.setStatus(MatchStatus.COMPLETED);
+        matching.setStatus(MatchStatus.OK);
         matchingRepository.save(matching);
     }
+    //매칭 수락 (알림에서 거절 누른 경우) getMatchUserByPost
+    public void noMatch(int matching_idx) {
+        Matching matching = matchingRepository.findById(matching_idx)
+                .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
+        matching.setStatus(MatchStatus.NO);
+        matchingRepository.save(matching);
+    }
+
+    public List<String> getMatchUserByPost(int post_idx) {
+        List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
+        List<String> matchedUsers = new ArrayList<>();
+        for (Matching matching : matchingList) {
+            matchedUsers.add(matching.getUser().getId());
+        }
+        return matchedUsers;
+    }
+
+
 
 }

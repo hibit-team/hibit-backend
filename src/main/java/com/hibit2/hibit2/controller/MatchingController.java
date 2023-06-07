@@ -29,13 +29,36 @@ public class MatchingController {
         matchingService.sendInvitations(post_idx, userIds);
         return ResponseEntity.ok().build();
     }
-    //매칭 완료 변경 -> 여러 명이 한 번에 만났으면 그거 한 번에 완료로?
-    @PutMapping("/{matching_idx}/complete")
-    @Operation(summary = "/matching/1/complete", description = "매칭완료 변경")
-    public ResponseEntity<Void> completeMatch(@PathVariable int matching_idx) {
-        matchingService.completeMatch(matching_idx);
+    //매칭 수락 (추후 알림에서 변경 가능)
+    @PutMapping("/{matching_idx}/ok")
+    @Operation(summary = "/matching/1/ok", description = "매칭 수락 변경")
+    public ResponseEntity<Void> okMatch(@PathVariable int matching_idx) {
+        matchingService.okMatch(matching_idx);
+        return ResponseEntity.ok().build();
+    }
+    //매칭 수락 (추후 알림에서 변경 가능)
+    @PutMapping("/{matching_idx}/no")
+    @Operation(summary = "/matching/1/no", description = "매칭 거절 변경")
+    public ResponseEntity<Void> noMatch(@PathVariable int matching_idx) {
+        matchingService.noMatch(matching_idx);
         return ResponseEntity.ok().build();
     }
 
-    //holding변경 버튼 만들기
+    //매칭에서 ok한 사람들 list반환
+    @GetMapping("/{post_idx}/oklist")
+    @Operation(summary = "/matching/1/oklist", description = "매칭 수락자 리스트")
+    public ResponseEntity<List<String>> getMatchUserByPost(@PathVariable int post_idx) {
+        List<String> matchUsers = matchingService.getMatchUserByPost(post_idx);
+        return ResponseEntity.ok(matchUsers);
+    }
+
+
+    //매칭 진짜 다녀온 사람들 리스트 history에 추가
+
+    //매칭 완료
+
+
+
+
+
 }
