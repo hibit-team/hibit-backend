@@ -80,7 +80,10 @@ public class MatchingService {
         List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
         List<String> matchedUsers = new ArrayList<>();
         for (Matching matching : matchingList) {
-            matchedUsers.add(matching.getUser().getId());
+            String userId = matching.getUser().getId();
+            if (!matchedUsers.contains(userId)) {
+                matchedUsers.add(userId);
+            }
         }
         return matchedUsers;
     }
