@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "exhibiton", description = "전시회")
 @RestController
@@ -23,9 +24,12 @@ public class ExhibitonController {
     private final ExhibitionRepository exhibitionRepository;
 
     @GetMapping("/list")
-    public ResponseEntity<List<Exhibition>> getExhibitionList() {
+    public ResponseEntity<List<String>> getExhibitionList() {
         LocalDateTime currentDate = LocalDateTime.now();
         List<Exhibition> exhibitionList = exhibitionRepository.findByFinishDateAfter(currentDate);
-        return ResponseEntity.ok(exhibitionList);
+        List<String> exhibitionTitleList = exhibitionList.stream()
+                .map(Exhibition::getTitle)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(exhibitionTitleList);
     }
 }
