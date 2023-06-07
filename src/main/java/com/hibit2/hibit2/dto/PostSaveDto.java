@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.util.List;
 
 import static com.hibit2.hibit2.domain.Post_status.Holding;
@@ -19,6 +20,8 @@ public class PostSaveDto {
     private String title;
     @Schema(description = "내용", example = "내용내용")
     private String content;
+    @Schema(description = "전시회", example = "에드워드 호퍼: 길 위에서")
+    private String exhibition;
     @Schema(description = "매칭 상태", example = "Holding")
     private char status;
     @Schema(description = "전시관람 인원", example = "1")
@@ -35,11 +38,12 @@ public class PostSaveDto {
     private List<DateTimeSlot> dateTimeSlots;
 
     @Builder
-    public PostSaveDto(Users user, String title, String content, char status,
+    public PostSaveDto(Users user, String title, String content, String exhibition, char status,
                        int number, String openchat, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots){
         this.user = user;
         this.title=title;
         this.content=content;
+        this.exhibition=exhibition;
         this.status = status;
         this.number=number;
         this.openchat=openchat;
@@ -51,6 +55,7 @@ public class PostSaveDto {
                 .user(user)
                 .title(title)
                 .content(content)
+                .exhibiton(exhibition)
                 .status('N')
                 .number(number)
                 .openchat(openchat)

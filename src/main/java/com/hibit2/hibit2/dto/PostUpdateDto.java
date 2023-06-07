@@ -14,6 +14,7 @@ import java.util.List;
 public class PostUpdateDto {
     private String title;
     private String content;
+    private String exhibiton;
     private int number;
     private String openchat;
     private List<What_do> what_do;
@@ -22,9 +23,10 @@ public class PostUpdateDto {
 
 
     @Builder
-    public PostUpdateDto(String title, String content, int number, String openchat, List<What_do> what_do,  List<DateTimeSlot> dateTimeSlots,String mainimg){
+    public PostUpdateDto(String title, String content, String exhibiton, int number, String openchat, List<What_do> what_do,  List<DateTimeSlot> dateTimeSlots,String mainimg){
         this.title=title;
         this.content=content;
+        this.exhibiton=exhibiton;
         this.number=number;
         this.openchat=openchat;
         this.what_do=what_do;

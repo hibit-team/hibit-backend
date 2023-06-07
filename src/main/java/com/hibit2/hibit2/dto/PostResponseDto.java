@@ -15,6 +15,7 @@ public class PostResponseDto {
     private Users user;
     private String title;
     private String content;
+    private String exhibiton;
     private char status;
     private int number;
     private String openchat;
@@ -28,6 +29,7 @@ public class PostResponseDto {
         this.idx=entity.getIdx();
         this.user = entity.getUser();
         this.title=entity.getTitle();
+        this.exhibiton=entity.getExhibition();
         this.content=entity.getContent();
         this.status=entity.getStatus();
         this.number=entity.getNumber();

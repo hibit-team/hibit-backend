@@ -32,8 +32,6 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "user_idx")
     private Users user;
 
-
-
     @Column(length = 50, nullable = false)
     @Schema(description = "제목", example = "전시회 관람 같이가요")
     private String title;
@@ -41,6 +39,12 @@ public class Post extends BaseTimeEntity {
     @Column(length = 200, nullable = false)
     @Schema(description = "본문", example = "본문내용내용")
     private String content;
+
+    @Column(length = 255, nullable = false)
+    @Schema(description = "전시회", example = "에드워드 호퍼: 길 위에서")
+    private String exhibition;
+
+
 
     @Column(nullable = false)
     @Schema(description = "선호인원", example = "3")
@@ -95,12 +99,13 @@ public class Post extends BaseTimeEntity {
     private int comment_number;
 
     @Builder
-    public Post(Users user,String title, String content, int number, String openchat,
+    public Post(Users user,String title, String content, String exhibiton, int number, String openchat,
                 int view, char status, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
                 List<Users> likeUsers, int comment_number){
         this.user=user;
         this.title=title;
         this.content=content;
+        this.exhibition=exhibiton;
         this.number=number;
         this.openchat=openchat;
         this.view=view;
@@ -113,9 +118,10 @@ public class Post extends BaseTimeEntity {
         this.comment_number = comment_number;
     }
 
-    public void update(String title, String content, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
+    public void update(String title, String content, String exhibition, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
         this.title=title;
         this.content=content;
+        this.exhibition = exhibition;
         this.number=number;
         this.openchat=openchat;
         this.what_do=what_do;
