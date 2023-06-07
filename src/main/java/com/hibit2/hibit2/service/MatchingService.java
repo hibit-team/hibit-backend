@@ -38,7 +38,7 @@ public class MatchingService {
     public void sendInvitations(int postIdx, List<String> userIds) {
         Post post = postRepository.findById(postIdx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-
+        post.increaseRound();
         for (String userId : userIds) {
             Users user = usersRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
@@ -49,12 +49,14 @@ public class MatchingService {
 
             if (matchRequest.getStatus() == MatchStatus.HOLDING){
                 matchRequest.setStatus(MatchStatus.PENDING);
+                matchRequest.setRound(post.getRound());
             }
             else{
                 Matching newmatching = new Matching();
                 newmatching.setUser(user);
                 newmatching.setPost(post);
                 newmatching.setStatus(MatchStatus.PENDING);
+                newmatching.setRound(post.getRound());
                 matchingRepository.save(newmatching);
             }
         }
@@ -66,7 +68,7 @@ public class MatchingService {
         matching.setStatus(MatchStatus.OK);
         matchingRepository.save(matching);
     }
-    //매칭 수락 (알림에서 거절 누른 경우) getMatchUserByPost
+    //매칭 수락 (알림에서 거절 누른 경우)
     public void noMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
