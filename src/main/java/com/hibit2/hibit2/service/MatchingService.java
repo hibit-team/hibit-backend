@@ -46,7 +46,17 @@ public class MatchingService {
             if (matchRequest == null) {
                 throw new RuntimeException("매칭 요청을 찾을 수 없습니다.");
             }
-            matchRequest.setStatus(MatchStatus.PENDING);
+
+            if (matchRequest.getStatus() == MatchStatus.HOLDING){
+                matchRequest.setStatus(MatchStatus.PENDING);
+            }
+            else{
+                Matching newmatching = new Matching();
+                newmatching.setUser(user);
+                newmatching.setPost(post);
+                newmatching.setStatus(MatchStatus.PENDING);
+                matchingRepository.save(newmatching);
+            }
         }
     }
     //매칭 수락 (알림에서 수락 누른 경우)

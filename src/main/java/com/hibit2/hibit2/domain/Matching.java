@@ -32,4 +32,9 @@ public class Matching {
         this.post = post;
         this.status = MatchStatus.HOLDING;
     }
+
+    public void setUser(Users user) {this.user = user;}
+    public void setPost(Post post) {this.post = post;}
+
+
 }
