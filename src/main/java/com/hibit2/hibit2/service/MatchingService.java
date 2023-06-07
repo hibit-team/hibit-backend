@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class MatchingService {
     public void sendInvitations(int postIdx, List<String> userIds) {
         Post post = postRepository.findById(postIdx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-
+        post.increaseRound();
         for (String userId : userIds) {
             Users user = usersRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
@@ -45,15 +46,48 @@ public class MatchingService {
             if (matchRequest == null) {
                 throw new RuntimeException("매칭 요청을 찾을 수 없습니다.");
             }
-            matchRequest.setStatus(MatchStatus.PENDING);
+
+            if (matchRequest.getStatus() == MatchStatus.HOLDING){
+                matchRequest.setStatus(MatchStatus.PENDING);
+                matchRequest.setRound(post.getRound());
+            }
+            else{
+                Matching newmatching = new Matching();
+                newmatching.setUser(user);
+                newmatching.setPost(post);
+                newmatching.setStatus(MatchStatus.PENDING);
+                newmatching.setRound(post.getRound());
+                matchingRepository.save(newmatching);
+            }
         }
     }
-    //매칭 완료 변경
-    public void completeMatch(int matching_idx) {
+    //매칭 수락 (알림에서 수락 누른 경우)
+    public void okMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
-        matching.setStatus(MatchStatus.COMPLETED);
+        matching.setStatus(MatchStatus.OK);
         matchingRepository.save(matching);
     }
+    //매칭 수락 (알림에서 거절 누른 경우)
+    public void noMatch(int matching_idx) {
+        Matching matching = matchingRepository.findById(matching_idx)
+                .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
+        matching.setStatus(MatchStatus.NO);
+        matchingRepository.save(matching);
+    }
+
+    public List<String> getMatchUserByPost(int post_idx) {
+        List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
+        List<String> matchedUsers = new ArrayList<>();
+        for (Matching matching : matchingList) {
+            String userId = matching.getUser().getId();
+            if (!matchedUsers.contains(userId)) {
+                matchedUsers.add(userId);
+            }
+        }
+        return matchedUsers;
+    }
+
+
 
 }

@@ -98,10 +98,14 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "댓글수", example = "15")
     private int comment_number;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Schema(description = "글 작성자가 초대장 보낸 횟수", example = "0")
+    private int round;
+
     @Builder
     public Post(Users user,String title, String content, String exhibiton, int number, String openchat,
                 int view, char status, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
-                List<Users> likeUsers, int comment_number){
+                List<Users> likeUsers, int comment_number, int round){
         this.user=user;
         this.title=title;
         this.content=content;
@@ -116,6 +120,7 @@ public class Post extends BaseTimeEntity {
         this.liked=liked;
         this.likeUsers =likeUsers;
         this.comment_number = comment_number;
+        this.round = round;
     }
 
     public void update(String title, String content, String exhibition, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
@@ -156,4 +161,7 @@ public class Post extends BaseTimeEntity {
 
 
 
+    public void increaseRound(){
+        this.round++;
+    }
 }
