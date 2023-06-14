@@ -33,7 +33,7 @@ public class GoogleOAuthClient implements OAuthClient {
     private final ObjectMapper objectMapper;
 
     public GoogleOAuthClient(
-        @Value("${oauth.google.redirect_url}") final String googleRedirectUri,
+        @Value("${oauth.google.redirect_uri}") final String googleRedirectUri,
         @Value("${oauth.google.client_id}") final String googleClientId,
         @Value("${oauth.google.client_secret}") final String googleClientSecret,
         @Value("${oauth.google.token_uri}") final String googleTokenUri,
@@ -90,9 +90,7 @@ public class GoogleOAuthClient implements OAuthClient {
     private OAuthMember generateOAuthMemberBy(final String decodedIdToken) throws JsonProcessingException {
         Map<String, String> userInfo = objectMapper.readValue(decodedIdToken, HashMap.class);
         String email = userInfo.get("email");
-        String gender = userInfo.get("gender");
-        int age = Integer.parseInt(userInfo.get("age"));
 
-        return new OAuthMember(email, gender, age);
+        return new OAuthMember(email);
     }
 }

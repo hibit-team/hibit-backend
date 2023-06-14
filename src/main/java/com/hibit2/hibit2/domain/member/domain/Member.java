@@ -21,8 +21,6 @@ import lombok.Getter;
 @Entity
 public class Member {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
-    private static final int MAX_NICK_NAME_LENGTH = 10;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,26 +29,18 @@ public class Member {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "gender", nullable = false)
-    private String gender;
-
-    @Column(name = "age", nullable = false)
-    private int age;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "social_type", nullable = false)
+    private SocialType socialType;
 
     protected Member() {
     }
 
-    public  Member(final String email, final String gender, final int age, final Role role) {
+    public  Member(final String email, final SocialType socialType) {
         validateEmail(email);
 
         this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.role = role;
+        this.socialType = socialType;
     }
 
     private void validateEmail(final String email) {

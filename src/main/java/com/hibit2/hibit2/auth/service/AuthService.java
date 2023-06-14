@@ -4,7 +4,7 @@ import com.hibit2.hibit2.auth.dto.TokenResponse;
 import com.hibit2.hibit2.auth.support.JwtTokenProvider;
 import com.hibit2.hibit2.auth.support.OAuthClient;
 import com.hibit2.hibit2.domain.member.domain.Member;
-import com.hibit2.hibit2.domain.member.domain.Role;
+import com.hibit2.hibit2.domain.member.domain.SocialType;
 import com.hibit2.hibit2.domain.member.service.MemberService;
 import com.hibit2.hibit2.auth.support.OAuthEndpoint;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
@@ -58,9 +58,6 @@ public class AuthService {
     }
 
     private Member generateMemberBy(final OAuthMember oAuthMember) {
-        return new Member(oAuthMember.getEmail(),
-            oAuthMember.getGender(),
-            oAuthMember.getAge(),
-            Role.USER);
+        return new Member(oAuthMember.getEmail(), SocialType.GOOGLE);
     }
 }
