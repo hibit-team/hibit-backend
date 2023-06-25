@@ -6,6 +6,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 ### IntelliJ IDEA ###
+.DS_Store
 .idea
 *.iws
 *.iml
@@ -14,6 +15,7 @@ out/
 
 # Google login oauth - clientId, clientSecret
 application-oauth.properties
+application.yml
 
 # User-specific stuff
 .idea/**/workspace.xml
