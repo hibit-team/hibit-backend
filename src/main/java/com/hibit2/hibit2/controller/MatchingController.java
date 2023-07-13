@@ -1,12 +1,15 @@
 package com.hibit2.hibit2.controller;
 
 import com.hibit2.hibit2.domain.Matching;
+import com.hibit2.hibit2.domain.Users;
+import com.hibit2.hibit2.dto.UserlistDto;
 import com.hibit2.hibit2.service.MatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,9 +21,20 @@ public class MatchingController {
     //매칭 신청자 리스트 확인
     @GetMapping("/{post_idx}/list")
     @Operation(summary = "/matching/1/list", description = "매칭 신청자 리스트 확인")
-    public ResponseEntity<List<Matching>> getMatchRequestsByPost(@PathVariable int post_idx) {
+    public ResponseEntity<List<UserlistDto>> getMatchRequestsByPost(@PathVariable int post_idx) {
         List<Matching> matchRequests = matchingService.getMatchRequestsByPost(post_idx);
-        return ResponseEntity.ok(matchRequests);
+        List<UserlistDto> userlistDtoList = new ArrayList<>();
+        for (Matching matching : matchRequests) {
+            Users user = matching.getUser();
+            UserlistDto userlistDto = new UserlistDto();
+            userlistDto.setIdx(user.getIdx());
+            userlistDto.setId(user.getId());
+            userlistDto.setProfileImg(user.getProfileImg());
+
+            userlistDtoList.add(userlistDto);
+        }
+
+        return ResponseEntity.ok(userlistDtoList);
     }
     //초대장 발송
     @PutMapping("/{post_idx}/send")
