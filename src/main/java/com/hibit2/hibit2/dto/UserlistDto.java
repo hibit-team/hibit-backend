@@ -25,5 +25,12 @@ public class UserlistDto {
     public void setId(String id) {this.id = id;}
     public void setProfileImg(String profileImg) {this.profileImg = profileImg;}
 
+    public Users toUser() {
+        Users user = new Users();
+        user.setIdx(this.idx);
+        user.setId(this.id);
+        user.setProfileImg(this.profileImg);
+        return user;
 
+    }
 }

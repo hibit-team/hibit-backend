@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.service;
 
 import com.hibit2.hibit2.domain.*;
+import com.hibit2.hibit2.dto.CommentListDto;
+import com.hibit2.hibit2.dto.PostListDto;
 import com.hibit2.hibit2.repository.CommentRepository;
 import com.hibit2.hibit2.repository.MatchingRepository;
 import com.hibit2.hibit2.repository.PostRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,8 +70,11 @@ public class CommentService {
 
     // 댓글 조회 -> post idx에 해당하는 모든 댓글 리스트
     public List<Comment> getCommentsByPost(int post_idx) {
+        //List<Comment> list = commentRepository.findByPostIdxAndParentCommentIsNullOrderByCreatedDate(post_idx);
+        //return list.stream().map(CommentListDto::new).collect(Collectors.toList());
         return commentRepository.findByPostIdxAndParentCommentIsNullOrderByCreatedDate(post_idx);
     }
+
 
     // 댓글 수정
     public Comment updateComment(int comment_idx, String newContent) {
