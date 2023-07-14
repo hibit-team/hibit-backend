@@ -4,6 +4,7 @@ import com.hibit2.hibit2.domain.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.hibit2.hibit2.BaseTimeEntity;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;

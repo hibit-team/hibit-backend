@@ -24,6 +24,7 @@ public class PostResponseDto {
     private LocalDateTime createdDate;
     private List<DateTimeSlot> dateTimeSlots;
     private String mainimg;
+    private String time;
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
@@ -39,6 +40,7 @@ public class PostResponseDto {
         this.createdDate = entity.getCreatedDate();
         this.dateTimeSlots = entity.getDateTimeSlots();  // 매개변수에서 전달받은 dateTimeSlots를 사용
         this.mainimg=entity.getMainimg();
+        this.time = entity.calculateTime();
     }
 
 }

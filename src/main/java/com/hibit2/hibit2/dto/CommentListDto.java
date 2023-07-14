@@ -17,20 +17,22 @@ public class CommentListDto {
     private String content;
     private List<CommentListDto> childComments;
     private int liked;
+    private String time;
     private List<UserlistDto> likeUsers;
 
-    public CommentListDto(Comment comment) {
-        this.idx = comment.getIdx();
-        this.content = comment.getContent();
+    public CommentListDto(Comment entity) {
+        this.idx = entity.getIdx();
+        this.content = entity.getContent();
         this.childComments = new ArrayList<>();
-        this.liked = comment.getLiked();
+        this.liked = entity.getLiked();
+        this.time= entity.calculateTime();
         this.likeUsers = new ArrayList<>();
 
-        for (Comment childComment : comment.getChildComments()) {
+        for (Comment childComment : entity.getChildComments()) {
             this.childComments.add(new CommentListDto(childComment));
         }
 
-        for (Users likeUser : comment.getLikeUsers()) {
+        for (Users likeUser : entity.getLikeUsers()) {
             this.likeUsers.add(new UserlistDto(likeUser));
         }
     }
