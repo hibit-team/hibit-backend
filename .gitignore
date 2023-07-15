@@ -5,6 +5,18 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
+### IntelliJ IDEA ###
+.DS_Store
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+# Google login oauth - clientId, clientSecret
+application-oauth.properties
+application.yml
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -185,5 +197,3 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
-
-# End of https://www.toptal.com/developers/gitignore/api/gradle,intellij,java,visualstudiocode
