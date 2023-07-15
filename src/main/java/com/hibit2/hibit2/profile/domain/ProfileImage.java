@@ -6,25 +6,26 @@ import lombok.Getter;
 
 import javax.persistence.*;
 
+import com.hibit2.hibit2.domain.Post;
+
 @Entity
 @Getter
+@Table(name = "profile_image")
 public class ProfileImage {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idx", nullable = false)
-    private int idx; // 프로필_이미지_IDX
+    private int idx;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
 
     @Column(name = "image_url")
-    private String imageUrl;    // 이미지_URL
+    private String imageUrl;
 
     protected ProfileImage() {
-    }
-
-    @Builder
-    public ProfileImage(int idx, String imageUrl) {
-        this.idx = idx;
-        this.imageUrl = imageUrl;
     }
 }
