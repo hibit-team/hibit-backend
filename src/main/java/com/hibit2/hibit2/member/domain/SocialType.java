@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SocialType {
-    GOOGLE, GITHUB;
+    GOOGLE, KAKAO;
 
 }
