@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.SocialType;
+
 class ProfileTest {
 
 
@@ -15,6 +18,7 @@ class ProfileTest {
     void 프로필을_셩상한다() {
         // given
         int idx = 1;
+        Member member = new Member("fancy.junyongmoon@gmail.com", SocialType.GOOGLEG);
         String nickname = "fancy";
         int age = 28;
         int gender = 1;
@@ -27,7 +31,7 @@ class ProfileTest {
         int ban = 1;
 
         // when & then
-        Assertions.assertDoesNotThrow(() -> new Profile(idx, nickname, age, gender,
+        Assertions.assertDoesNotThrow(() -> new Profile(idx, member, nickname, age, gender,
                 personalityType, introduce, mainImg, job, addressCity, addressDistinct, ban));
     }
 
