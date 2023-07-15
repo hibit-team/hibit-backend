@@ -1,0 +1,75 @@
+# github repository Actions 페이지에 나타낼 이름
+name: CI/CD
+
+# event trigger
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release/**'
+      
+permissions:
+  contents: read
+
+jobs:
+  CI-CD:
+    runs-on: ubuntu-latest
+    steps:
+
+    ## jdk setting
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin' # https://github.com/actions/setup-java
+
+    ## gradle caching
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    ## create application-database.properties
+    - name: make application-database.yml
+      run: |
+          cd ./src/main/resources
+          touch ./application-database.yml
+          echo "${{ secrets.DATABASE }}" > ./application-database.yml
+      shell: bash
+      
+    ## permission change
+    - name: Change gradlew permissions
+      run: chmod +x ./gradlew
+
+    ## gradle build
+    - name: Build with Gradle
+      run: ./gradlew bootJar
+
+    ## docker build & push to production
+    - name: Docker build & push to prod
+      run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/hibit2 .
+          docker push ${{ secrets.DOCKER_REPO }}/hibit2
+
+
+    ## deploy to productionhibitdb
+    - name: Deploy to prod
+      uses: appleboy/ssh-action@master
+      id: deploy-prod
+      with:
+          host: ${{ secrets.HOST}}
+          username: ubuntu
+          envs: GITHUB_SHA
+          key: ${{ secrets.KEY }}
+          script: |
+              sudo docker rm -f $(docker ps -qa)
+              sudo docker pull ${{ secrets.DOCKER_REPO }}/hibit2
+              docker-compose up -d
+              docker image prune -f
