@@ -8,8 +8,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.hibit2.hibit2.domain.member.domain.Member;
-import com.hibit2.hibit2.domain.member.domain.SocialType;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.SocialType;
+import com.hibit2.hibit2.member.service.MemberService;
 
 @SpringBootTest
 class MemberServiceTest {

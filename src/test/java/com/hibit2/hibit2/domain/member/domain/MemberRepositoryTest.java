@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.domain.SocialType;
+
 @DataJpaTest
 class MemberRepositoryTest {
 

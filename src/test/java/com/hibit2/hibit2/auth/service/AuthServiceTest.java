@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.hibit2.hibit2.auth.dto.TokenResponse;
 import com.hibit2.hibit2.config.TestConfig;
-import com.hibit2.hibit2.domain.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.domain.MemberRepository;
 
 @SpringBootTest(classes = TestConfig.class)
 class AuthServiceTest {
