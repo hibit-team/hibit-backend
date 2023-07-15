@@ -19,7 +19,7 @@ public class ProfileImage {
     private int idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id")
+    @JoinColumn(name = "profile_idx")
     private Profile profile;
 
 

@@ -8,17 +8,23 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.hibit2.hibit2.member.domain.Member;
+
 @Table(name = "profiles")
 @Getter
 @Entity
 public class Profile {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
+    //private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idx", nullable = false)
     private int idx;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_idx")
+    private Member member;
 
     @Column(name = "nickname", length = 20, nullable = false)
     @Schema(description = "닉네임", example = "히빗")
@@ -43,7 +49,7 @@ public class Profile {
     private String introduce;
 
     @Column(name = "main_img", length = 100, nullable = false)
-    @Schema(description = "나의 사진", example = "http://hibitbucket")
+    @Schema(description = "나의 대표사진", example = "http://hibitbucket")
     private String mainImg;
 
     @Column(name = "job", length = 50, nullable = false)
@@ -68,9 +74,11 @@ public class Profile {
     }
 
     @Builder
-    public Profile(int idx, String nickname, int age, int gender, List<PersonalityType> personality, String introduce,
-        String mainImg, String job, AddressCity addressCity, AddressDistinct addressDistinct, int ban) {
+    public Profile(int idx, Member member, String nickname, int age, int gender, List<PersonalityType> personality,
+        String introduce, String mainImg, String job, AddressCity addressCity, AddressDistinct addressDistinct,
+        int ban) {
         this.idx = idx;
+        this.member = member;
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
