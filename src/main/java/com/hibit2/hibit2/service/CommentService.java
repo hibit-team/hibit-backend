@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.service;
 
 import com.hibit2.hibit2.domain.*;
+import com.hibit2.hibit2.dto.CommentListDto;
+import com.hibit2.hibit2.dto.PostListDto;
 import com.hibit2.hibit2.repository.CommentRepository;
 import com.hibit2.hibit2.repository.MatchingRepository;
 import com.hibit2.hibit2.repository.PostRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class CommentService {
 
         Comment comment = new Comment();
         comment.setPost(post);
+        comment.setUser(user);
         comment.setContent(content);
         //댓글을 처음 단 상황인지 파악, 자신이 쓴 글은 매칭 추가 안함
         if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
@@ -52,6 +56,7 @@ public class CommentService {
 
         Comment reply = new Comment();
         reply.setParentComment(parentComment);
+        reply.setUser(user);
         reply.setContent(content);
         reply.setPost(parentComment.getPost());
         parentComment.addChildComment(reply);
@@ -67,8 +72,11 @@ public class CommentService {
 
     // 댓글 조회 -> post idx에 해당하는 모든 댓글 리스트
     public List<Comment> getCommentsByPost(int post_idx) {
+        //List<Comment> list = commentRepository.findByPostIdxAndParentCommentIsNullOrderByCreatedDate(post_idx);
+        //return list.stream().map(CommentListDto::new).collect(Collectors.toList());
         return commentRepository.findByPostIdxAndParentCommentIsNullOrderByCreatedDate(post_idx);
     }
+
 
     // 댓글 수정
     public Comment updateComment(int comment_idx, String newContent) {

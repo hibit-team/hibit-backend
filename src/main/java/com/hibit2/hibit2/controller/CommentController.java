@@ -1,6 +1,7 @@
 package com.hibit2.hibit2.controller;
 
 import com.hibit2.hibit2.domain.Comment;
+import com.hibit2.hibit2.dto.CommentListDto;
 import com.hibit2.hibit2.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.hibernate.Hibernate;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,15 +43,17 @@ public class CommentController {
     // 댓글 조회
     @GetMapping("/list/{post_idx}")
     @Operation(summary = "/comment/list/1", description = "게시글에 대한 전체 리스트")
-    public ResponseEntity<List<Comment>> getCommentsByPost(@PathVariable int post_idx) {
+    public ResponseEntity<List<CommentListDto>> getCommentsByPost(@PathVariable int post_idx) {
         List<Comment> comments = commentService.getCommentsByPost(post_idx);
-        comments.forEach(this::initializeChildComments);
-        return ResponseEntity.ok(comments);
+        List<CommentListDto> commentListDtos = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            CommentListDto commentListDto = new CommentListDto(comment);
+            commentListDtos.add(commentListDto);
+        }
+        return ResponseEntity.ok(commentListDtos);
     }
-    private void initializeChildComments(Comment comment) {
-        Hibernate.initialize(comment.getChildComments());
-        comment.getChildComments().forEach(this::initializeChildComments);
-    }
+
 
     // 댓글 수정
     @PutMapping("/update/{comment_idx}")

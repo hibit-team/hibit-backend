@@ -24,8 +24,13 @@ public class Users {
     @Schema(description = "아이디", example = "abc")
     private String id;
 
+    //추후 프로필 이미지로 수정될 사항
+    @Column(length = 100)
+    @Schema(description = "프로필이미지 url", example = "https://qqqq")
+    private String profileImg;
     @Builder
-    public Users(String id){
+    public Users(String id, String profileImg){
         this.id=id;
+        this.profileImg = profileImg;
     }
 }

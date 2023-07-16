@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.domain.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 public class PostResponseDto {
     private int idx;
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Users user;
     private String title;
     private String content;
@@ -24,6 +26,7 @@ public class PostResponseDto {
     private LocalDateTime createdDate;
     private List<DateTimeSlot> dateTimeSlots;
     private String mainimg;
+    private String time;
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
@@ -39,6 +42,7 @@ public class PostResponseDto {
         this.createdDate = entity.getCreatedDate();
         this.dateTimeSlots = entity.getDateTimeSlots();  // 매개변수에서 전달받은 dateTimeSlots를 사용
         this.mainimg=entity.getMainimg();
+        this.time = entity.calculateTime();
     }
 
 }

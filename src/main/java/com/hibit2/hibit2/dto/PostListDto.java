@@ -1,9 +1,11 @@
 package com.hibit2.hibit2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.domain.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.hibit2.hibit2.BaseTimeEntity;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 @Getter
 public class PostListDto {
     private int idx;
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Users user;
     private String title;
     private String exhibition;
