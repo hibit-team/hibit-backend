@@ -34,6 +34,7 @@ public class CommentService {
 
         Comment comment = new Comment();
         comment.setPost(post);
+        comment.setUser(user);
         comment.setContent(content);
         //댓글을 처음 단 상황인지 파악, 자신이 쓴 글은 매칭 추가 안함
         if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
@@ -55,6 +56,7 @@ public class CommentService {
 
         Comment reply = new Comment();
         reply.setParentComment(parentComment);
+        reply.setUser(user);
         reply.setContent(content);
         reply.setPost(parentComment.getPost());
         parentComment.addChildComment(reply);

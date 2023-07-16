@@ -1,6 +1,7 @@
 package com.hibit2.hibit2.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.hibit2.hibit2.BaseTimeEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,14 +27,22 @@ public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
+
+    @Column(length = 251, nullable = false)
+    @Schema(description = "댓글", example = "댓글내용")
     private String content;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "post_idx")
     private Post post;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "user_idx")
+    private Users user;
 
     @ManyToOne
     @JsonIgnore

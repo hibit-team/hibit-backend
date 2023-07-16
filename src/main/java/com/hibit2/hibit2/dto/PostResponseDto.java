@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.domain.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 public class PostResponseDto {
     private int idx;
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Users user;
     private String title;
     private String content;

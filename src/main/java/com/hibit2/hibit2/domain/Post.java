@@ -1,6 +1,7 @@
 package com.hibit2.hibit2.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.BaseTimeEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -28,7 +29,7 @@ public class Post extends BaseTimeEntity {
     private int idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    //@JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "user_idx")
     private Users user;
 

@@ -14,6 +14,8 @@ import java.util.List;
 public class CommentListDto {
 
     private int idx;
+    private String writer;
+    private String writerImg;
     private String content;
     private List<CommentListDto> childComments;
     private int liked;
@@ -22,21 +24,28 @@ public class CommentListDto {
 
     public CommentListDto(Comment entity) {
         this.idx = entity.getIdx();
+        this.writer=entity.getUser().getId();
+        this.writerImg=entity.getUser().getProfileImg();
         this.content = entity.getContent();
         this.childComments = new ArrayList<>();
         this.liked = entity.getLiked();
         this.time= entity.calculateTime();
         this.likeUsers = new ArrayList<>();
 
-        for (Comment childComment : entity.getChildComments()) {
-            this.childComments.add(new CommentListDto(childComment));
+        if (entity.getChildComments() != null) {
+            for (Comment childComment : entity.getChildComments()) {
+                this.childComments.add(new CommentListDto(childComment));
+            }
         }
 
-        for (Users likeUser : entity.getLikeUsers()) {
-            this.likeUsers.add(new UserlistDto(likeUser));
+        if (entity.getLikeUsers() != null) {
+            for (Users likeUser : entity.getLikeUsers()) {
+                this.likeUsers.add(new UserlistDto(likeUser));
+            }
         }
+
     }
-
+/*
     public Comment toComment() {
         Comment comment = new Comment();
         comment.setIdx(this.idx);
@@ -60,6 +69,6 @@ public class CommentListDto {
         }
 
         return comment;
-    }
+    }*/
 
 }
