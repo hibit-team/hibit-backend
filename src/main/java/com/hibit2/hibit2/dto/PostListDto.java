@@ -37,13 +37,10 @@ public class PostListDto {
         this.comment_number=entity.getComment_number();
     }
 
-    private List<Object> number_and_What(int number, List<What_do> what_do) {
+    private List<Object> number_and_What(int number, What_do what_do) {
         List<Object> number_and_What = new ArrayList<>();
         number_and_What.add(number+"인 관람");
-        List<String> whatDoDescList = what_do.stream()
-                .map(What_do::getDecs)
-                .collect(Collectors.toList());
-        number_and_What.addAll(whatDoDescList);
+        number_and_What.add(what_do);
         return number_and_What;
     }
 
