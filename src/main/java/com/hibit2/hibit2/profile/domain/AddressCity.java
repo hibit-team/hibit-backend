@@ -1,31 +1,34 @@
 package com.hibit2.hibit2.profile.domain;
 
-import lombok.Getter;
 
-@Getter
+
 public enum AddressCity {
 
-    SEOUL("서울"),
-    BUSAN("부산"),
-    INCHEON("인천"),
-    DAEGU("대구"),
-    GWANGJU("광주"),
-    DAEJEON("대전"),
-    ULSAN("울산"),
-    SEJONG("세종"),
-    GYEONGGI("경기"),
-    GANGWON("강원"),
-    CHUNGBUK("충북"),
-    CHUNGNAM("충남"),
-    JEONBUK("전북"),
-    JEONNAM("전남"),
-    GYEONGBUK("경북"),
-    GYEONGNAM("경남"),
-    JEJU("제주");
+    SEOUL("서울특별시"),
+    BUSAN("부산광역시"),
+    DAEGU("대구광역시"),
+    INCHEON("인천광역시"),
+    GWANGJU("광주광역시"),
+    DAEJEON("대전광역시"),
+    ULSAN("울산광역시"),
+    SEJONG("세종시"),
+    GANGWON("강원도"),
+    GYEONGGI("경기도"),
+    CHUNGBUK("충청북도"),
+    CHUNGNAM("충청남도"),
+    JEONBUK("전라북도"),
+    JEONNAM("전라남도"),
+    GYEONGBUK("경상북도"),
+    GYEONGNAM("경상남도"),
+    JEJU("제주특별시");
 
     private final String name;
 
     AddressCity(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
