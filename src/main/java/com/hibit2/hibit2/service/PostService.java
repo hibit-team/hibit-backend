@@ -44,12 +44,12 @@ public class PostService {
     @Transactional
     public List<PostListDto> findByPost_status(char flag){
         Sort sort = Sort.by(Sort.Direction.DESC,"createdDate");
-        List<Post> list = postRepository.findALlByStatus(flag, sort);
+        List<Post> list = postRepository.findByStatusNot(flag, sort);
         return list.stream().map(PostListDto::new).collect(Collectors.toList());
     }
     @Transactional
     public Page<PostListDto> findPostsByPost_status(char flag, Pageable pageable) {
-        Page<Post> postPage = postRepository.findByStatus(flag, pageable);
+        Page<Post> postPage = postRepository.findByStatusNot(flag, pageable);
         return postPage.map(PostListDto::new);
     }
     @Transactional
@@ -61,6 +61,12 @@ public class PostService {
         return postPage.map(PostListDto::new);
     }
 
+    //검색
+    @Transactional
+    public Page<PostListDto> findByTitleOrExhibition(char flag, String keyword, Pageable pageable) {
+        Page<Post> postPage = postRepository.findByStatusNotAndTitleContainingOrExhibitionContaining(flag, keyword, keyword, pageable);
+        return postPage.map(PostListDto::new);
+    }
 
     @Transactional
     public PostResponseDto findById(int idx){

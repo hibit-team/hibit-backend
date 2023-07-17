@@ -58,7 +58,7 @@ public class PostController {
     @GetMapping("/list/allposts/{pageParam}")
     @Operation(summary = "post/list/allposts/1", description = "매칭글 기본 리스트")
     public ResponseEntity<List<PostListDto>> findPostsByPage(@PathVariable int pageParam) {
-        char flag = 'N';
+        char flag = 'D';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
         Page<PostListDto> postPage = postService.findPostsByPost_status(flag, pageable);
@@ -70,7 +70,7 @@ public class PostController {
     @GetMapping("/list/like/{pageParam}")
     @Operation(summary = "post/list/like/1", description = "매칭글 좋아요 순서 리스트")
     public ResponseEntity<List<PostListDto>> findPostsByPageLike(@PathVariable int pageParam) {
-        char flag = 'N';
+        char flag = 'D';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "liked").and(Sort.by(Sort.Direction.DESC, "createdDate")));
         Page<PostListDto> postPage = postService.findPostsByPost_status(flag, pageable);
@@ -81,7 +81,7 @@ public class PostController {
     @GetMapping("/list/thisweek/{pageParam}")
     @Operation(summary = "post/thisweek/1", description = "매칭글 이번주 출발 리스트")
     public ResponseEntity<List<PostListDto>> findPostsByDateTimeRange(@PathVariable int pageParam) {
-        char flag = 'N';
+        char flag = 'D';
         int page = pageParam -1;
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
         // 현재 날짜와 이번 주의 월요일을 가져옴
@@ -103,11 +103,22 @@ public class PostController {
     @GetMapping("/listall")
     @Operation(summary = "post/listall", description = "게시글 전체보기, 기본 최신순")
     public ResponseEntity<List<PostListDto>> findAllPosts(){
-        char flag = 'N';
+        char flag = 'D';
         List<PostListDto> list = postService.findByPost_status(flag);
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 
+    // 검색
+    @GetMapping("/search/{pageParam}")
+    @Operation(summary = "post/list/search/1", description = "검색 결과")
+    public ResponseEntity<List<PostListDto>> findByTitleOrExhibition(@PathVariable int pageParam, @RequestParam String keyword) {
+        char flag = 'D';
+        int page = pageParam -1;
+        Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Page<PostListDto> postPage = postService.findByTitleOrExhibition(flag,keyword,pageable);
+        return ResponseEntity.status(HttpStatus.CREATED).body(postPage.getContent());
+
+    }
     @GetMapping("/{post_idx}")
     @Operation(summary = "post/{idx}", description = "매칭 글 상세")
     public ResponseEntity<PostResponseDto> findById(@PathVariable int post_idx){
