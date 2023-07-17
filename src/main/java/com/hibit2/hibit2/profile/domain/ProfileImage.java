@@ -6,11 +6,9 @@ import lombok.Getter;
 
 import javax.persistence.*;
 
-import com.hibit2.hibit2.domain.Post;
-
 @Entity
 @Getter
-@Table(name = "profile_image")
+@Table(name = "profile_images")
 public class ProfileImage {
 
 
@@ -23,9 +21,14 @@ public class ProfileImage {
     private Profile profile;
 
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", nullable = false, length = 100)
     private String imageUrl;
 
     protected ProfileImage() {
+    }
+
+    public ProfileImage(Profile profile, String imageUrl) {
+        this.profile = profile;
+        this.imageUrl = imageUrl;
     }
 }

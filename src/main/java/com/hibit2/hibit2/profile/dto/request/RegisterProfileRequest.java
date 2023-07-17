@@ -8,6 +8,7 @@ import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.profile.domain.AddressCity;
 import com.hibit2.hibit2.profile.domain.AddressDistinct;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
+import com.hibit2.hibit2.profile.domain.ProfileImage;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -40,7 +41,7 @@ public class RegisterProfileRequest {
 
     @NotBlank
     @Schema(description = "나의 대표사진", example = "http://hibitbucket")
-    private String mainImg;
+    private List<ProfileImage> mainImg;
 
     @Schema(description = "직업 혹은 학교", example = "College student")
     private String job;
@@ -55,7 +56,7 @@ public class RegisterProfileRequest {
     }
 
     public RegisterProfileRequest(Member member, String nickname, int age, int gender,
-        List<PersonalityType> personalityTypeList, String introduce, String mainImg, String job,
+        List<PersonalityType> personalityTypeList, String introduce, List<ProfileImage> mainImg, String job,
         AddressCity addressCity,
         AddressDistinct addressDistinct) {
         this.member = member;

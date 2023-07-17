@@ -50,7 +50,8 @@ public class Profile {
 
     @Column(name = "main_img", length = 100, nullable = false)
     @Schema(description = "나의 대표사진", example = "http://hibitbucket")
-    private String mainImg;
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<ProfileImage> mainImg;
 
     @Column(name = "job", length = 50, nullable = false)
     @Schema(description = "직업 혹은 학교", example = "College student")
@@ -75,8 +76,8 @@ public class Profile {
 
     @Builder
     public Profile(int idx, Member member, String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce, String mainImg, String job, AddressCity addressCity, AddressDistinct addressDistinct,
-        int ban) {
+        String introduce, List<ProfileImage> mainImg, String job, AddressCity addressCity,
+        AddressDistinct addressDistinct, int ban) {
         this.idx = idx;
         this.member = member;
         this.nickname = nickname;
