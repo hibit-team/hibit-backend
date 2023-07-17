@@ -45,8 +45,6 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "전시회", example = "에드워드 호퍼: 길 위에서")
     private String exhibition;
 
-
-
     @Column(nullable = false)
     @Schema(description = "선호인원", example = "3")
     private int number;
@@ -57,10 +55,8 @@ public class Post extends BaseTimeEntity {
 
     @Column(nullable = false)
     @Schema(description = "전시보고뭐할래", example = "[\"EAT\", \"CAFE\"]")
-    @ElementCollection(targetClass = What_do.class)
     @Enumerated(EnumType.STRING)
-    private List<What_do> what_do;
-
+    private What_do what_do;
 
     @Column(nullable = false, columnDefinition = "integer default 0")
     @Schema(description = "조회수", example = "default 0 = 자동 카운트")
@@ -105,7 +101,7 @@ public class Post extends BaseTimeEntity {
 
     @Builder
     public Post(Users user,String title, String content, String exhibiton, int number, String openchat,
-                int view, char status, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
+                int view, char status, What_do what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
                 List<Users> likeUsers, int comment_number, int round){
         this.user=user;
         this.title=title;
@@ -124,7 +120,7 @@ public class Post extends BaseTimeEntity {
         this.round = round;
     }
 
-    public void update(String title, String content, String exhibition, int number, String openchat, List<What_do> what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
+    public void update(String title, String content, String exhibition, int number, String openchat, What_do what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
         this.title=title;
         this.content=content;
         this.exhibition = exhibition;

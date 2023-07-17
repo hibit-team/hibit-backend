@@ -21,7 +21,7 @@ public class PostResponseDto {
     private char status;
     private int number;
     private String openchat;
-    private List<What_do> what_do;
+    private What_do what_do;
     private int view;
     private LocalDateTime createdDate;
     private List<DateTimeSlot> dateTimeSlots;

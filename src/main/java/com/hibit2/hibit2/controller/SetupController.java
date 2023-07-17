@@ -56,17 +56,9 @@ public class SetupController {
             post.setOpenchat("http://kakao");
 
             List<What_do> whatDoOptions = new ArrayList<>(Arrays.asList(What_do.values()));
-
-            // Generate random number of what_do options (1 to 4)
-            int numOptions = random.nextInt(4) + 1;
-            List<What_do> selectedOptions = new ArrayList<>();
-            for (int j = 0; j < numOptions; j++) {
-                int randomIndex = random.nextInt(whatDoOptions.size());
-                What_do option = whatDoOptions.get(randomIndex);
-                selectedOptions.add(option);
-                whatDoOptions.remove(randomIndex);
-            }
-            post.setWhat_do(selectedOptions);
+            int randomIndex = random.nextInt(whatDoOptions.size());
+            What_do option = whatDoOptions.get(randomIndex);
+            post.setWhat_do(option);
 
             int numSlots = random.nextInt(3) + 1;
             List<DateTimeSlot> dateTimeSlots = new ArrayList<>();

@@ -45,30 +45,5 @@ public class CommentListDto {
         }
 
     }
-/*
-    public Comment toComment() {
-        Comment comment = new Comment();
-        comment.setIdx(this.idx);
-        comment.setContent(this.content);
-        comment.setLiked(this.liked);
-
-        if (this.childComments != null) {
-            List<Comment> childCommentList = new ArrayList<>();
-            for (CommentListDto childCommentDto : this.childComments) {
-                childCommentList.add(childCommentDto.toComment());
-            }
-            comment.setChildComments(childCommentList);
-        }
-
-        if (this.likeUsers != null) {
-            List<Users> likeUsersList = new ArrayList<>();
-            for (UserlistDto likeUserDto : this.likeUsers) {
-                likeUsersList.add(likeUserDto.toUser());
-            }
-            comment.setLikeUsers(likeUsersList);
-        }
-
-        return comment;
-    }*/
 
 }
