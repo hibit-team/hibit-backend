@@ -28,8 +28,8 @@ public class PostSaveDto {
     private int number;
     @Schema(description = "오픈채팅 url", example = "http://open")
     private String openchat;
-    @Schema(description = "전시이후뭐할래", example = "[\"EAT\", \"CAFE\"]")
-    private List<What_do> what_do;
+    @Schema(description = "전시이후뭐할래", example = "EAT")
+    private What_do what_do;
 
     @Schema(description = "관람일자", example = "[\n" + "{\n" +
             "    \"date\": \"2023-05-31\",\n" +
@@ -39,7 +39,7 @@ public class PostSaveDto {
 
     @Builder
     public PostSaveDto(Users user, String title, String content, String exhibition, char status,
-                       int number, String openchat, List<What_do> what_do, List<DateTimeSlot> dateTimeSlots){
+                       int number, String openchat, What_do what_do, List<DateTimeSlot> dateTimeSlots){
         this.user = user;
         this.title=title;
         this.content=content;
