@@ -20,10 +20,11 @@ public class PostUpdateDto {
     private What_do what_do;
     private List<DateTimeSlot> dateTimeSlots;
     private String mainimg;
+    private List<String> subimg;
 
 
     @Builder
-    public PostUpdateDto(String title, String content, String exhibiton, int number, String openchat, What_do what_do,  List<DateTimeSlot> dateTimeSlots,String mainimg){
+    public PostUpdateDto(String title, String content, String exhibiton, int number, String openchat, What_do what_do,  List<DateTimeSlot> dateTimeSlots,String mainimg, List<String> subimg){
         this.title=title;
         this.content=content;
         this.exhibiton=exhibiton;
@@ -32,5 +33,6 @@ public class PostUpdateDto {
         this.what_do=what_do;
         this.dateTimeSlots=dateTimeSlots;
         this.mainimg=mainimg;
+        this.subimg=subimg;
     }
 }

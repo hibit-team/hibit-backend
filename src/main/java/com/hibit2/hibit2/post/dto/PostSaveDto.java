@@ -39,9 +39,16 @@ public class PostSaveDto {
             "  }" +"\n]")
     private List<DateTimeSlot> dateTimeSlots;
 
+    @Schema(description = "대표이미지 url", example = "http://hibitbucket")
+    private String mainimg;
+    @Schema(description = "나머지이미지 url 리스트", example = "[\n" +
+            "        \"https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/1.png\"\n" +
+            "    ]")
+    private List<String> subimg;
     @Builder
     public PostSaveDto(Users user, String title, String content, String exhibition, char status,
-                       int number, String openchat, What_do what_do, List<DateTimeSlot> dateTimeSlots){
+                       int number, String openchat, What_do what_do, List<DateTimeSlot> dateTimeSlots,
+                       String mainimg, List<String>  subimg){
         this.user = user;
         this.title=title;
         this.content=content;
@@ -51,6 +58,8 @@ public class PostSaveDto {
         this.openchat=openchat;
         this.what_do=what_do;
         this.dateTimeSlots = dateTimeSlots;
+        this.mainimg=mainimg;
+        this.subimg=subimg;
     }
     public Post toEntity(){
         return Post.builder()
@@ -63,6 +72,8 @@ public class PostSaveDto {
                 .openchat(openchat)
                 .what_do(what_do)
                 .dateTimeSlots(dateTimeSlots)
+                .mainimg(mainimg)
+                .subimg(subimg)
                 .build();
     }
 

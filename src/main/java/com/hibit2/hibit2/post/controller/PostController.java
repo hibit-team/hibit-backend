@@ -46,7 +46,9 @@ public class PostController {
                 @Parameter(name = "dateTimeSlots", description = "날짜", example =  "[\n" + "{\n" +
                         "    \"date\": \"2023-05-31\",\n" +
                         "    \"timeSlot\": \"AM\"\n" +
-                        "  }" +"\n]")
+                        "  }" +"\n]"),
+               @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
+               @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
     })
     public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto){
         //Users user = (Users) authentication.getPrincipal();

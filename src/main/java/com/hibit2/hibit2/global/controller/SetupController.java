@@ -78,7 +78,10 @@ public class SetupController {
                         .build());
             }
             post.setDateTimeSlots(dateTimeSlots);
-
+            post.setMainimg("https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/1.png");
+            List<String> subimg = new ArrayList<>();
+            subimg.add("https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png");
+            post.setSubimg(subimg);
             posts.add(post);
         }
         return posts;

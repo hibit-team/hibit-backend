@@ -11,42 +11,51 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 public class PostResponseDto {
     private int idx;
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    private Users user;
+    private String writer;
+    private String writerImg;
     private String title;
     private String content;
     private String exhibiton;
     private char status;
     private int number;
     private String openchat;
-    private What_do what_do;
     private int view;
     private LocalDateTime createdDate;
-    private List<DateTimeSlot> dateTimeSlots;
+    private List<Object> number_and_What;
     private String mainimg;
+    private List<String> subimg;
     private String time;
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
-        this.user = entity.getUser();
+        this.writer=entity.getUser().getId();
+        this.writerImg=entity.getUser().getProfileImg();
         this.title=entity.getTitle();
         this.exhibiton=entity.getExhibition();
         this.content=entity.getContent();
         this.status=entity.getStatus();
         this.number=entity.getNumber();
         this.openchat=entity.getOpenchat();
-        this.what_do=entity.getWhat_do();
         this.view=entity.getView();
         this.createdDate = entity.getCreatedDate();
-        this.dateTimeSlots = entity.getDateTimeSlots();  // 매개변수에서 전달받은 dateTimeSlots를 사용
+        this.number_and_What = number_and_What(entity.getNumber(), entity.getWhat_do());
         this.mainimg=entity.getMainimg();
+        this.subimg=entity.getSubimg();
         this.time = entity.calculateTime();
+    }
+
+    private List<Object> number_and_What(int number, What_do what_do) {
+        List<Object> number_and_What = new ArrayList<>();
+        number_and_What.add(number+"인 관람");
+        number_and_What.add(what_do.getDecs());
+        return number_and_What;
     }
 
 }
