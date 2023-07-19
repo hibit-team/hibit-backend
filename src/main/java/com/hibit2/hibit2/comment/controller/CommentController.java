@@ -57,7 +57,7 @@ public class CommentController {
 
     // 댓글 수정
     @PutMapping("/update/{comment_idx}")
-    @Operation(summary = "/comment//update/1", description = "댓글 수정")
+    @Operation(summary = "/comment/update/1", description = "댓글 수정")
     public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody String newContent) {
         Comment updatedComment = commentService.updateComment(comment_idx, newContent);
         return ResponseEntity.ok(updatedComment);

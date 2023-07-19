@@ -54,8 +54,7 @@ public class Post extends BaseTimeEntity {
     @Schema(description = "오픈채팅url", example = "http://kakao~~")
     private String openchat;
 
-    @Column(nullable = false)
-    @Schema(description = "전시보고뭐할래", example = "[\"EAT\", \"CAFE\"]")
+    @Schema(description = "전시보고뭐할래", example = "EAT")
     @Enumerated(EnumType.STRING)
     private What_do what_do;
 

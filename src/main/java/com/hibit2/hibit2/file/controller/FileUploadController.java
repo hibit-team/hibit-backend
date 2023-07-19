@@ -4,7 +4,9 @@ import com.hibit2.hibit2.file.service.FileUploadService;
 import com.hibit2.hibit2.post.domain.Post;
 
 import com.hibit2.hibit2.post.repository.PostRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +26,9 @@ public class FileUploadController {
     @Autowired
     private PostRepository postRepository;
 //게시글 사진 업로드 누른 경우
-    @PostMapping("/{post_idx}/upload") //대표이미지 url 스트링값으로 받아오기
-    public ResponseEntity<List<String>> uploadFiles(@PathVariable int post_idx, @RequestParam("file") List<MultipartFile> files, @RequestParam String mainimg) {
+    @PostMapping(value = "/{post_idx}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "이미지 저장", description = "이미지를 저장하는 메소드입니다.")
+    public ResponseEntity<List<String>> uploadFiles(@PathVariable int post_idx, @RequestParam("file") List<MultipartFile> files) {
         List<String> fileUrls = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
@@ -33,6 +36,7 @@ public class FileUploadController {
             fileUrls.add(fileUrl);
         }
         Optional<Post> postOptional = postRepository.findById(post_idx);
+        /*
         if (postOptional.isPresent()) {
             // 게시글이 존재하는 경우
             Post post = postOptional.get();
@@ -42,6 +46,7 @@ public class FileUploadController {
             // 게시글이 존재하지 않는 경우
             throw new RuntimeException("게시글을 찾을 수 없습니다.");
         }
+        */
         return ResponseEntity.ok(fileUrls);
     }
 
