@@ -75,8 +75,14 @@ public class Post extends BaseTimeEntity {
     private List<DateTimeSlot> dateTimeSlots;
 
     @Column(length = 300, nullable = true)
-    @Schema(description = "대표이미지 idx", example = "http://hibitbucket")
+    @Schema(description = "대표이미지 url", example = "http://hibitbucket")
     private String mainimg;
+
+    //나머지 이미지
+    @ElementCollection
+    @Schema(description = "나머지이미지 url 리스트", example = "http://hibitbucket")
+    private List<String> subimg;
+
 
     @Column(nullable = false, columnDefinition = "integer default 0")
     @Schema(description = "좋아요 수", example = "default 0")
@@ -101,7 +107,8 @@ public class Post extends BaseTimeEntity {
 
     @Builder
     public Post(Users user,String title, String content, String exhibiton, int number, String openchat,
-                int view, char status, What_do what_do, List<DateTimeSlot> dateTimeSlots, String mainimg, int liked,
+                int view, char status, What_do what_do, List<DateTimeSlot> dateTimeSlots, String mainimg,
+                List<String> subimg, int liked,
                 List<Users> likeUsers, int comment_number, int round){
         this.user=user;
         this.title=title;
@@ -114,13 +121,14 @@ public class Post extends BaseTimeEntity {
         this.what_do=what_do;
         this.dateTimeSlots=dateTimeSlots;
         this.mainimg=mainimg;
+        this.subimg=subimg;
         this.liked=liked;
         this.likeUsers =likeUsers;
         this.comment_number = comment_number;
         this.round = round;
     }
 
-    public void update(String title, String content, String exhibition, int number, String openchat, What_do what_do,List<DateTimeSlot> dateTimeSlots, String mainimg){
+    public void update(String title, String content, String exhibition, int number, String openchat, What_do what_do,List<DateTimeSlot> dateTimeSlots, String mainimg, List<String> subimg){
         this.title=title;
         this.content=content;
         this.exhibition = exhibition;
@@ -129,6 +137,7 @@ public class Post extends BaseTimeEntity {
         this.what_do=what_do;
         this.dateTimeSlots=dateTimeSlots;
         this.mainimg=mainimg;
+        this.subimg=subimg;
     }
     public void increaseView(){
         this.view++;
@@ -141,7 +150,7 @@ public class Post extends BaseTimeEntity {
     }
 
     public void makeMainimg(String url){this.mainimg= url;}
-
+    public void makeSubimg(List<String> url){this.subimg= url;}
     public void increaseLike(){
         this.liked++;
     }

@@ -25,10 +25,11 @@ public class FileUploadController {
     private FileUploadService fileUploadService;
     @Autowired
     private PostRepository postRepository;
-//게시글 사진 업로드 누른 경우
+//게시글 사진 업로드 누른 경우 -> post가 먼저 작성되는 경우 사용
+    /*
     @PostMapping(value = "/{post_idx}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "이미지 저장", description = "이미지를 저장하는 메소드입니다.")
-    public ResponseEntity<List<String>> uploadFiles(@PathVariable int post_idx, @RequestParam("file") List<MultipartFile> files) {
+    public ResponseEntity<List<String>> uploadFiles(@PathVariable int post_idx, @RequestParam("file") List<MultipartFile> files,  @RequestParam int mainimgIdx) {
         List<String> fileUrls = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
@@ -36,18 +37,39 @@ public class FileUploadController {
             fileUrls.add(fileUrl);
         }
         Optional<Post> postOptional = postRepository.findById(post_idx);
-        /*
+
         if (postOptional.isPresent()) {
-            // 게시글이 존재하는 경우
             Post post = postOptional.get();
-            post.makeMainimg(mainimg);
-            postRepository.save(post); // 변경된 mainimg 값을 저장
+            post.makeMainimg(fileUrls.get(mainimgIdx));
+            fileUrls.remove(mainimgIdx);
+            post.makeSubimg(fileUrls);
+            postRepository.save(post);
         } else {
-            // 게시글이 존재하지 않는 경우
             throw new RuntimeException("게시글을 찾을 수 없습니다.");
         }
-        */
+
         return ResponseEntity.ok(fileUrls);
     }
+*/
+    //게시글 사진 업로드 누른 경우 -> 이미지 업로드 이후, dto에서 이미지가 전달받는 경우
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "이미지 저장", description = "이미지를 저장하는 메소드입니다.")
+    public ResponseEntity<List<Object>> uploadFiles(@RequestParam("file") List<MultipartFile> files,  @RequestParam int mainimgIdx) {
+        List<String> fileUrls = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile file = files.get(i);
+            String fileUrl = fileUploadService.uploadFile(file);
+            fileUrls.add(fileUrl);
+        }
+        String mainImg = fileUrls.remove(mainimgIdx);
+
+        List<Object> response = new ArrayList<>();
+        response.add(mainImg);
+        response.add(fileUrls);
+        return ResponseEntity.ok(response);
+    }
+
+
+
 
 }

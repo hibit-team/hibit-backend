@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 @Getter
 public class PostListDto {
     private int idx;
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    private Users user;
     private String title;
     private String exhibition;
     private char status;
@@ -33,7 +31,6 @@ public class PostListDto {
 
     public PostListDto(@NotNull Post entity){
         this.idx=entity.getIdx();
-        this.user = entity.getUser();
         this.title=entity.getTitle();
         this.exhibition=entity.getExhibition();
         this.status=entity.getStatus();
@@ -47,7 +44,7 @@ public class PostListDto {
     private List<Object> number_and_What(int number, What_do what_do) {
         List<Object> number_and_What = new ArrayList<>();
         number_and_What.add(number+"인 관람");
-        number_and_What.add(what_do);
+        number_and_What.add(what_do.getDecs());
         return number_and_What;
     }
     private String formatDateTimeSlots(List<DateTimeSlot> dateTimeSlots) {
