@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hibit2.hibit2.auth.dto.TokenRequest;
-import com.hibit2.hibit2.auth.dto.TokenResponse;
+import com.hibit2.hibit2.auth.dto.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.service.AuthService;
 import com.hibit2.hibit2.global.dto.CommonResponse;
 
@@ -31,10 +31,10 @@ public class AuthController {
     }
 
     @PostMapping("/{oauthProvider}/token")
-    public ResponseEntity<CommonResponse<TokenResponse>>
+    public ResponseEntity<CommonResponse<AccessAndRefreshTokenResponse>>
     generateToken(@PathVariable final String oauthProvider,
         @RequestBody final TokenRequest tokenRequest) {
-        TokenResponse tokenResponse = authService.generateTokenWithCode(tokenRequest.getCode());
-        return ResponseEntity.ok(new CommonResponse<>(tokenResponse));
+        AccessAndRefreshTokenResponse accessAndRefreshTokenResponse = authService.generateAccessAndRefreshTokenWithCode(tokenRequest.getCode());
+        return ResponseEntity.ok(new CommonResponse<>(accessAndRefreshTokenResponse));
     }
 }
