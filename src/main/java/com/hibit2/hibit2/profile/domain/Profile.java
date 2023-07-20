@@ -30,7 +30,7 @@ public class Profile {
     @Schema(description = "닉네임", example = "히빗")
     private String nickname;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "age", nullable = false)
     @Schema(description = "나이", example = "20")
     private int age;
 
