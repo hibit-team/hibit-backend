@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.domain.member.service;
+package com.hibit2.hibit2.member.service;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
