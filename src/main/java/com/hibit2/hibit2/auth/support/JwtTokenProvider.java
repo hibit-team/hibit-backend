@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import com.hibit2.hibit2.auth.service.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,17 +19,30 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements TokenProvider {
     private final SecretKey key;
-    private final long validityInMilliseconds;
+    private final long accessTokenValidityInMilliseconds;
+    private final long refreshTokenValidityInMilliseconds;
 
-    public JwtTokenProvider(@Value("${jwt.secret}}") String secretKey,
-        @Value("${jwt.expire-length}") long validityInMilliseconds) {
+    public JwtTokenProvider(@Value("${security.jwt.token.secret-key}}") String secretKey,
+                            @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMilliseconds,
+                            @Value("${security.jwt.token.refresh.expire-length}") final long refreshTokenValidityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        this.validityInMilliseconds = validityInMilliseconds;
+        this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
+        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
     }
 
-    public String createToken(String payload) {
+    @Override
+    public String createAccessToken(final String payload) {
+        return createToken(payload, accessTokenValidityInMilliseconds);
+    }
+
+    @Override
+    public String createRefreshToken(final String payload) {
+        return createToken(payload, refreshTokenValidityInMilliseconds);
+    }
+
+    public String createToken(String payload, final Long validityInMilliseconds) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 

@@ -1,7 +1,7 @@
 package com.hibit2.hibit2.auth.service;
 
-import com.hibit2.hibit2.auth.dto.TokenResponse;
-import com.hibit2.hibit2.auth.support.JwtTokenProvider;
+import com.hibit2.hibit2.auth.domain.AuthToken;
+import com.hibit2.hibit2.auth.dto.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.support.OAuthClient;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.domain.SocialType;
@@ -22,15 +22,14 @@ public class AuthService {
 
     private final MemberService memberService;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
+    private final TokenCreator tokenCreator;
 
     public AuthService(final OAuthEndpoint oAuthEndpoint, final OAuthClient oAuthClient
-    , final MemberService memberService, final JwtTokenProvider jwtTokenProvider) {
+    , final MemberService memberService, final TokenCreator tokenCreator) {
         this.oAuthEndpoint = oAuthEndpoint;
         this.oAuthClient = oAuthClient;
         this.memberService = memberService;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.tokenCreator = tokenCreator;
     }
 
     public String generateGoogleLink() {
@@ -38,7 +37,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse generateTokenWithCode(final String code) {
+    public AccessAndRefreshTokenResponse generateAccessAndRefreshTokenWithCode(final String code) {
         OAuthMember oAuthMember = oAuthClient.getOAuthMember(code);
 
         String email = oAuthMember.getEmail();
@@ -46,9 +45,9 @@ public class AuthService {
         saveMemberIfNotExists(oAuthMember, email);
 
         Member foundMember = memberService.findByEmail(email);
-        String accessToken = jwtTokenProvider.createToken(String.valueOf(foundMember.getId()));
+        AuthToken authToken = tokenCreator.createAuthToken(foundMember.getId());
 
-        return new TokenResponse(accessToken);
+        return new AccessAndRefreshTokenResponse(authToken.getAccessToken(), authToken.getRefreshToken());
     }
 
     private void saveMemberIfNotExists(final OAuthMember oAuthMember, final String email) {

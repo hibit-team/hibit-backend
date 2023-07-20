@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.hibit2.hibit2.auth.dto.TokenResponse;
+import com.hibit2.hibit2.auth.dto.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.config.TestConfig;
 import com.hibit2.hibit2.member.domain.MemberRepository;
 
@@ -36,7 +36,7 @@ class AuthServiceTest {
         String code = "authorization code";
 
         // when
-        TokenResponse actual = authService.generateTokenWithCode(code);
+        AccessAndRefreshTokenResponse actual = authService.generateAccessAndRefreshTokenWithCode(code);
 
         // then
         assertThat(actual.getAccessToken()).isNotEmpty();
@@ -47,7 +47,7 @@ class AuthServiceTest {
     void Authorization_Code를_받으면_회원이_데이터베이스에_저장된다() {
         // given
         String code = "authorization code";
-        authService.generateTokenWithCode(code);
+        authService.generateAccessAndRefreshTokenWithCode(code);
 
         // when
         boolean actual = memberRepository.existsByEmail("fancy.junyongmoon@gmail.com");
