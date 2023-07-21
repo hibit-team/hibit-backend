@@ -59,4 +59,6 @@ public class Alarm extends BaseTimeEntity {
         this.read=read;
     }
 
+    public void readAlarm() {this.read = true;}
+
 }
