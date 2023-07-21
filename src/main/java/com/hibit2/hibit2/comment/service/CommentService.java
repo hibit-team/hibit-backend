@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.comment.service;
 
 
+import com.hibit2.hibit2.alarm.domain.AlarmType;
+import com.hibit2.hibit2.alarm.service.AlarmService;
 import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.comment.repository.CommentRepository;
 import com.hibit2.hibit2.global.repository.MatchingRepository;
@@ -13,12 +15,10 @@ import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class CommentService {
     private final UsersRepository usersRepository;
     private final MatchingRepository matchingRepository;
     private final MatchingService matchingService;
+    private final AlarmService alarmService;
     // 댓글 작성
     public Comment createComment(int post_idx, int user_idx, String content) {
         Post post = postRepository.findById(post_idx)
@@ -46,6 +47,9 @@ public class CommentService {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
         }
+
+        //알람 생성
+        alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
 
         return commentRepository.save(comment);
     }
@@ -72,6 +76,9 @@ public class CommentService {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
         }
+        //알람 생성 (게시글작성자 -> 댓글 알람, 댓글 작성자 -> 대댓글 알람)
+        alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
+        alarmService.createAlarm(parentComment.getUser(), user, AlarmType.RECOMMENT, "");
         return commentRepository.save(reply);
     }
 
@@ -112,10 +119,9 @@ public class CommentService {
             }
             post.decreaseCommentNumber(count);
         }
-
-
         commentRepository.delete(comment);
     }
+    //댓글 좋아요
     public Comment likeComment(int comment_idx, String userId){
         Comment comment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
@@ -131,11 +137,15 @@ public class CommentService {
             // 좋아요 추가
             comment.getLikeUsers().add(user);
             comment.increaseLike();
+            //알람 생성
+            alarmService.createAlarm(comment.getUser(), user, AlarmType.COMMENTHEART, "");
+
         } else {
             // 좋아요 취소
             comment.getLikeUsers().remove(existingLike.get());
             comment.decreaseLike();
         }
+
         return commentRepository.save(comment);
     }
 

@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.matching.service;
 
 
+import com.hibit2.hibit2.alarm.domain.AlarmType;
+import com.hibit2.hibit2.alarm.service.AlarmService;
 import com.hibit2.hibit2.global.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
@@ -21,6 +23,7 @@ public class MatchingService {
     private final MatchingRepository matchingRepository;
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
+    private final AlarmService alarmService;
 
     //매칭 신청 유저 확인
     public boolean exitMatching(Users user, Post post) {
@@ -47,11 +50,15 @@ public class MatchingService {
             if (matchRequest == null) {
                 throw new RuntimeException("매칭 요청을 찾을 수 없습니다.");
             }
-
-            if (matchRequest.getStatus() == MatchStatus.HOLDING){
+            //댓글을 달고 처음 초대하는 경우
+            if (matchRequest.getStatus() == MatchStatus.HOLDING)
+            {
                 matchRequest.setStatus(MatchStatus.PENDING);
                 matchRequest.setRound(post.getRound());
+                //알람 생성
+                alarmService.createAlarm(user ,post.getUser(), AlarmType.INVITATION, "");
             }
+            //한 번 이상 보냈을 경우
             else{
                 Matching newmatching = new Matching();
                 newmatching.setUser(user);
@@ -59,6 +66,8 @@ public class MatchingService {
                 newmatching.setStatus(MatchStatus.PENDING);
                 newmatching.setRound(post.getRound());
                 matchingRepository.save(newmatching);
+                //알람 생성
+                alarmService.createAlarm(user ,post.getUser(), AlarmType.INVITATION, "");
             }
         }
     }
@@ -68,13 +77,22 @@ public class MatchingService {
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
         matching.setStatus(MatchStatus.OK);
         matchingRepository.save(matching);
+
+        //알람 생성 (옾챗링크
+        String url = matching.getPost().getOpenchat();
+        alarmService.createAlarm(matching.getUser() ,matching.getPost().getUser(), AlarmType.OPENCHAT, url);
+        //알림 생성(수락)
+        alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() , AlarmType.ACCEPT, "");
     }
-    //매칭 수락 (알림에서 거절 누른 경우)
+    //매칭 거절 (알림에서 거절 누른 경우)
     public void noMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
         matching.setStatus(MatchStatus.NO);
         matchingRepository.save(matching);
+
+        //알림 생성
+        alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() , AlarmType.REFUSE, "");
     }
 
     public List<String> getMatchUserByPost(int post_idx) {
