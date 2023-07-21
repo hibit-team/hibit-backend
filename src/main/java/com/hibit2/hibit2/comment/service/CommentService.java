@@ -47,7 +47,9 @@ public class CommentService {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
         }
-        alarmService.createAlarm(post.getUser(), AlarmType.COMMENT, "");
+
+        //알람 생성
+        alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
 
         return commentRepository.save(comment);
     }
@@ -74,6 +76,9 @@ public class CommentService {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
         }
+        //알람 생성 (게시글작성자 -> 댓글 알람, 댓글 작성자 -> 대댓글 알람)
+        alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
+        alarmService.createAlarm(parentComment.getUser(), user, AlarmType.RECOMMENT, "");
         return commentRepository.save(reply);
     }
 
@@ -114,10 +119,9 @@ public class CommentService {
             }
             post.decreaseCommentNumber(count);
         }
-
-
         commentRepository.delete(comment);
     }
+    //댓글 좋아요
     public Comment likeComment(int comment_idx, String userId){
         Comment comment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
@@ -133,11 +137,15 @@ public class CommentService {
             // 좋아요 추가
             comment.getLikeUsers().add(user);
             comment.increaseLike();
+            //알람 생성
+            alarmService.createAlarm(comment.getUser(), user, AlarmType.COMMENTHEART, "");
+
         } else {
             // 좋아요 취소
             comment.getLikeUsers().remove(existingLike.get());
             comment.decreaseLike();
         }
+
         return commentRepository.save(comment);
     }
 

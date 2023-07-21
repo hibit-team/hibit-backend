@@ -28,6 +28,12 @@ public class Alarm extends BaseTimeEntity {
     @JoinColumn(name = "user_idx")
     private Users user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "sender_idx")
+    private Users sender;
+
+
     @Schema(description = "알림 타입", example = "COMMENT")
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;

@@ -21,24 +21,24 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
 
     //알림 생성
-    public Alarm createAlarm(Users user,  AlarmType alarmType, String url){
+    public Alarm createAlarm(Users user, Users sender, AlarmType alarmType, String url){
         String content;
         if (alarmType == AlarmType.COMMENT){
-            content = user.getId()+ "님이 회원님의 게시글에 댓글을 남겼습니다.";
+            content = sender.getId()+ "님이 회원님의 게시글에 댓글을 남겼습니다.";
         } else if (alarmType == AlarmType.RECOMMENT) {
-            content = user.getId() + "님이 회원님의 댓글에 대댓글을 남겼습니다.";
+            content = sender.getId() + "님이 회원님의 댓글에 대댓글을 남겼습니다.";
         } else if (alarmType == AlarmType.COMMENTHEART) {
-            content = user.getId() + "님이 회원님의 댓글을 좋아합니다.";
+            content = sender.getId() + "님이 회원님의 댓글을 좋아합니다.";
         } else if (alarmType == AlarmType.INVITATION) {
-            content = user.getId()+ "님이 회원님께 초대장을 전송했습니다.";
+            content = sender.getId()+ "님이 회원님께 초대장을 전송했습니다.";
         } else if (alarmType == AlarmType.OPENCHAT) {
-            content = user.getId()+ "님이 오픈채팅방 링크가 도착했습니다.";
+            content = sender.getId()+ "님이 오픈채팅방 링크가 도착했습니다.";
         } else if (alarmType == AlarmType.ACCEPT){
-            content = user.getId() + "님이 초대를 수락하셨어요.";
+            content = sender.getId() + "님이 초대를 수락하셨어요.";
         } else if (alarmType==AlarmType.REFUSE){
-            content = user.getId() + "님이 초대를 거절하셨어요.";
+            content = sender.getId() + "님이 초대를 거절하셨어요.";
         } else if (alarmType==AlarmType.REPORT) {
-            content = user.getId()+ "회원님의 계정이 서비스 이용 수칙을 위반하여 신고되었습니다.";
+            content = sender.getId()+ "회원님의 계정이 서비스 이용 수칙을 위반하여 신고되었습니다.";
         } else if (alarmType==AlarmType.EVENT){
             //관리자가 변경해야 함
             content = "";
@@ -47,6 +47,7 @@ public class AlarmService {
         }
         Alarm alarm = new Alarm();
         alarm.setUser(user);
+        alarm.setSender(sender);
         alarm.setAlarmType(alarmType);
         alarm.setUrl(url);
         alarm.setContent(content);
