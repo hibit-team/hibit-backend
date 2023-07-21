@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.comment.service;
 
 
+import com.hibit2.hibit2.alarm.domain.AlarmType;
+import com.hibit2.hibit2.alarm.service.AlarmService;
 import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.comment.repository.CommentRepository;
 import com.hibit2.hibit2.global.repository.MatchingRepository;
@@ -13,12 +15,10 @@ import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class CommentService {
     private final UsersRepository usersRepository;
     private final MatchingRepository matchingRepository;
     private final MatchingService matchingService;
+    private final AlarmService alarmService;
     // 댓글 작성
     public Comment createComment(int post_idx, int user_idx, String content) {
         Post post = postRepository.findById(post_idx)
@@ -46,6 +47,7 @@ public class CommentService {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
         }
+        alarmService.createAlarm(post.getUser(), AlarmType.COMMENT, "");
 
         return commentRepository.save(comment);
     }
