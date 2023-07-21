@@ -1,11 +1,11 @@
-package com.hibit2.hibit2.alarm.domain;
+package com.hibit2.hibit2.declaration.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.comment.domain.Comment;
+import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,9 +18,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 @DynamicInsert
-@Table(name = "alarm")
-
-public class Alarm extends BaseTimeEntity {
+@Table(name = "declaration")
+public class Declaration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
@@ -32,35 +31,29 @@ public class Alarm extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "sender_idx")
-    private Users sender;
+    @JoinColumn(name = "reportUser_idx")
+    private Users reportUser;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "post_idx")
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "comment_idx")
+    private Comment comment;
 
     @Schema(description = "알림 타입", example = "COMMENT")
     @Enumerated(EnumType.STRING)
-    private AlarmType alarmType;
+    private DeclarationType declarationType;
 
-    @Column(length = 255,nullable = false)
-    @Schema(description = "내용", example = "__님이 댓글을 작성했습니다.")
+    @Column(length = 500,nullable = false)
+    @Schema(description = "신고 내용", example = "댓글 작성 과정에서 욕설이 포함되어 있었음")
     private String content;
 
-    @Column(nullable = true)
-    @Schema(description = "오픈채팅방링크", example = "openchaturl")
-    private String url;
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
-    @Schema(description = "읽음 여부", example = "True")
+    @Schema(description = "관리자 확인 여부", example = "True")
     private boolean read;
-
-    @Builder
-    public Alarm(Users user, AlarmType alarmType, String content, String url, boolean read){
-        this.user=user;
-        this.alarmType = alarmType;
-        this.content=content;
-        this.url=url;
-        this.read=read;
-    }
-
-    public void readAlarm() {this.read = true;}
-
 }
