@@ -27,7 +27,7 @@ class MemberTest {
 
     @DisplayName("회원의 email 형식이 맞지 않으면 예외가 발생한다.")
     @ParameterizedTest
-    @ValueSource(strings = {"fancy.junyongmoon@", "fancy.junyongmoon@gmail", "fancy.junyongmoon@gmail.com", "fancy.junyongmoon"})
+    @ValueSource(strings = {"fancy.junyongmoon@", "fancy.junyongmoon@gmail", "fancy.junyongmoon"})
     void 회원의_email_형식이_맞지_않으면_예외가_발생한다(final String email) {
 
         SocialType socialType = SocialType.GOOGLE;
