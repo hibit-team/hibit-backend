@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hibit2.hibit2.profile.domain.Profile;
 import com.hibit2.hibit2.profile.dto.request.RegisterProfileRequest;
 import com.hibit2.hibit2.profile.dto.response.RegisterProfileResponse;
+import com.hibit2.hibit2.profile.dto.response.UserProfileResponse;
+import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
 import com.hibit2.hibit2.profile.repository.ProfileRepository;
 
 
@@ -37,4 +39,9 @@ public class ProfileService {
         return new RegisterProfileResponse(saveProfile);
     }
 
+    public UserProfileResponse getProfile(int profileId) {
+        Profile profile = profileRepository.findById(profileId)
+            .orElseThrow(NotFoundProfileException::new);
+        return new UserProfileResponse(profile);
+    }
 }
