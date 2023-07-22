@@ -28,7 +28,7 @@ public class RegisterProfileRequest {
     private int age;
 
     @NotBlank
-    @Schema(description = "성별", example = "남성")
+    @Schema(description = "성별", example = "0")
     private int gender;
 
     @NotBlank
