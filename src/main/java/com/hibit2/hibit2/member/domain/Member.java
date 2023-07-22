@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import com.hibit2.hibit2.member.exception.InvalidMemberException;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Table(name = "members")
@@ -27,10 +28,12 @@ public class Member {
     private Long id;
 
     @Column(name = "email", nullable = false)
+    @Schema(description = "이메일", example = "teamhibit@gmail.com")
     private String email;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "social_type", nullable = false)
+    @Schema(description = "소셜 로그인 유형", example = "GOOGLE")
     private SocialType socialType;
 
     protected Member() {

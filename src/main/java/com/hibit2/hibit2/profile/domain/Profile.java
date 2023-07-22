@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import com.hibit2.hibit2.member.domain.Member;
 
 @Table(name = "profiles")
-@Getter
 @Entity
 public class Profile {
 
@@ -90,5 +89,53 @@ public class Profile {
         this.addressCity = addressCity;
         this.addressDistinct = addressDistinct;
         this.ban = ban;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public int getIdx() {
+        return idx;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public List<PersonalityType> getPersonality() {
+        return personality;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public List<ProfileImage> getMainImg() {
+        return mainImg;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public AddressCity getAddressCity() {
+        return addressCity;
+    }
+
+    public AddressDistinct getAddressDistinct() {
+        return addressDistinct;
+    }
+
+    public int getBan() {
+        return ban;
     }
 }
