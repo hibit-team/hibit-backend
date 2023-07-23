@@ -144,4 +144,28 @@ public class Profile {
     public int getBan() {
         return ban;
     }
+
+    public void modifyProfile(String nickname, int age, int gender, List<PersonalityType> personality, String introduce
+                        , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+        validateProfile(nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistinct);
+        this.nickname = nickname.trim();
+        this.age = age;
+        this.gender = gender;
+        this.personality = personality;
+        this.introduce = introduce.trim();
+        this.mainImg = mainImg.trim();
+        this.subImg = subImg;
+        this.job = job.trim();
+        this.addressCity = addressCity;
+        this.addressDistinct = addressDistinct;
+    }
+
+    private void validateProfile(String nickname, int age, int gender, List<PersonalityType> personality, String introduce
+        , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+        if((nickname == null || nickname.isBlank())
+            || age < 0 || gender < 0
+            || personality == null || personality.isEmpty()
+            || introduce == null || introduce.isBlank()) {
+        } throw new InvalidProfileInfoException();
+    }
 }

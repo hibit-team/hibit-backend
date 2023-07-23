@@ -40,4 +40,14 @@ public class ProfileService {
             .orElseThrow(NotFoundProfileException::new);
         return new UserProfileResponse(profile);
     }
+
+    @Transactional
+    public void update(final Long memberId, final Long profileId, final ProfileUpdateRequest request) {
+        Profile profile = profileRepository.getByMemberIdAndProfileId(memberId, profileId);
+
+        profile.modifyProfile(request.getNickname(), request.getAge(), request.getGender(),
+                                request.getPersonality(), request.getIntroduce(),
+                                request.getMainImg(), request.getSubImg(), request.getJob(),
+                                request.getAddressCity(), request.getAddressDistinct());
+    }
 }

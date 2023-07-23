@@ -49,4 +49,13 @@ public class ProfileController {
         UserProfileResponse response = profileService.findProfileById(profileId);
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/me/{profileId}")
+    @Operation(summary = "/me/profile", description = "프로필 수정")
+    public ResponseEntity<Void> update(@UserAuthenticationPrincipal final LoginMember loginMember,
+                                        @PathVariable final Long profileId,
+                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
+        profileService.update(loginMember.getId(), profileId, profileUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
