@@ -28,4 +28,9 @@ public class AuthTokenCreator implements TokenCreator {
         String refreshToken = tokenProvider.createRefreshToken(String.valueOf(memberId));
         return tokenRepository.save(memberId, refreshToken);
     }
+
+    public Long extractPayLoad(final String accessToken) {
+        tokenProvider.validateToken(accessToken);
+        return Long.valueOf(tokenProvider.getPayload(accessToken));
+    }
 }
