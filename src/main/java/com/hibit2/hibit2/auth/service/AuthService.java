@@ -4,7 +4,9 @@ import com.hibit2.hibit2.auth.domain.AuthToken;
 import com.hibit2.hibit2.auth.dto.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.support.OAuthClient;
 import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.MemberRepository;
 import com.hibit2.hibit2.member.domain.SocialType;
+import com.hibit2.hibit2.member.dto.MemberResponse;
 import com.hibit2.hibit2.member.service.MemberService;
 import com.hibit2.hibit2.auth.support.OAuthEndpoint;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
 
+    private MemberRepository memberRepository;
+
     private final OAuthEndpoint oAuthEndpoint;
     private final OAuthClient oAuthClient;
 
@@ -24,8 +28,9 @@ public class AuthService {
 
     private final TokenCreator tokenCreator;
 
-    public AuthService(final OAuthEndpoint oAuthEndpoint, final OAuthClient oAuthClient
+    public AuthService(final MemberRepository memberRepository, final OAuthEndpoint oAuthEndpoint, final OAuthClient oAuthClient
     , final MemberService memberService, final TokenCreator tokenCreator) {
+        this.memberRepository = memberRepository;
         this.oAuthEndpoint = oAuthEndpoint;
         this.oAuthClient = oAuthClient;
         this.memberService = memberService;
@@ -58,5 +63,11 @@ public class AuthService {
 
     private Member generateMemberBy(final OAuthMember oAuthMember) {
         return new Member(oAuthMember.getEmail(), SocialType.GOOGLE);
+    }
+
+    public Long extractMemberId(final String accessToken) {
+        Long memberId = tokenCreator.extractPayLoad(accessToken);
+        memberRepository.validateExistById(memberId);
+        return memberId;
     }
 }
