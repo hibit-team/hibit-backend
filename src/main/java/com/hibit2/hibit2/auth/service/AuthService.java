@@ -1,12 +1,11 @@
 package com.hibit2.hibit2.auth.service;
 
 import com.hibit2.hibit2.auth.domain.AuthToken;
-import com.hibit2.hibit2.auth.dto.AccessAndRefreshTokenResponse;
+import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.support.OAuthClient;
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.member.domain.SocialType;
-import com.hibit2.hibit2.member.dto.MemberResponse;
 import com.hibit2.hibit2.member.service.MemberService;
 import com.hibit2.hibit2.auth.support.OAuthEndpoint;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
