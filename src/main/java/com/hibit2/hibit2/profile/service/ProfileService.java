@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.profile.domain.Profile;
 import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
 import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;

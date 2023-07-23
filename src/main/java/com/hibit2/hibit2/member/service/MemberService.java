@@ -4,7 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.dto.MemberResponse;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.member.exception.NoSuchMemberException;
 
 @Transactional(readOnly = true)
@@ -28,5 +29,8 @@ public class MemberService {
 
     public boolean existByEmail(final String email) {
         return memberRepository.existsByEmail(email);
+    }
+    public MemberResponse findById(Long id) {
+        return new MemberResponse(memberRepository.getById(id));
     }
 }
