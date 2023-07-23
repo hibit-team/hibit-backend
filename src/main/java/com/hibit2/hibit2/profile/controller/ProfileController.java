@@ -18,7 +18,7 @@ import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.auth.support.UserAuthenticationPrincipal;
 import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
 import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
-import com.hibit2.hibit2.profile.dto.response.RegisterProfileResponse;
+import com.hibit2.hibit2.profile.dto.response.ProfileRegisterResponse;
 import com.hibit2.hibit2.profile.dto.response.UserProfileResponse;
 import com.hibit2.hibit2.profile.service.ProfileService;
 
@@ -36,9 +36,9 @@ public class ProfileController {
 
     @PostMapping
     @Operation(description = "프로필 등록")
-    public ResponseEntity<RegisterProfileResponse> save(@UserAuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<ProfileRegisterResponse> save(@UserAuthenticationPrincipal final LoginMember loginMember,
                                                         @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
-        RegisterProfileResponse profileResponse = profileService.save(loginMember.getId(), profileRegisterRequest);
+        ProfileRegisterResponse profileResponse = profileService.save(loginMember.getId(), profileRegisterRequest);
         return ResponseEntity.created(URI.create("/api/profiles/" + profileResponse.getId())).body(profileResponse);
     }
 

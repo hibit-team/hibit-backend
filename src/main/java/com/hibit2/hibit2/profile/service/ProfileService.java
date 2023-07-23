@@ -8,7 +8,7 @@ import com.hibit2.hibit2.member.domain.MemberRepository;
 import com.hibit2.hibit2.profile.domain.Profile;
 import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
 import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
-import com.hibit2.hibit2.profile.dto.response.RegisterProfileResponse;
+import com.hibit2.hibit2.profile.dto.response.ProfileRegisterResponse;
 import com.hibit2.hibit2.profile.dto.response.UserProfileResponse;
 import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
 import com.hibit2.hibit2.profile.repository.ProfileRepository;
@@ -27,14 +27,13 @@ public class ProfileService {
     }
 
     @Transactional
-    public RegisterProfileResponse save(final Long memberId, final ProfileRegisterRequest request) {
+    public ProfileRegisterResponse save(final Long memberId, final ProfileRegisterRequest request) {
 
         Member member = memberRepository.getById(memberId);
         Profile profile = request.toEntity(member);
         Profile saveProfile = profileRepository.save(profile);
-        return new RegisterProfileResponse(saveProfile);
+        return new ProfileRegisterResponse(saveProfile);
     }
-
     public UserProfileResponse findProfileById(final Long profileId) {
         Profile profile = profileRepository.findById(profileId)
             .orElseThrow(NotFoundProfileException::new);
