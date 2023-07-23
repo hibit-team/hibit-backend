@@ -4,15 +4,20 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.auth.support.UserAuthenticationPrincipal;
-import com.hibit2.hibit2.profile.dto.request.RegisterProfileRequest;
+import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
+import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
 import com.hibit2.hibit2.profile.dto.response.RegisterProfileResponse;
 import com.hibit2.hibit2.profile.dto.response.UserProfileResponse;
 import com.hibit2.hibit2.profile.service.ProfileService;
@@ -29,21 +34,19 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    // 프로필 등록
     @PostMapping
-    @Operation(summary = "/profiles/{profile.getId()}", description = "프로필 등록")
-    public ResponseEntity<Void> registerProfile(@Valid @RequestBody RegisterProfileRequest registerProfileRequest) {
-
-        RegisterProfileResponse profile = profileService.registerProfile(registerProfileRequest);
-
-        return ResponseEntity.created(URI.create("/profiles/" + profile.getId())).build();
+    @Operation(description = "프로필 등록")
+    public ResponseEntity<RegisterProfileResponse> save(@UserAuthenticationPrincipal final LoginMember loginMember,
+                                                        @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
+        RegisterProfileResponse profileResponse = profileService.save(loginMember.getId(), profileRegisterRequest);
+        return ResponseEntity.created(URI.create("/api/profiles/" + profileResponse.getId())).body(profileResponse);
     }
 
-    // 프로필 조회
-    @GetMapping
+    @GetMapping("/me/{profileId}")
     @Operation(summary = "/me/profile", description = "프로필 조회")
-    public ResponseEntity<UserProfileResponse> getProfile(@UserAuthenticationPrincipal int profileId) {
-        UserProfileResponse response = profileService.getProfile(profileId);
+    public ResponseEntity<UserProfileResponse> findProfileById(@UserAuthenticationPrincipal final LoginMember loginMember,
+                                                                @PathVariable final Long profileId) {
+        UserProfileResponse response = profileService.findProfileById(profileId);
         return ResponseEntity.ok(response);
     }
 }
