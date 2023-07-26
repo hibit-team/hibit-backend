@@ -49,9 +49,10 @@ public class MatchingController {
     @Operation(summary = "/matching/1/ok", description = "매칭 수락 변경")
     public ResponseEntity<Void> okMatch(@PathVariable int matching_idx) {
         matchingService.okMatch(matching_idx);
+
         return ResponseEntity.ok().build();
     }
-    //매칭 수락 (추후 알림에서 변경 가능)
+    //매칭 거절 (추후 알림에서 변경 가능)
     @PutMapping("/{matching_idx}/no")
     @Operation(summary = "/matching/1/no", description = "매칭 거절 변경")
     public ResponseEntity<Void> noMatch(@PathVariable int matching_idx) {
@@ -68,7 +69,6 @@ public class MatchingController {
     }
 
 
-    //매칭 진짜 다녀온 사람들 리스트 history에 추가
 
 
 

@@ -6,6 +6,8 @@ import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.repository.PostRepository;
+import com.hibit2.hibit2.postHistory.domain.postHistory;
+import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class MatchingService {
     private final MatchingRepository matchingRepository;
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
+    private final com.hibit2.hibit2.postHistory.repository.postHistoryRepository postHistoryRepository;
 
     //매칭 신청 유저 확인
     public boolean exitMatching(Users user, Post post) {
@@ -67,13 +70,19 @@ public class MatchingService {
         Matching matching = matchingRepository.findById(matching_idx)
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
         matching.setStatus(MatchStatus.OK);
+        postHistory postHistory = postHistoryRepository.findByPostIdx(matching.getPost().getIdx());
+        postHistory.increaseOk();
+        postHistoryRepository.save(postHistory);
         matchingRepository.save(matching);
     }
-    //매칭 수락 (알림에서 거절 누른 경우)
+    //매칭 거절 (알림에서 거절 누른 경우)
     public void noMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
                 .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
         matching.setStatus(MatchStatus.NO);
+        postHistory postHistory = postHistoryRepository.findByPostIdx(matching.getPost().getIdx());
+        postHistory.increaseNo();
+        postHistoryRepository.save(postHistory);
         matchingRepository.save(matching);
     }
 

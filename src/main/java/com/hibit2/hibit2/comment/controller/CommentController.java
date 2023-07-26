@@ -82,6 +82,5 @@ public class CommentController {
         return ResponseEntity.ok(comment);
     }
 
-    //대댓글 수정/삭제/좋아요 만들기
 
 }
