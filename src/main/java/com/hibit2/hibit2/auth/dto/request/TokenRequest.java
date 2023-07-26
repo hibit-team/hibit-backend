@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.dto;
+package com.hibit2.hibit2.auth.dto.request;
 
 public class TokenRequest {
 

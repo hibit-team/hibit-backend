@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.hibit2.hibit2.auth.dto.AccessAndRefreshTokenResponse;
+import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.config.TestConfig;
-import com.hibit2.hibit2.member.domain.MemberRepository;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 
 @SpringBootTest(classes = TestConfig.class)
 class AuthServiceTest {
