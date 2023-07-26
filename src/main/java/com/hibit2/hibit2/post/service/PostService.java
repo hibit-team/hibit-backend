@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.post.service;
 
 
+import com.hibit2.hibit2.matching.domain.MatchStatus;
+import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
@@ -107,6 +109,16 @@ public class PostService {
             post.decreaseLike();
         }
         return postRepository.save(post);
+    }
+
+    @Transactional
+    public void completePost(int post_idx) {
+        Post post = postRepository.findById(post_idx)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+
+        post.complete();
+        postRepository.save(post);
+
     }
 
 

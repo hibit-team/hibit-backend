@@ -152,4 +152,13 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
+    //게시글 상태 변경
+    @PutMapping("/{post_idx}/complete")
+    @Operation(summary = "/post/1/complete", description = "게시글 모집 완료")
+    public ResponseEntity<Void> completePost(@PathVariable int post_idx) {
+        postService.completePost(post_idx);
+        return ResponseEntity.ok().build();
+        //Posthistory 추가
+    }
+
 }

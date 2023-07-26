@@ -70,7 +70,6 @@ public class MatchingController {
 
     //매칭 진짜 다녀온 사람들 리스트 history에 추가
 
-    //매칭 완료
 
 
 

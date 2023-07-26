@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comment")
@@ -27,16 +28,18 @@ public class CommentController {
     // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
     @PostMapping("/{post_idx}/{user_idx}")
     @Operation(summary = "/comment/1/1", description = "댓글 작성")
-    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody String content) {
-        Comment comment = commentService.createComment(post_idx, user_idx, content);
+    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody Map<String,String> content) {
+        String commentContent = content.get("content");
+        Comment comment = commentService.createComment(post_idx, user_idx, commentContent);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
 
     // 대댓글 작성
     @PostMapping("/replies/{comment_idx}/{user_idx}")
     @Operation(summary = "/comment/replies/1/1", description = "댓글에 대한 대댓글 작성")
-    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx, @PathVariable int user_idx, @RequestBody String content) {
-        Comment reply = commentService.createReply(comment_idx, user_idx, content);
+    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx, @PathVariable int user_idx, @RequestBody Map<String,String> content) {
+        String commentContent = content.get("content");
+        Comment reply = commentService.createReply(comment_idx, user_idx, commentContent);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply);
     }
 
@@ -58,8 +61,9 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/update/{comment_idx}")
     @Operation(summary = "/comment/update/1", description = "댓글 수정")
-    public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody String newContent) {
-        Comment updatedComment = commentService.updateComment(comment_idx, newContent);
+    public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody  Map<String,String> content) {
+        String commentContent = content.get("content");
+        Comment updatedComment = commentService.updateComment(comment_idx, commentContent);
         return ResponseEntity.ok(updatedComment);
     }
 
