@@ -1,11 +1,11 @@
 package com.hibit2.hibit2.profile.domain;
 
 
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 
+// 2023.07.23 사용안하는 엔티티 클래스
 @Entity
 @Getter
 @Table(name = "profile_images")

@@ -18,7 +18,7 @@ public class UserProfileResponse {
     private int gender;
     private List<PersonalityType> personality;
     private String introduce;
-    private List<ProfileImage> mainImg;
+    private String mainImg;
 
     // 선택 노출 정보
     private int age;
@@ -33,7 +33,7 @@ public class UserProfileResponse {
 
     // @AllArgsConstructor(access = AccessLevel.PRIVATE) : 해당 클래스 내의 모든 변수값을 가진 생성자를 자동으로 만들어 준다.
     public UserProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce,
-        List<ProfileImage> mainImg, int age, AddressCity addressCity, AddressDistinct addressDistinct, String job) {
+        String mainImg, int age, AddressCity addressCity, AddressDistinct addressDistinct, String job) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;
@@ -51,7 +51,7 @@ public class UserProfileResponse {
             profile.getPersonality(),
             profile.getIntroduce(),
             profile.getMainImg(),
-            profile.getIdx(),
+            profile.getAge(),
             profile.getAddressCity(),
             profile.getAddressDistinct(),
             profile.getJob());

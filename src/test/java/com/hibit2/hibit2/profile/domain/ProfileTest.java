@@ -1,6 +1,5 @@
 package com.hibit2.hibit2.profile.domain;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,28 +17,28 @@ class ProfileTest {
     @Test
     void 프로필을_생성한다() {
         // given
-        int idx = 1;
+        Long id = 1L;
         Member member = new Member("fancy.junyongmoon@gmail.com", SocialType.GOOGLE);
         String nickname = "fancy";
         int age = 26;
         int gender = 1;
-        List<PersonalityType> personalityType = Arrays.asList(PersonalityType.TYPE_1);
+
+        List<PersonalityType> personalityType = Arrays.asList(PersonalityType.TYPE_3, PersonalityType.TYPE_4, PersonalityType.TYPE_6);
         String introduce = "Hi, I'm fancy.";
+        String mainImg = "http://hibitbucket";
+        List<String> subImg = Arrays.asList("http://hibitbucket1", "http://hibitbucket2");
+
         String job = "Backend";
         AddressCity addressCity = AddressCity.SEOUL;
         AddressDistinct addressDistinct = AddressDistinct.SEOUL_YONGSAN;
         int ban = 1;
 
-        Profile profile = new Profile(idx, member, nickname, age, gender,
-            personalityType, introduce, null, job, addressCity, addressDistinct, ban);
-
-        ProfileImage profileImage = new ProfileImage(profile, "profile.jpg");
-        List<ProfileImage> mainImg = new ArrayList<>();
-        mainImg.add(profileImage);
+        Profile profile = new Profile(member, nickname, age, gender,
+            personalityType, introduce, mainImg, subImg, job, addressCity, addressDistinct);
 
         // when & then
-        Assertions.assertDoesNotThrow(() -> new Profile(idx, member, nickname, age, gender,
-            personalityType, introduce, mainImg, job, addressCity, addressDistinct, ban));
+        Assertions.assertDoesNotThrow(() -> new Profile(member, nickname, age, gender,
+            personalityType, introduce, mainImg, subImg, job, addressCity, addressDistinct));
     }
 
 }

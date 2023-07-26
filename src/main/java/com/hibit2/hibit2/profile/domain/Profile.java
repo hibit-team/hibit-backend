@@ -3,25 +3,24 @@ package com.hibit2.hibit2.profile.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import lombok.Getter;
 import javax.persistence.*;
 import java.util.List;
-import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.profile.exception.InvalidProfileInfoException;
 
 @Table(name = "profiles")
 @Entity
 public class Profile {
 
-    //private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idx", nullable = false)
-    private int idx;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "member_idx")
     private Member member;
 
@@ -49,8 +48,12 @@ public class Profile {
 
     @Column(name = "main_img", length = 100, nullable = false)
     @Schema(description = "나의 대표사진", example = "http://hibitbucket")
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<ProfileImage> mainImg;
+    private String mainImg;
+
+    @ElementCollection
+    @Schema(description = "나머지 이미지 url 리스트", example = "[\"http://hibitbucket1\", \"http://hibitbucket2\"]" )
+    private List<String> subImg;
+
 
     @Column(name = "job", length = 50, nullable = false)
     @Schema(description = "직업 혹은 학교", example = "College student")
@@ -74,10 +77,9 @@ public class Profile {
     }
 
     @Builder
-    public Profile(int idx, Member member, String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce, List<ProfileImage> mainImg, String job, AddressCity addressCity,
-        AddressDistinct addressDistinct, int ban) {
-        this.idx = idx;
+    public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
+        String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
+        AddressDistinct addressDistinct) {
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -85,18 +87,18 @@ public class Profile {
         this.personality = personality;
         this.introduce = introduce;
         this.mainImg = mainImg;
+        this.subImg = subImg;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistinct = addressDistinct;
-        this.ban = ban;
     }
 
     public Member getMember() {
         return member;
     }
 
-    public int getIdx() {
-        return idx;
+    public Long getId() {
+        return id;
     }
 
     public String getNickname() {
@@ -119,8 +121,12 @@ public class Profile {
         return introduce;
     }
 
-    public List<ProfileImage> getMainImg() {
+    public String getMainImg() {
         return mainImg;
+    }
+
+    public List<String> getSubImg() {
+        return subImg;
     }
 
     public String getJob() {
@@ -137,5 +143,29 @@ public class Profile {
 
     public int getBan() {
         return ban;
+    }
+
+    public void modifyProfile(String nickname, int age, int gender, List<PersonalityType> personality, String introduce
+                        , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+        validateProfile(nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistinct);
+        this.nickname = nickname.trim();
+        this.age = age;
+        this.gender = gender;
+        this.personality = personality;
+        this.introduce = introduce.trim();
+        this.mainImg = mainImg.trim();
+        this.subImg = subImg;
+        this.job = job.trim();
+        this.addressCity = addressCity;
+        this.addressDistinct = addressDistinct;
+    }
+
+    private void validateProfile(String nickname, int age, int gender, List<PersonalityType> personality, String introduce
+        , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+        if((nickname == null || nickname.isBlank())
+            || age < 0 || gender < 0
+            || personality == null || personality.isEmpty()
+            || introduce == null || introduce.isBlank()) {
+        } throw new InvalidProfileInfoException();
     }
 }
