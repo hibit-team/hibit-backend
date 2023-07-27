@@ -7,6 +7,7 @@ import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.TimeSlot;
 import com.hibit2.hibit2.post.domain.What_do;
 import com.hibit2.hibit2.user.domain.Users;
+import com.hibit2.hibit2.user.dto.UserlistDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +36,7 @@ public class PostResponseDto {
     private List<String> subimg;
     private String time;
     private List<String> dateTime;
+    private List<UserlistDto> likeUsers;
 
 
     public PostResponseDto(@NotNull Post entity){
@@ -54,6 +56,14 @@ public class PostResponseDto {
         this.subimg=entity.getSubimg();
         this.time = entity.calculateTime();
         this.dateTime = formatDateTimeSlots(entity.getDateTimeSlots());
+        this.likeUsers= new ArrayList<>();
+
+
+        if (entity.getLikeUsers() != null) {
+            for (Users likeUser : entity.getLikeUsers()) {
+                this.likeUsers.add(new UserlistDto(likeUser));
+            }
+        }
 
     }
 
