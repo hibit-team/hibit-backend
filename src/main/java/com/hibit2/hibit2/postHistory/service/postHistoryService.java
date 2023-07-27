@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @RestController
@@ -19,6 +20,10 @@ public class postHistoryService {
     @Transactional
     public postHistory findById(int idx) {
         postHistory entity = postHistoryRepository.findByPostIdx(idx);
+        if (entity == null) {
+            throw new EntityNotFoundException("postHistory not found with idx: " + idx);
+        }
+
         return entity;
     }
 }

@@ -21,7 +21,7 @@ import javax.persistence.EntityNotFoundException;
 public class postHistoryController {
     private postHistoryService postHistoryService;
 
-    // 생성자 주입(Constructor Injection)
+    @Autowired
     public postHistoryController(postHistoryService postHistoryService) {
         this.postHistoryService = postHistoryService;
     }

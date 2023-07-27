@@ -28,7 +28,6 @@ public class postHistory extends BaseTimeEntity {
 
 
     @ManyToOne
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "post_idx")
     private Post post;
 
