@@ -30,7 +30,10 @@ public class MemberService {
     public boolean existByEmail(final String email) {
         return memberRepository.existsByEmail(email);
     }
-    public MemberResponse findById(Long id) {
-        return new MemberResponse(memberRepository.getById(id));
+    public MemberResponse findById(final Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(NoSuchMemberException::new);
+
+        return new MemberResponse(member);
     }
 }
