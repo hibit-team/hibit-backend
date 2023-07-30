@@ -29,6 +29,18 @@ public class AuthTokenCreator implements TokenCreator {
         return tokenRepository.save(memberId, refreshToken);
     }
 
+    public AuthToken renewAuthToken(final String refreshToken) {
+        tokenProvider.validateToken(refreshToken);
+        Long memberId = Long.valueOf(tokenProvider.getPayload(refreshToken));
+
+        String accessTokenForRenew = tokenProvider.createAccessToken(String.valueOf(memberId));
+        String refreshTokenForRenew = tokenRepository.getToken(memberId);
+
+        AuthToken renewalAuthToken = new AuthToken(accessTokenForRenew, refreshTokenForRenew);
+        renewalAuthToken.validateHasSameRefreshToken(refreshToken);
+        return renewalAuthToken;
+    }
+
     public Long extractPayLoad(final String accessToken) {
         tokenProvider.validateToken(accessToken);
         return Long.valueOf(tokenProvider.getPayload(accessToken));
