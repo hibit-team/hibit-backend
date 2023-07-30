@@ -1,15 +1,18 @@
 package com.hibit2.hibit2.auth.service;
 
 import com.hibit2.hibit2.auth.domain.AuthToken;
+import com.hibit2.hibit2.auth.domain.OAuthToken;
+import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
-import com.hibit2.hibit2.auth.support.OAuthClient;
+import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
+import com.hibit2.hibit2.auth.event.MemberSavedEvent;
+import com.hibit2.hibit2.auth.repository.OAuthTokenRepository;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.member.domain.SocialType;
-import com.hibit2.hibit2.member.service.MemberService;
-import com.hibit2.hibit2.auth.support.OAuthEndpoint;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,49 +22,56 @@ public class AuthService {
 
 
     private MemberRepository memberRepository;
-
-    private final OAuthEndpoint oAuthEndpoint;
-    private final OAuthClient oAuthClient;
-
-    private final MemberService memberService;
+    private final OAuthTokenRepository oAuthTokenRepository;
 
     private final TokenCreator tokenCreator;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public AuthService(final MemberRepository memberRepository, final OAuthEndpoint oAuthEndpoint, final OAuthClient oAuthClient
-    , final MemberService memberService, final TokenCreator tokenCreator) {
+
+    public AuthService(MemberRepository memberRepository, OAuthTokenRepository oAuthTokenRepository, TokenCreator tokenCreator, ApplicationEventPublisher eventPublisher) {
         this.memberRepository = memberRepository;
-        this.oAuthEndpoint = oAuthEndpoint;
-        this.oAuthClient = oAuthClient;
-        this.memberService = memberService;
+        this.oAuthTokenRepository = oAuthTokenRepository;
         this.tokenCreator = tokenCreator;
-    }
-
-    public String generateGoogleLink() {
-            return oAuthEndpoint.generate();
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
-    public AccessAndRefreshTokenResponse generateAccessAndRefreshTokenWithCode(final String code) {
-        OAuthMember oAuthMember = oAuthClient.getOAuthMember(code);
+    public AccessAndRefreshTokenResponse generateAccessAndRefreshToken(final OAuthMember oAuthMember) {
+        Member foundMember = findMember(oAuthMember);
 
-        String email = oAuthMember.getEmail();
+        OAuthToken oAuthToken = getOAuthToken(oAuthMember, foundMember);
+        oAuthToken.change(oAuthMember.getRefreshToken());
 
-        saveMemberIfNotExists(oAuthMember, email);
-
-        Member foundMember = memberService.findByEmail(email);
         AuthToken authToken = tokenCreator.createAuthToken(foundMember.getId());
-
         return new AccessAndRefreshTokenResponse(authToken.getAccessToken(), authToken.getRefreshToken());
     }
 
-    private void saveMemberIfNotExists(final OAuthMember oAuthMember, final String email) {
-        if (!memberService.existByEmail(email)) {
-            memberService.save(generateMemberBy(oAuthMember));
+    private OAuthToken getOAuthToken(OAuthMember oAuthMember, Member member) {
+        Long memberId = member.getId();
+        if (oAuthTokenRepository.existsByMemberId(memberId)) {
+            return oAuthTokenRepository.getByMemberId(memberId);
         }
+        return oAuthTokenRepository.save(new OAuthToken(member, oAuthMember.getRefreshToken()));
     }
 
-    private Member generateMemberBy(final OAuthMember oAuthMember) {
-        return new Member(oAuthMember.getEmail(), SocialType.GOOGLE);
+    private Member findMember(final OAuthMember oAuthMember) {
+        String email = oAuthMember.getEmail();
+        if (memberRepository.existsByEmail(email)) {
+            return memberRepository.getByEmail(email);
+        }
+        return saveMember(oAuthMember);
+    }
+
+    private Member saveMember(final OAuthMember oAuthMember) {
+        Member savedMember = memberRepository.save(oAuthMember.toMember());
+        eventPublisher.publishEvent(new MemberSavedEvent(savedMember.getId()));
+        return savedMember;
+    }
+
+    public AccessTokenResponse generateAccessToken(final TokenRenewalRequest tokenRenewalRequest) {
+        String refreshToken = tokenRenewalRequest.getRefreshToken();
+        AuthToken authToken = tokenCreator.renewAuthToken(refreshToken);
+        return new AccessTokenResponse(authToken.getAccessToken());
     }
 
     public Long extractMemberId(final String accessToken) {
