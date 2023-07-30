@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.global.config;
+package com.hibit2.hibit2.global.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;

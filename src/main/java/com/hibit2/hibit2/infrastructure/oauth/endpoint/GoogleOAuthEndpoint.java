@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 
 import com.hibit2.hibit2.auth.support.OAuthEndpoint;
 
+// 사용 안함 - 관련 Interface(OAuthEndpoint)
 @Component
-@PropertySource("classpath:application.yml")
+@PropertySource("classpath:application-local.yml")
 public class GoogleOAuthEndpoint implements OAuthEndpoint {
 
     private static final String GOOGLE_OAUTH_END_POINT = "https://accounts.google.com/o/oauth2/v2/auth";

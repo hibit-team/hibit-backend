@@ -5,7 +5,7 @@ import java.util.Base64;
 
 import com.hibit2.hibit2.auth.support.OAuthClient;
 import com.hibit2.hibit2.auth.dto.response.OAuthAccessTokenResponse;
-import com.hibit2.hibit2.global.config.GoogleProperties;
+import com.hibit2.hibit2.global.config.properties.GoogleProperties;
 import com.hibit2.hibit2.infrastructure.oauth.dto.UserInfo;
 import com.hibit2.hibit2.infrastructure.oauth.exception.OAuthException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,7 +33,8 @@ public class GoogleOAuthClient implements OAuthClient {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public GoogleOAuthClient(final GoogleProperties properties, final RestTemplateBuilder restTemplateBuilder,
+    public GoogleOAuthClient(final GoogleProperties properties,
+                             final RestTemplateBuilder restTemplateBuilder,
                              final ObjectMapper objectMapper) {
         this.properties = properties;
         this.restTemplate = restTemplateBuilder.build();

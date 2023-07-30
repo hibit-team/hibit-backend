@@ -1,12 +1,10 @@
 package com.hibit2.hibit2.infrastructure.oauth.uri;
 
 import com.hibit2.hibit2.auth.support.OAuthUri;
-import com.hibit2.hibit2.global.config.GoogleProperties;
-import org.springframework.context.annotation.Profile;
+import com.hibit2.hibit2.global.config.properties.GoogleProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("prod")
 public class GoogleOAuthUri implements OAuthUri {
 
     private final GoogleProperties properties;
