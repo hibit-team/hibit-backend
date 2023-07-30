@@ -12,7 +12,7 @@ public class OAuthUriResponse {
         this.oAuthUri = oAuthUri;
     }
 
-    public String getoAuthUri() {
+    public String gotoAuthUri() {
         return oAuthUri;
     }
 }

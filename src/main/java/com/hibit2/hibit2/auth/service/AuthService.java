@@ -9,7 +9,6 @@ import com.hibit2.hibit2.auth.event.MemberSavedEvent;
 import com.hibit2.hibit2.auth.repository.OAuthTokenRepository;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
-import com.hibit2.hibit2.member.domain.SocialType;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,20 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final OAuthTokenRepository oAuthTokenRepository;
 
     private final TokenCreator tokenCreator;
     private final ApplicationEventPublisher eventPublisher;
 
 
-    public AuthService(MemberRepository memberRepository, OAuthTokenRepository oAuthTokenRepository, TokenCreator tokenCreator, ApplicationEventPublisher eventPublisher) {
+    public AuthService(final MemberRepository memberRepository, final OAuthTokenRepository oAuthTokenRepository,
+                       final TokenCreator tokenCreator, final ApplicationEventPublisher eventPublisher) {
         this.memberRepository = memberRepository;
         this.oAuthTokenRepository = oAuthTokenRepository;
         this.tokenCreator = tokenCreator;
         this.eventPublisher = eventPublisher;
     }
-
     @Transactional
     public AccessAndRefreshTokenResponse generateAccessAndRefreshToken(final OAuthMember oAuthMember) {
         Member foundMember = findMember(oAuthMember);
@@ -46,7 +45,7 @@ public class AuthService {
         return new AccessAndRefreshTokenResponse(authToken.getAccessToken(), authToken.getRefreshToken());
     }
 
-    private OAuthToken getOAuthToken(OAuthMember oAuthMember, Member member) {
+    private OAuthToken getOAuthToken(final OAuthMember oAuthMember, final Member member) {
         Long memberId = member.getId();
         if (oAuthTokenRepository.existsByMemberId(memberId)) {
             return oAuthTokenRepository.getByMemberId(memberId);

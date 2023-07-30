@@ -7,10 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthTokenCreator implements TokenCreator {
     private final TokenProvider tokenProvider;
-
     private final TokenRepository tokenRepository;
 
-    public AuthTokenCreator(TokenProvider tokenProvider, TokenRepository tokenRepository) {
+    public AuthTokenCreator(final TokenProvider tokenProvider, final TokenRepository tokenRepository) {
         this.tokenProvider = tokenProvider;
         this.tokenRepository = tokenRepository;
     }

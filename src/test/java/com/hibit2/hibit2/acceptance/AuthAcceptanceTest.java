@@ -31,7 +31,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(() -> {
             상태코드_200이_반환된다(response);
-            assertThat(oAuthUriResponse.getoAuthUri()).contains("https://");
+            assertThat(oAuthUriResponse.gotoAuthUri()).contains("https://");
         });
     }
     @DisplayName("최초_회원이거나_기존에_존재하는_회원이_다시_로그인하는_경우_토큰들을_발급하고_상태코드_200을_반환한다.")
