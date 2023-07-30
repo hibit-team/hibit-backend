@@ -13,6 +13,8 @@ import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class DeclarationService {
@@ -54,6 +56,5 @@ public class DeclarationService {
 
         return declarationRepository.save(declaration);
     }
-
 
 }

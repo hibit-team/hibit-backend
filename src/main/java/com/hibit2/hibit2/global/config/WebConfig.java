@@ -17,10 +17,5 @@ public class WebConfig implements WebMvcConfigurer {
             .allowedOriginPatterns("*");
     }
 
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
-        return builder -> {
-            builder.modulesToInstall(new Hibernate5Module());
-        };
-    }
+
 }
