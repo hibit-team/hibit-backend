@@ -3,6 +3,7 @@ package com.hibit2.hibit2.comment.controller;
 
 import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.comment.dto.CommentListDto;
+import com.hibit2.hibit2.comment.dto.CommentSaveDto;
 import com.hibit2.hibit2.comment.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class CommentController {
     // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
     @PostMapping("/{post_idx}/{user_idx}")
     @Operation(summary = "/comment/1/1", description = "댓글 작성")
-    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody String content) {
-
+    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        String content = commentSaveDto.getContent();
         Comment comment = commentService.createComment(post_idx, user_idx, content);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
@@ -37,7 +38,8 @@ public class CommentController {
     // 대댓글 작성
     @PostMapping("/replies/{comment_idx}/{user_idx}")
     @Operation(summary = "/comment/replies/1/1", description = "댓글에 대한 대댓글 작성")
-    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx, @PathVariable int user_idx, @RequestBody String content) {
+    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx, @PathVariable int user_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        String content = commentSaveDto.getContent();
         Comment reply = commentService.createReply(comment_idx, user_idx, content);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply);
     }
@@ -60,7 +62,8 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/update/{comment_idx}")
     @Operation(summary = "/comment/update/1", description = "댓글 수정")
-    public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody String content) {
+    public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        String content = commentSaveDto.getContent();
         Comment updatedComment = commentService.updateComment(comment_idx, content);
         return ResponseEntity.ok(updatedComment);
     }
@@ -82,6 +85,5 @@ public class CommentController {
         return ResponseEntity.ok(comment);
     }
 
-    //대댓글 수정/삭제/좋아요 만들기
 
 }

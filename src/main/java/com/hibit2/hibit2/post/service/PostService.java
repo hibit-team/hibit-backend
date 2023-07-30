@@ -1,14 +1,18 @@
 package com.hibit2.hibit2.post.service;
 
 
+import com.hibit2.hibit2.global.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
+import com.hibit2.hibit2.matching.service.MatchingService;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
 import com.hibit2.hibit2.post.dto.PostSaveDto;
 import com.hibit2.hibit2.post.dto.PostUpdateDto;
 import com.hibit2.hibit2.post.repository.PostRepository;
+import com.hibit2.hibit2.postHistory.domain.postHistory;
+import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +34,9 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
+    private final MatchingRepository matchingRepository;
+    private final postHistoryRepository postHistoryRepository;
+    private final MatchingService matchingService;
 
     @Transactional
     public Post save(PostSaveDto postSaveDto){
@@ -40,6 +48,12 @@ public class PostService {
 
         Post post = postSaveDto.toEntity();
         postRepository.save(post);
+
+        postHistory postHistory = new postHistory();
+        postHistory.setPost(post);
+        postHistory.setOkUsers(new ArrayList<>());
+        postHistoryRepository.save(postHistory);
+
         return post;
     }
 
@@ -115,9 +129,17 @@ public class PostService {
     public void completePost(int post_idx) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-
         post.complete();
         postRepository.save(post);
+
+        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
+
+        List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
+        List<String> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+        postHistory.setOkUsers(matchedUsers);
+
+        postHistoryRepository.save(postHistory);
 
     }
 
