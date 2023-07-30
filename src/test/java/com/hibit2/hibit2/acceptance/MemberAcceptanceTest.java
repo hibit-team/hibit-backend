@@ -1,12 +1,10 @@
 package com.hibit2.hibit2.acceptance;
 
-import com.hibit2.hibit2.config.TestConfig;
 import com.hibit2.hibit2.member.dto.MemberResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Import;
 
 
 import static com.hibit2.hibit2.acceptance.fixtures.AuthAcceptanceFixtures.자체_토큰을_생성하고_엑세스_토큰을_반환한다;
@@ -17,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("회원 관련 기능")
-@Import(TestConfig.class)
 public class MemberAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("등록된 회원이 자신의 정보를 조회하면 상태코드 200을 반환한다.")

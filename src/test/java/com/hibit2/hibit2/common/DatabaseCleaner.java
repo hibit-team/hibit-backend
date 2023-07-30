@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.metamodel.Type;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Objects; // 추가 import 문
 
 @Component
 public class DatabaseCleaner {
@@ -22,6 +23,7 @@ public class DatabaseCleaner {
                 .stream()
                 .map(Type::getJavaType)
                 .map(javaType -> javaType.getAnnotation(Table.class))
+                .filter(Objects::nonNull) // Null이 아닌 경우만 필터링
                 .map(Table::name)
                 .collect(Collectors.toList());
     }
