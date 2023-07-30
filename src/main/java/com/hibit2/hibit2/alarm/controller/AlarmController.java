@@ -42,7 +42,7 @@ public class AlarmController {
 
         for (Users user : allUsers) {
             Alarm alarm = new Alarm();
-            alarm.setUser(user); // 각 유저에게 알림을 생성하므로 해당 유저를 설정
+            alarm.setUser(user);
             alarm.setSender(sender);
             alarm.setAlarmType(AlarmType.EVENT);
             alarm.setUrl("");
