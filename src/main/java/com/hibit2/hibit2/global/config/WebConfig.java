@@ -33,12 +33,12 @@ public class WebConfig implements WebMvcConfigurer {
             .allowedOriginPatterns(patterns);
     }
 
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
-        return builder -> {
-            builder.modulesToInstall(new Hibernate5Module());
-        };
-    }
+//    @Bean
+//    public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
+//        return builder -> {
+//            builder.modulesToInstall(new Hibernate5Module());
+//        };
+//    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
