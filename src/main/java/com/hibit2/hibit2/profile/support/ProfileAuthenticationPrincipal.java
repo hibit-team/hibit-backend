@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.support;
+package com.hibit2.hibit2.profile.support;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UserAuthenticationPrincipal {
+public @interface ProfileAuthenticationPrincipal {
 
 }

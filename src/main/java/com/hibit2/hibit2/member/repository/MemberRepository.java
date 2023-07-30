@@ -17,6 +17,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     }
     boolean existsByEmail(final String email);
 
+    default Member getByEmail(final String email) {
+        return findByEmail(email)
+                .orElseThrow(NoSuchMemberException::new);
+    }
+
     default void validateExistById(final Long id) {
         if(!existsById(id)) {
             throw new NoSuchMemberException();
