@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.support;
+package com.hibit2.hibit2.auth.presentation;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,7 +11,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.hibit2.hibit2.auth.dto.LoginMember;
-import com.hibit2.hibit2.auth.service.AuthService;
+import com.hibit2.hibit2.auth.application.AuthService;
 
 @Component
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {

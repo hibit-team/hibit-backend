@@ -1,7 +1,6 @@
-package com.hibit2.hibit2.auth.support;
+package com.hibit2.hibit2.auth.application;
 
 import com.hibit2.hibit2.auth.exception.InvalidTokenException;
-import com.hibit2.hibit2.auth.service.TokenProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 

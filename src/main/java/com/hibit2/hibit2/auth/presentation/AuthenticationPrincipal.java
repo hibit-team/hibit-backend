@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.support;
+package com.hibit2.hibit2.auth.presentation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.repository;
+package com.hibit2.hibit2.auth.domain;
 
 public interface TokenRepository {
 

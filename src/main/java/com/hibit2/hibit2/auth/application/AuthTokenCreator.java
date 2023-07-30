@@ -1,7 +1,7 @@
-package com.hibit2.hibit2.auth.service;
+package com.hibit2.hibit2.auth.application;
 
 import com.hibit2.hibit2.auth.domain.AuthToken;
-import com.hibit2.hibit2.auth.repository.TokenRepository;
+import com.hibit2.hibit2.auth.domain.TokenRepository;
 import org.springframework.stereotype.Component;
 
 @Component

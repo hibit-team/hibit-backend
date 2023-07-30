@@ -2,7 +2,7 @@ package com.hibit2.hibit2.acceptance;
 
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.OAuthUriResponse;
-import com.hibit2.hibit2.config.TestConfig;
+import com.hibit2.hibit2.common.config.TokenConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
@@ -17,7 +17,7 @@ import static com.hibit2.hibit2.common.AuthFixtures.STUB_MEMBER_인증_코드;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(TestConfig.class)
+@Import(TokenConfig.class)
 @DisplayName("인증 관련 기능")
 public class AuthAcceptanceTest extends AcceptanceTest {
 

@@ -1,6 +1,6 @@
 package com.hibit2.hibit2.infrastructure.oauth.uri;
 
-import com.hibit2.hibit2.auth.support.OAuthUri;
+import com.hibit2.hibit2.auth.application.OAuthUri;
 import com.hibit2.hibit2.global.config.properties.GoogleProperties;
 import org.springframework.stereotype.Component;
 

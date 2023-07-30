@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.service;
+package com.hibit2.hibit2.auth.application;
 
 import com.hibit2.hibit2.auth.domain.AuthToken;
 import com.hibit2.hibit2.auth.domain.OAuthToken;
@@ -6,7 +6,7 @@ import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
 import com.hibit2.hibit2.auth.event.MemberSavedEvent;
-import com.hibit2.hibit2.auth.repository.OAuthTokenRepository;
+import com.hibit2.hibit2.auth.domain.OAuthTokenRepository;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.auth.dto.OAuthMember;

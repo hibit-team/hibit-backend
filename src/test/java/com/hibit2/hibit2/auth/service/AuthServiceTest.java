@@ -6,12 +6,12 @@ import static com.hibit2.hibit2.common.OAuthFixtures.MEMBER;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.hibit2.hibit2.auth.application.AuthService;
 import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
 import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
 import com.hibit2.hibit2.auth.event.MemberSavedEvent;
 import com.hibit2.hibit2.auth.exception.InvalidTokenException;
 import com.hibit2.hibit2.common.annotation.ServiceTest;
-import com.hibit2.hibit2.common.config.ExternalApiConfig;
 import com.hibit2.hibit2.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.member.repository.MemberRepository;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 

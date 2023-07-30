@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.support;
+package com.hibit2.hibit2.auth.application;
 
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 import com.hibit2.hibit2.auth.dto.response.OAuthAccessTokenResponse;

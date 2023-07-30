@@ -1,6 +1,6 @@
 package com.hibit2.hibit2.infrastructure.oauth.client;
 
-import com.hibit2.hibit2.auth.support.OAuthClient;
+import com.hibit2.hibit2.auth.application.OAuthClient;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 import com.hibit2.hibit2.auth.dto.response.OAuthAccessTokenResponse;
 import com.hibit2.hibit2.common.OAuthFixtures;

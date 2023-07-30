@@ -1,18 +1,17 @@
-package com.hibit2.hibit2.auth.controller;
+package com.hibit2.hibit2.auth.presentation;
 
 import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
 import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.OAuthUriResponse;
-import com.hibit2.hibit2.auth.support.AuthenticationPrincipal;
 import org.springframework.http.ResponseEntity;
 
 import com.hibit2.hibit2.auth.dto.request.TokenRequest;
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
-import com.hibit2.hibit2.auth.support.OAuthUri;
-import com.hibit2.hibit2.auth.support.OAuthClient;
-import com.hibit2.hibit2.auth.service.AuthService;
+import com.hibit2.hibit2.auth.application.OAuthUri;
+import com.hibit2.hibit2.auth.application.OAuthClient;
+import com.hibit2.hibit2.auth.application.AuthService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -3,7 +3,7 @@ package com.hibit2.hibit2.infrastructure.oauth.client;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import com.hibit2.hibit2.auth.support.OAuthClient;
+import com.hibit2.hibit2.auth.application.OAuthClient;
 import com.hibit2.hibit2.auth.dto.response.OAuthAccessTokenResponse;
 import com.hibit2.hibit2.global.config.properties.GoogleProperties;
 import com.hibit2.hibit2.infrastructure.oauth.dto.UserInfo;

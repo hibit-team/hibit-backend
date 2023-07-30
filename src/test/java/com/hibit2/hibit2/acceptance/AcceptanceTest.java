@@ -1,6 +1,6 @@
 package com.hibit2.hibit2.acceptance;
 
-import com.hibit2.hibit2.auth.repository.TokenRepository;
+import com.hibit2.hibit2.auth.domain.TokenRepository;
 import com.hibit2.hibit2.common.DatabaseCleaner;
 import com.hibit2.hibit2.common.config.ExternalApiConfig;
 import io.restassured.RestAssured;

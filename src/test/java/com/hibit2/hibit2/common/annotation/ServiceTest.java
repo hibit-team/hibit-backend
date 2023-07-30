@@ -3,8 +3,8 @@ package com.hibit2.hibit2.common.annotation;
 
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
-import com.hibit2.hibit2.auth.repository.TokenRepository;
-import com.hibit2.hibit2.auth.service.AuthService;
+import com.hibit2.hibit2.auth.domain.TokenRepository;
+import com.hibit2.hibit2.auth.application.AuthService;
 import com.hibit2.hibit2.common.DatabaseCleaner;
 import com.hibit2.hibit2.common.builder.BuilderSupporter;
 import com.hibit2.hibit2.common.builder.GivenBuilder;

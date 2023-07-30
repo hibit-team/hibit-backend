@@ -3,6 +3,8 @@ package com.hibit2.hibit2.auth.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.hibit2.hibit2.auth.domain.InMemoryAuthTokenRepository;
+import com.hibit2.hibit2.auth.domain.TokenRepository;
 import com.hibit2.hibit2.auth.exception.NoSuchTokenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

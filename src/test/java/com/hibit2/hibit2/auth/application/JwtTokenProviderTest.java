@@ -1,10 +1,9 @@
-package com.hibit2.hibit2.auth.support;
+package com.hibit2.hibit2.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.hibit2.hibit2.auth.exception.InvalidTokenException;
-import com.hibit2.hibit2.auth.service.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -70,6 +69,16 @@ class JwtTokenProviderTest {
 
         // when & then
         assertThatThrownBy(() -> jwtTokenProvider.validateToken(expiredToken))
+                .isInstanceOf(InvalidTokenException.class);
+    }
+    @DisplayName("토큰을 검증하여 유효하지 않으면 예외를 던진다.")
+    @Test
+    void 토큰을_검증하여_유효하지_않으면_예외를_던진다() {
+        // given
+        String invalidToken = "invalid";
+
+        // when & then
+        assertThatThrownBy(() -> jwtTokenProvider.validateToken(invalidToken))
                 .isInstanceOf(InvalidTokenException.class);
     }
 }

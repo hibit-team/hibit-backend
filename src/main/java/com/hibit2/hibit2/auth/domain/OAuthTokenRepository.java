@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.repository;
+package com.hibit2.hibit2.auth.domain;
 
 import com.hibit2.hibit2.auth.domain.OAuthToken;
 import org.springframework.data.jpa.repository.JpaRepository;

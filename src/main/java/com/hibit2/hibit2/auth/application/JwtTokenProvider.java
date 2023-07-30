@@ -1,22 +1,18 @@
-package com.hibit2.hibit2.auth.support;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
-import com.hibit2.hibit2.auth.service.TokenProvider;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+package com.hibit2.hibit2.auth.application;
 
 import com.hibit2.hibit2.auth.exception.InvalidTokenException;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider implements TokenProvider {
@@ -43,7 +39,7 @@ public class JwtTokenProvider implements TokenProvider {
         return createToken(payload, refreshTokenValidityInMilliseconds);
     }
 
-    public String createToken(String payload, final Long validityInMilliseconds) {
+    public String createToken(final String payload, final Long validityInMilliseconds) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -55,7 +51,7 @@ public class JwtTokenProvider implements TokenProvider {
             .compact();
     }
 
-    public String getPayload(String token) {
+    public String getPayload(final String token) {
         return Jwts.parserBuilder()
             .setSigningKey(key)
             .build()
@@ -64,7 +60,7 @@ public class JwtTokenProvider implements TokenProvider {
             .getSubject();
     }
 
-    public void validateToken(String token) {
+    public void validateToken(final String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
                 .setSigningKey(key)

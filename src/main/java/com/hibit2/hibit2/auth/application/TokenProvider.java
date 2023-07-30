@@ -1,4 +1,4 @@
-package com.hibit2.hibit2.auth.service;
+package com.hibit2.hibit2.auth.application;
 
 public interface TokenProvider {
 

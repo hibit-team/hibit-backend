@@ -5,9 +5,6 @@ import com.hibit2.hibit2.auth.domain.OAuthToken;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.domain.SocialType;
 
-import java.time.LocalDateTime;
-
-
 public final class GivenBuilder {
 
     private final BuilderSupporter bs;
