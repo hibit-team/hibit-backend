@@ -22,7 +22,7 @@ public class AuthAcceptanceFixtures {
     public static ExtractableResponse<Response> 자체_토큰을_생성한다(final String oauthProvider, final String code) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new TokenRequest(code, "https://hibit-frontend-cdos8frtf-3-myway.vercel.app/google-callback"))
+                .body(new TokenRequest(code, "https://hibit.shop/oauth"))
                 .when().post("/api/auth/{oauthProvider}/token", oauthProvider)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
@@ -32,7 +32,7 @@ public class AuthAcceptanceFixtures {
     public static String 자체_토큰을_생성하고_엑세스_토큰을_반환한다(final String oauthProvider, final String code) {
         AccessAndRefreshTokenResponse accessAndRefreshTokenResponse = RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new TokenRequest(code,"https://hibit-frontend-cdos8frtf-3-myway.vercel.app/google-callback"))
+                .body(new TokenRequest(code,"https://hibit.shop/oauth"))
                 .when().post("/api/auth/{oauthProvider}/token", oauthProvider)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
