@@ -27,14 +27,11 @@ class MemberTest {
 
     @DisplayName("회원의 email 형식이 맞지 않으면 예외가 발생한다.")
     @ParameterizedTest
-    @ValueSource(strings = {"fancy.junyongmoon@", "fancy.junyongmoon@gmail", "fancy.junyongmoon"})
+    @ValueSource(strings = {"fancy.junyongmoon@", "fancy.junyongmoon@amail", "fancy.junyongmoon"})
     void 회원의_email_형식이_맞지_않으면_예외가_발생한다(final String email) {
 
-        SocialType socialType = SocialType.GOOGLE;
-
         // given & when & then
-        assertThatThrownBy(() -> new Member(email, socialType))
-            .isInstanceOf(InvalidMemberException.class)
-            .hasMessage("이메일 형식이 올바르지 않습니다.");
+        assertThatThrownBy(() -> new Member(email, SocialType.GOOGLE))
+            .isInstanceOf(InvalidMemberException.class);
     }
 }

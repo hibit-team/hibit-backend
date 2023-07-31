@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hibit2.hibit2.auth.dto.LoginMember;
-import com.hibit2.hibit2.auth.support.UserAuthenticationPrincipal;
+import com.hibit2.hibit2.profile.support.ProfileAuthenticationPrincipal;
 import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
 import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
 import com.hibit2.hibit2.profile.dto.response.ProfileRegisterResponse;
@@ -36,7 +36,7 @@ public class ProfileController {
 
     @PostMapping
     @Operation(description = "프로필 등록")
-    public ResponseEntity<ProfileRegisterResponse> save(@UserAuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<ProfileRegisterResponse> save(@ProfileAuthenticationPrincipal final LoginMember loginMember,
                                                         @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
         ProfileRegisterResponse profileResponse = profileService.save(loginMember.getId(), profileRegisterRequest);
         return ResponseEntity.created(URI.create("/api/profiles/" + profileResponse.getId())).body(profileResponse);
@@ -44,7 +44,7 @@ public class ProfileController {
 
     @GetMapping("/me/{profileId}")
     @Operation(summary = "/me/profile", description = "프로필 조회")
-    public ResponseEntity<UserProfileResponse> findProfileById(@UserAuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<UserProfileResponse> findProfileById(@ProfileAuthenticationPrincipal final LoginMember loginMember,
                                                                 @PathVariable final Long profileId) {
         UserProfileResponse response = profileService.findProfileById(profileId);
         return ResponseEntity.ok(response);
@@ -52,7 +52,7 @@ public class ProfileController {
 
     @PatchMapping("/me/{profileId}")
     @Operation(summary = "/me/profile", description = "프로필 수정")
-    public ResponseEntity<Void> update(@UserAuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<Void> update(@ProfileAuthenticationPrincipal final LoginMember loginMember,
                                         @PathVariable final Long profileId,
                                         @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
         profileService.update(loginMember.getId(), profileId, profileUpdateRequest);

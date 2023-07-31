@@ -1,8 +1,6 @@
 package com.hibit2.hibit2.profile.exception;
 
-import com.hibit2.hibit2.exception.NotFoundException;
-
-public class NotFoundProfileException extends NotFoundException {
+public class NotFoundProfileException extends RuntimeException {
 
     public NotFoundProfileException(final String message) {
         super(message);

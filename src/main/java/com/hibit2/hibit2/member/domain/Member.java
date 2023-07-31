@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Table(name = "members")
-@Getter
 @Entity
 public class Member {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
@@ -51,5 +50,17 @@ public class Member {
         if(!matcher.matches()) {
             throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public SocialType getSocialType() {
+        return socialType;
     }
 }
