@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.auth.domain;
 
+import com.hibit2.hibit2.global.config.BaseTimeEntity;
 import com.hibit2.hibit2.member.domain.Member;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.util.Objects;
 
 @Table(name = "oauth_tokens")
 @Entity
-public class OAuthToken {
+public class OAuthToken extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
