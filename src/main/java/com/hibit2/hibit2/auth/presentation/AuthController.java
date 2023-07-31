@@ -38,8 +38,8 @@ public class AuthController {
 
     @GetMapping("/{oauthProvider}/oauth-uri")
     public ResponseEntity<OAuthUriResponse> generateLink(@PathVariable final String oauthProvider,
-                                                         @RequestParam final String redirectUri) {
-        OAuthUriResponse oAuthUriResponse = new OAuthUriResponse(oAuthUri.generate(redirectUri));
+                                                         @RequestParam final String redirectUr) {;
+        OAuthUriResponse oAuthUriResponse = new OAuthUriResponse(oAuthUri.generate(redirectUr));
         return ResponseEntity.ok(oAuthUriResponse);
     }
 
