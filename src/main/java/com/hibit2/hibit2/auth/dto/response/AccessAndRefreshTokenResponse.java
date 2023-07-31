@@ -6,9 +6,9 @@ public class AccessAndRefreshTokenResponse {
 
     private final String refreshToken;
 
-    public AccessAndRefreshTokenResponse(String accessToken, String refreshToeken) {
+    public AccessAndRefreshTokenResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToeken;
+        this.refreshToken = refreshToken;
     }
 
     public String getAccessToken() {
