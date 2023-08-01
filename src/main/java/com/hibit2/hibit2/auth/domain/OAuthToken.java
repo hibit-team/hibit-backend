@@ -16,7 +16,7 @@ public class OAuthToken extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "members_id", nullable = false)
     private Member member;
-    @Column(name = "refresh_token", nullable = false)
+    @Column(name = "refresh_token")
     private String refreshToken;
 
     protected OAuthToken() {
