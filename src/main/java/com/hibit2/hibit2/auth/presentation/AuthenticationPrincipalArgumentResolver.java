@@ -3,7 +3,6 @@ package com.hibit2.hibit2.auth.presentation;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
