@@ -47,10 +47,10 @@ public class ProfileRegisterRequest {
     @Schema(description = "직업 혹은 학교", example = "College student")
     private String job;
 
-    @Schema(description = "시/도", example = "서울")
+    @Schema(description = "시/도", example = "서울특별시")
     private AddressCity addressCity;
 
-    @Schema(description = "시/군/구", example = "서울 용산구")
+    @Schema(description = "시/군/구", example = "서울특별시 용산구")
     private AddressDistinct addressDistinct;
 
     public ProfileRegisterRequest() {

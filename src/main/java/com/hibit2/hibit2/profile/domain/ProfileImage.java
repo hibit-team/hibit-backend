@@ -14,10 +14,10 @@ public class ProfileImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idx;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_idx")
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
 
