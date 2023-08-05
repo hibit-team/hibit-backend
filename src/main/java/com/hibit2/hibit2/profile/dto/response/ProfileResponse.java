@@ -6,12 +6,11 @@ import com.hibit2.hibit2.profile.domain.AddressCity;
 import com.hibit2.hibit2.profile.domain.AddressDistinct;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
-import com.hibit2.hibit2.profile.domain.ProfileImage;
 
 import lombok.Getter;
 
 @Getter
-public class UserProfileResponse {
+public class ProfileResponse {
 
     // 필수 노출 정보
     private String nickname;
@@ -28,12 +27,12 @@ public class UserProfileResponse {
 
     // @NoArgsConstructor(access = AccessLevel.PRIVATE) : 아무런 매개변수가 없는 생성자
     // dto - AccessLevel.PRIVATE / entity - AccessLevel.PROTECTED
-    public UserProfileResponse() {
+    public ProfileResponse() {
     }
 
     // @AllArgsConstructor(access = AccessLevel.PRIVATE) : 해당 클래스 내의 모든 변수값을 가진 생성자를 자동으로 만들어 준다.
-    public UserProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce,
-        String mainImg, int age, AddressCity addressCity, AddressDistinct addressDistinct, String job) {
+    public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce,
+                           String mainImg, int age, AddressCity addressCity, AddressDistinct addressDistinct, String job) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;
@@ -45,7 +44,7 @@ public class UserProfileResponse {
         this.job = job;
     }
 
-    public UserProfileResponse(Profile profile) {
+    public ProfileResponse(Profile profile) {
         this(profile.getNickname(),
             profile.getGender(),
             profile.getPersonality(),
