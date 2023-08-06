@@ -28,7 +28,7 @@ public class ProfileUpdateRequest {
     private int gender;
 
     @NotBlank(message = "공백일 수 없습니다.")
-    @Schema(description = "본인의 성격을 골라주세요.(최대 5개)", example = "[\"유머있는\", \"낙천적인\", \"외향적인\"]")
+    @Schema(description = "본인의 성격을 골라주세요.(최대 5개)", example = "[\"TYPE_1\", \"TYPE_2\", \"TYPE_3\"]")
     private List<PersonalityType> personality;
 
     @NotBlank(message = "공백일 수 없습니다.")
@@ -45,10 +45,10 @@ public class ProfileUpdateRequest {
     @Schema(description = "직업 혹은 학교", example = "College student")
     private String job;
 
-    @Schema(description = "시/도", example = "서울")
+    @Schema(description = "시/도", example = "SEOUL")
     private AddressCity addressCity;
 
-    @Schema(description = "시/군/구", example = "서울 강남구")
+    @Schema(description = "시/군/구", example = "SEOUL_JONGRO")
     private AddressDistinct addressDistinct;
 
     public ProfileUpdateRequest() {
