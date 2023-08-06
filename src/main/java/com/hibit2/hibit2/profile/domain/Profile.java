@@ -2,12 +2,10 @@ package com.hibit2.hibit2.profile.domain;
 
 
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import javax.persistence.*;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.profile.exception.InvalidProfileInfoException;
 

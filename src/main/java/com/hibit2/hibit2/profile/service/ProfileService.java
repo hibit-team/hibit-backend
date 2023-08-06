@@ -1,6 +1,7 @@
 package com.hibit2.hibit2.profile.service;
 
 import com.hibit2.hibit2.auth.dto.LoginMember;
+import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,9 @@ import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
 import com.hibit2.hibit2.profile.dto.response.ProfileRegisterResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfileResponse;
 import com.hibit2.hibit2.profile.repository.ProfileRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -54,6 +58,13 @@ public class ProfileService {
         return new ProfileResponse(profile);
     }
 
+    public ProfilesResponse findProfilesByIdAndMemberId() {
+        List<ProfileResponse> profileResponses = profileRepository.findAll()
+                .stream()
+                .map(ProfileResponse::new)
+                .collect(Collectors.toList());
+        return new ProfilesResponse(profileResponses);
+    }
     @Transactional
     public void update(final Long memberId, final Long profileId, final ProfileUpdateRequest request) {
         Profile profile = profileRepository.getByMemberIdAndProfileId(memberId, profileId);

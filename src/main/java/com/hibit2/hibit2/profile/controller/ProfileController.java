@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
+import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,15 @@ public class ProfileController {
         return ResponseEntity.created(URI.create("/api/profiles/" + response.getId())).build();
     }
 
+    @GetMapping
+    @Operation(description = "프로필 전체 조회")
+    public ResponseEntity<ProfilesResponse> findProfiles() {
+        ProfilesResponse response = profileService.findProfilesByIdAndMemberId();
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/me/{profileId}")
-    @Operation(summary = "/me/profile", description = "프로필 조회")
+    @Operation(summary = "/me/profile", description = "프로필 본인 조회")
     public ResponseEntity<ProfileResponse> findProfileById(@AuthenticationPrincipal final LoginMember loginMember,
                                                            @PathVariable final Long profileId) {
         ProfileResponse response = profileService.findProfileByIdAndMemberId(loginMember, profileId);
