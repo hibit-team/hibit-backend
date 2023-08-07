@@ -42,7 +42,7 @@ public class AuthService {
         oAuthToken.change(oAuthMember.getRefreshToken());
 
         AuthToken authToken = tokenCreator.createAuthToken(foundMember.getId());
-        return new AccessAndRefreshTokenResponse(authToken.getAccessToken(), authToken.getRefreshToken());
+        return new AccessAndRefreshTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getRefreshToken());
     }
 
     private OAuthToken getOAuthToken(final OAuthMember oAuthMember, final Member member) {

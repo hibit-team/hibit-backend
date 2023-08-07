@@ -15,9 +15,10 @@ public class AuthTokenCreator implements TokenCreator {
     }
 
     public AuthToken createAuthToken(final Long memberId) {
+        Long id =  memberId;
         String accessToken = tokenProvider.createAccessToken(String.valueOf(memberId));
         String refreshToken = createRefreshToken(memberId);
-        return new AuthToken(accessToken, refreshToken);
+        return new AuthToken(id, accessToken, refreshToken);
     }
 
     private String createRefreshToken(final Long memberId) {
@@ -35,7 +36,7 @@ public class AuthTokenCreator implements TokenCreator {
         String accessTokenForRenew = tokenProvider.createAccessToken(String.valueOf(memberId));
         String refreshTokenForRenew = tokenRepository.getToken(memberId);
 
-        AuthToken renewalAuthToken = new AuthToken(accessTokenForRenew, refreshTokenForRenew);
+        AuthToken renewalAuthToken = new AuthToken(memberId, accessTokenForRenew, refreshTokenForRenew);
         renewalAuthToken.validateHasSameRefreshToken(refreshToken);
         return renewalAuthToken;
     }
