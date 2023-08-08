@@ -53,10 +53,10 @@ public class AlarmController {
 
     }
 
-    @GetMapping("/list/{user_idx}")
+    @GetMapping("/list")
     @Operation(summary = "alarm/list/{user_idx}", description = "알람 전체 리스트")
-    public ResponseEntity<List<AlarmListDto>> getAlarmList(@PathVariable int user_idx){
-        List<Alarm> alarms = alarmService.getAlarmByUserIdx(user_idx);
+    public ResponseEntity<List<AlarmListDto>> getAlarmList(@RequestParam int userIdx){
+        List<Alarm> alarms = alarmService.getAlarmByUserIdx(userIdx);
         alarms.sort(Comparator.comparing(Alarm::getCreatedDate).reversed());
         List<AlarmListDto> alarmListDtos = new ArrayList<>();
         for (Alarm alarm : alarms){
