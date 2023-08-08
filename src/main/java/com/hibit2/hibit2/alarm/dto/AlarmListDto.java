@@ -19,7 +19,7 @@ public class AlarmListDto {
     private String content;
     private String time;
     private String url;
-    private boolean reads;
+    private boolean readed;
 
 
     public AlarmListDto(Alarm entity){
@@ -29,7 +29,7 @@ public class AlarmListDto {
         this.content=entity.getContent();
         this.time=entity.calculateTime();
         this.url=entity.getUrl();
-        this.reads=entity.isReads();
+        this.readed=entity.isReaded();
     }
 
 

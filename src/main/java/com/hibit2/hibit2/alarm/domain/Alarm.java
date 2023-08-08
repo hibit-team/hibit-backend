@@ -50,7 +50,7 @@ public class Alarm extends BaseTimeEntity {
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     @Schema(description = "읽음 여부", example = "True")
-    private boolean reads;
+    private boolean readed;
 
     @Builder
     public Alarm(Users user, AlarmType alarmType, String content, String url, boolean reads){
@@ -58,9 +58,9 @@ public class Alarm extends BaseTimeEntity {
         this.alarmType = alarmType;
         this.content=content;
         this.url=url;
-        this.reads=reads;
+        this.readed=readed;
     }
 
-    public void readAlarm() {this.reads = true;}
+    public void readAlarm() {this.readed = true;}
 
 }
