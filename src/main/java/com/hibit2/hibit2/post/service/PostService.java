@@ -139,6 +139,8 @@ public class PostService {
 
         List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
         List<String> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+
+
         postHistory.setOkUsers(matchedUsers);
 
         post.complete();
