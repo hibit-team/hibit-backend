@@ -7,6 +7,8 @@ import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.TimeSlot;
 import com.hibit2.hibit2.post.domain.What_do;
 import com.hibit2.hibit2.post.repository.PostRepository;
+import com.hibit2.hibit2.postHistory.domain.postHistory;
+import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,21 +30,19 @@ import java.util.Random;
 public class SetupController {
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
+    private final postHistoryRepository postHistoryRepository;
 
 
     @GetMapping("/")
     public  List<Post> setup() {
-        Users user1 = new Users("a", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png");
-        Users user2 = new Users("b", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png");
-        Users user3 = new Users("c", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png");
+        Users user1 = new Users("a", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
+        Users user2 = new Users("b", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
+        Users user3 = new Users("c", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
 
         usersRepository.save(user1);
         usersRepository.save(user2);
         usersRepository.save(user3);
         List<Post> posts = createPosts(user1);
-
-
-        postRepository.saveAll(posts);
         return posts;
     }
     private List<Post> createPosts(Users user1) {
@@ -83,6 +83,16 @@ public class SetupController {
             subimg.add("https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png");
             post.setSubimg(subimg);
             posts.add(post);
+
+            postRepository.save(post); // 먼저 post 객체를 저장합니다.
+            postHistory postHistory = new postHistory(); // postHistory 객체 생성
+            postHistory.setPost(post); // 저장한 post 객체를 참조로 설정
+            postHistory.setOkUsers(new ArrayList<>());
+
+            postHistoryRepository.save(postHistory); // postHistory 객체 저장
+
+
+
         }
         return posts;
     }

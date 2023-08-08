@@ -6,6 +6,8 @@ import com.hibit2.hibit2.comment.dto.CommentListDto;
 import com.hibit2.hibit2.comment.dto.CommentSaveDto;
 import com.hibit2.hibit2.comment.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+@Tag(name = "comment", description = "댓글 및 대댓글")
 
 @RestController
 @RequestMapping("/comment")
+@RequiredArgsConstructor
+
 public class CommentController {
 
     private final CommentService commentService;
-
-    @Autowired
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
     @PostMapping("/{post_idx}/{user_idx}")

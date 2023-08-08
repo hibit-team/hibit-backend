@@ -46,6 +46,10 @@ dependencies {
 
 	// REST Assured - 외부 사용자 관점에서 REST API 자동화 테스트
 	testImplementation 'io.rest-assured:rest-assured:4.4.0'
+
+
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {

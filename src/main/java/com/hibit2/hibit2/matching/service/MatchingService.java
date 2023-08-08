@@ -1,7 +1,11 @@
 package com.hibit2.hibit2.matching.service;
 
 
+import com.hibit2.hibit2.alarm.domain.Alarm;
+import com.hibit2.hibit2.alarm.domain.AlarmType;
+import com.hibit2.hibit2.alarm.service.AlarmService;
 import com.hibit2.hibit2.global.repository.MatchingRepository;
+import com.hibit2.hibit2.mail.service.EmailService;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.post.domain.Post;
@@ -23,7 +27,9 @@ public class MatchingService {
     private final MatchingRepository matchingRepository;
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
-    private final com.hibit2.hibit2.postHistory.repository.postHistoryRepository postHistoryRepository;
+    private final AlarmService alarmService;
+    private final EmailService emailService;
+    private final postHistoryRepository postHistoryRepository;
 
     //매칭 신청 유저 확인
     public boolean exitMatching(Users user, Post post) {
@@ -50,11 +56,19 @@ public class MatchingService {
             if (matchRequest == null) {
                 throw new RuntimeException("매칭 요청을 찾을 수 없습니다.");
             }
-
-            if (matchRequest.getStatus() == MatchStatus.HOLDING){
+            //댓글을 달고 처음 초대하는 경우
+            if (matchRequest.getStatus() == MatchStatus.HOLDING)
+            {
                 matchRequest.setStatus(MatchStatus.PENDING);
                 matchRequest.setRound(post.getRound());
+                //알람 생성
+                Alarm alarm = alarmService.createAlarm(user ,post.getUser(), AlarmType.INVITATION, "");
+
+                //초대장 발송 이메일 발송
+                //이메일 수락 여부 확인 로직 추가
+                emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
             }
+            //한 번 이상 보냈을 경우
             else{
                 Matching newmatching = new Matching();
                 newmatching.setUser(user);
@@ -62,6 +76,12 @@ public class MatchingService {
                 newmatching.setStatus(MatchStatus.PENDING);
                 newmatching.setRound(post.getRound());
                 matchingRepository.save(newmatching);
+                //알람 생성
+                Alarm alarm = alarmService.createAlarm(user ,post.getUser(), AlarmType.INVITATION, "");
+
+                //초대장 발송 이메일 발송
+                //이메일 수락 여부 확인 로직 추가
+                emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
             }
         }
     }
@@ -74,6 +94,17 @@ public class MatchingService {
         postHistory.increaseOk();
         postHistoryRepository.save(postHistory);
         matchingRepository.save(matching);
+
+        //알람 생성 (옾챗링크
+        String url = matching.getPost().getOpenchat();
+        alarmService.createAlarm(matching.getUser() ,matching.getPost().getUser(), AlarmType.OPENCHAT, url); //여기도 메일 보내줘야하나?
+        //알림 생성(수락)
+        Alarm alarm = alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() , AlarmType.ACCEPT, "");
+
+        //초대장 발송 이메일 발송
+        //이메일 수락 여부 확인 로직 추가
+        emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 수락되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
+
     }
     //매칭 거절 (알림에서 거절 누른 경우)
     public void noMatch(int matching_idx) {
@@ -84,6 +115,15 @@ public class MatchingService {
         postHistory.increaseNo();
         postHistoryRepository.save(postHistory);
         matchingRepository.save(matching);
+
+        //알림 생성
+        Alarm alarm = alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() , AlarmType.REFUSE, "");
+
+        //초대장 발송 이메일 발송
+        //이메일 수락 여부 확인 로직 추가
+        emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 거절되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
+
+
     }
 
     public List<String> getMatchUserByPost(int post_idx) {

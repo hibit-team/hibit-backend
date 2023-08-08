@@ -33,16 +33,5 @@ public class WebConfig implements WebMvcConfigurer {
             .allowedOriginPatterns(patterns);
     }
 
-    // 예외 발생의 원인인 부분을 처리하기 위해 해당 부분 임시 주석 처리
-//    @Bean
-//    public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
-//        return builder -> {
-//            builder.modulesToInstall(new Hibernate5Module());
-//        };
-//    }
 
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(authenticationPrincipalArgumentResolver);
-    }
 }
