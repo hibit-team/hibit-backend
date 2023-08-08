@@ -14,7 +14,8 @@ public enum AlarmType {
      ACCEPT("수락"),
      REFUSE("거절"),
      REPORT("신고"),
-     EVENT("이벤트");
+     EVENT("이벤트"),
+     REMIND("완료변경");
 
     private final String decs;
 }

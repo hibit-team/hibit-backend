@@ -31,8 +31,8 @@ public class PostService {
     @Transactional
     public Post save(PostSaveDto postSaveDto){
 
-        Users user = new Users();
-        user.setId("a");
+        Users user = usersRepository.findById("a")
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         usersRepository.save(user);
         postSaveDto.setUser(user);
 

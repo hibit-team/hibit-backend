@@ -21,6 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findByDateTimeRange(@Param("flag") Character flag, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, Pageable pageable);
 
 
-    Page<Post> findByStatusNotAndTitleContainingOrExhibitionContaining(
-            char flag, String keyword, String keyword2, Pageable pageable);
+    Page<Post> findByStatusNotAndTitleContainingOrExhibitionContaining(char flag, String keyword, String keyword2, Pageable pageable);
+
+    List<Post> findPostsByDateTimeSlotsDate(LocalDate date);
+
 }
