@@ -62,8 +62,7 @@ public class MatchingService {
                 Alarm alarm = alarmService.createAlarm(user ,post.getUser(), AlarmType.INVITATION, "");
 
                 //초대장 발송 이메일 발송
-                //이메일 수락 여부 확인 로직 추가
-                emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
+                //emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
             }
             //한 번 이상 보냈을 경우
             else{
@@ -77,8 +76,7 @@ public class MatchingService {
                 Alarm alarm = alarmService.createAlarm(user ,post.getUser(), AlarmType.INVITATION, "");
 
                 //초대장 발송 이메일 발송
-                //이메일 수락 여부 확인 로직 추가
-                emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
+                //emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
             }
         }
     }
@@ -96,8 +94,7 @@ public class MatchingService {
         Alarm alarm = alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() , AlarmType.ACCEPT, "");
 
         //초대장 발송 이메일 발송
-        //이메일 수락 여부 확인 로직 추가
-        emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 수락되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
+        //emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 수락되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
 
     }
     //매칭 거절 (알림에서 거절 누른 경우)
@@ -111,8 +108,7 @@ public class MatchingService {
         Alarm alarm = alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() , AlarmType.REFUSE, "");
 
         //초대장 발송 이메일 발송
-        //이메일 수락 여부 확인 로직 추가
-        emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 거절되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
+        //emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 거절되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
 
 
     }
