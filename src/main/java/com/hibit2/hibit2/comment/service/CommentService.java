@@ -50,7 +50,6 @@ public class CommentService {
 
         //알람 생성
         alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
-
         return commentRepository.save(comment);
     }
 

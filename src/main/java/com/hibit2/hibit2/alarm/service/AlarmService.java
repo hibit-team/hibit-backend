@@ -10,6 +10,7 @@ import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
 
     //알림 생성
+    @Transactional
     public Alarm createAlarm(Users user, Users sender, AlarmType alarmType, String url){
         String content;
         if (alarmType == AlarmType.COMMENT){
@@ -58,6 +60,27 @@ public class AlarmService {
     //알림 보기
     public List<Alarm> getAlarmByUserIdx(int user_idx){
         return alarmRepository.findByUserIdx(user_idx);
+    }
+
+
+    //리마인더 알람 생성
+    @Transactional
+    public Alarm createRemind(Users user){
+
+        //추후 관리자 아이디로 변경
+        Users sender = usersRepository.findById("a")
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        String content;
+        content = "전시회 다녀오셨나요? 추후 변경";
+        Alarm alarm = new Alarm();
+        alarm.setUser(user);
+        alarm.setSender(sender);
+        alarm.setAlarmType(AlarmType.REMIND);
+        alarm.setUrl("");
+        alarm.setContent(content);
+        alarmRepository.save(alarm);
+        return alarm;
     }
 
 }
