@@ -4,11 +4,10 @@ import com.hibit2.hibit2.profile.domain.AddressCity;
 import com.hibit2.hibit2.profile.domain.AddressDistinct;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
-import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+
 public class ProfileRegisterResponse {
 
     private Long id;
@@ -33,8 +32,9 @@ public class ProfileRegisterResponse {
 
     private AddressDistinct addressDistinct;
 
-    public ProfileRegisterResponse(String nickname, int age, int gender, List<PersonalityType> personality, String introduce,
+    public ProfileRegisterResponse(Long id, String nickname, int age, int gender, List<PersonalityType> personality, String introduce,
                                    String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+        this.id = id;
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
@@ -59,5 +59,49 @@ public class ProfileRegisterResponse {
         this.job = saveProfile.getJob();
         this.addressCity = saveProfile.getAddressCity();
         this.addressDistinct = saveProfile.getAddressDistinct();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public List<PersonalityType> getPersonality() {
+        return personality;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public String getMainImg() {
+        return mainImg;
+    }
+
+    public List<String> getSubImg() {
+        return subImg;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public AddressCity getAddressCity() {
+        return addressCity;
+    }
+
+    public AddressDistinct getAddressDistinct() {
+        return addressDistinct;
     }
 }

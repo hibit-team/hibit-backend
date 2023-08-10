@@ -1,7 +1,9 @@
 package com.hibit2.hibit2.profile.service;
 
 import com.hibit2.hibit2.auth.dto.LoginMember;
+import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,14 +33,11 @@ public class ProfileService {
     }
 
     @Transactional
-    public ProfileRegisterResponse save(final Long memberId, final ProfileRegisterRequest request) {
+    public ProfileRegisterResponse save(Long memberId, ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
-        Profile profile = createProfile(foundMember, request);
-        Profile saveProfile = profileRepository.save(profile);
-        return new ProfileRegisterResponse(saveProfile);
-    }
-    public Profile createProfile(Member foundMember, ProfileRegisterRequest request) {
-        return Profile.builder()
+        // 프로필 id 값 출력
+        System.out.println(foundMember.getId());
+        Profile profile1 = Profile.builder()
                 .member(foundMember)
                 .nickname(request.getNickname())
                 .age(request.getAge())
@@ -51,6 +50,11 @@ public class ProfileService {
                 .addressCity(request.getAddressCity())
                 .addressDistinct(request.getAddressDistinct())
                 .build();
+        Profile saveProfile = profileRepository.save(profile1);
+        // 저장한 프로필에 대한 정보 출력
+        System.out.println(saveProfile.getAge());
+        System.out.println(saveProfile.getIntroduce());
+        return new ProfileRegisterResponse(saveProfile);
     }
 
     public ProfileResponse findProfileByIdAndMemberId(LoginMember loginMember, Long profileId) {
@@ -64,6 +68,18 @@ public class ProfileService {
                 .map(ProfileResponse::new)
                 .collect(Collectors.toList());
         return new ProfilesResponse(profileResponses);
+    }
+
+
+    public ProfileOtherResponse findOtherProfile(Long profileId) {
+        Profile profile = findProfileById(profileId);
+
+        return ProfileOtherResponse.from(profile);
+    }
+
+    public Profile findProfileById(Long profileId) {
+        return profileRepository.findById(profileId)
+                .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
     }
     @Transactional
     public void update(final Long memberId, final Long profileId, final ProfileUpdateRequest request) {

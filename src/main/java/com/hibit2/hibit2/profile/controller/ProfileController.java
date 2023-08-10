@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
+import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class ProfileController {
     @PostMapping
     @Operation(description = "프로필 등록")
     public ResponseEntity<Void> save(@AuthenticationPrincipal final LoginMember loginMember,
-                                                        @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
+                                     @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
         ProfileRegisterResponse response = profileService.save(loginMember.getId(), profileRegisterRequest);
         return ResponseEntity.created(URI.create("/api/profiles/" + response.getId())).build();
     }
@@ -45,18 +46,26 @@ public class ProfileController {
     }
 
     @GetMapping("/me/{profileId}")
-    @Operation(summary = "/me/profile", description = "프로필 본인 조회")
+    @Operation(summary = "/me/profile", description = "본인 프로필 조회")
     public ResponseEntity<ProfileResponse> findProfileById(@AuthenticationPrincipal final LoginMember loginMember,
                                                            @PathVariable final Long profileId) {
         ProfileResponse response = profileService.findProfileByIdAndMemberId(loginMember, profileId);
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/other/{profileId}")
+    @Operation(summary = "other/profile", description = "타인 프로필 조회")
+    public ResponseEntity<ProfileOtherResponse> findProfileByOtherId(@PathVariable Long profileId) {
+        ProfileOtherResponse response = profileService.findOtherProfile(profileId);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/me/{profileId}")
     @Operation(summary = "/me/profile", description = "프로필 수정")
     public ResponseEntity<Void> update(@AuthenticationPrincipal final LoginMember loginMember,
-                                        @PathVariable final Long profileId,
-                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
+                                       @PathVariable final Long profileId,
+                                       @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
         profileService.update(loginMember.getId(), profileId, profileUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
