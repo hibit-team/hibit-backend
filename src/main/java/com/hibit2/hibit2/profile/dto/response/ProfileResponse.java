@@ -46,13 +46,13 @@ public class ProfileResponse {
 
     public ProfileResponse(Profile profile) {
         this(profile.getNickname(),
-            profile.getGender(),
-            profile.getPersonality(),
-            profile.getIntroduce(),
-            profile.getMainImg(),
-            profile.getAge(),
-            profile.getAddressCity(),
-            profile.getAddressDistinct(),
-            profile.getJob());
+                profile.getGender(),
+                profile.getPersonality(),
+                profile.getIntroduce(),
+                profile.getMainImg(),
+                profile.getAge(),
+                profile.getAddressCity(),
+                profile.getAddressDistinct(),
+                profile.getJob());
     }
 }

@@ -57,8 +57,8 @@ public class ProfileRegisterRequest {
     }
 
     public ProfileRegisterRequest(String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-        AddressDistinct addressDistinct) {
+                                  String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
+                                  AddressDistinct addressDistinct) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;

@@ -65,8 +65,8 @@ public class Profile extends BaseTimeEntity {
 
     @Builder
     public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-        AddressDistinct addressDistinct) {
+                   String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
+                   AddressDistinct addressDistinct) {
         this.member = member;
         this.nickname = nickname;
         this.age = age;
