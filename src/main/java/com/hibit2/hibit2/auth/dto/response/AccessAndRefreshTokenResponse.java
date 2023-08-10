@@ -1,7 +1,13 @@
 package com.hibit2.hibit2.auth.dto.response;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class AccessAndRefreshTokenResponse {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
     private final String accessToken;
 
