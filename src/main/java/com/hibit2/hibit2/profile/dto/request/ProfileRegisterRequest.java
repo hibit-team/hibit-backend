@@ -50,7 +50,7 @@ public class ProfileRegisterRequest {
     @Schema(description = "시/도", example = "서울특별시")
     private AddressCity addressCity;
 
-    @Schema(description = "시/군/구", example = "서울특별시 용산구")
+    @Schema(description = "시/군/구", example = "용산구")
     private AddressDistinct addressDistinct;
 
     public ProfileRegisterRequest() {
