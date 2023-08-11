@@ -35,8 +35,6 @@ public class ProfileService {
     @Transactional
     public ProfileRegisterResponse save(Long memberId, ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
-        // 프로필 id 값 출력
-        System.out.println(foundMember.getId());
         Profile profile1 = Profile.builder()
                 .member(foundMember)
                 .nickname(request.getNickname())
@@ -51,9 +49,6 @@ public class ProfileService {
                 .addressDistrict(request.getAddressDistrict())
                 .build();
         Profile saveProfile = profileRepository.save(profile1);
-        // 저장한 프로필에 대한 정보 출력
-        System.out.println(saveProfile.getAge());
-        System.out.println(saveProfile.getIntroduce());
         return new ProfileRegisterResponse(saveProfile);
     }
 
