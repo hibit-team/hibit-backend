@@ -48,7 +48,7 @@ public class ProfileService {
                 .subImg(request.getSubImg())
                 .job(request.getJob())
                 .addressCity(request.getAddressCity())
-                .addressDistinct(request.getAddressDistinct())
+                .addressDistrict(request.getAddressDistrict())
                 .build();
         Profile saveProfile = profileRepository.save(profile1);
         // 저장한 프로필에 대한 정보 출력
@@ -94,7 +94,7 @@ public class ProfileService {
         profile.updateSubImg(request.getSubImg());
         profile.updateJob(request.getJob());
         profile.updateAddressCity(request.getAddressCity());
-        profile.updateAddressDistinct(request.getAddressDistinct());
+        profile.updateAddressDistinct(request.getAddressDistrict());
 
         profileRepository.save(profile);
     }

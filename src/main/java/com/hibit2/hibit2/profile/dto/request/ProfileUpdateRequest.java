@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.hibit2.hibit2.profile.domain.AddressCity;
-import com.hibit2.hibit2.profile.domain.AddressDistinct;
+import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -49,14 +49,14 @@ public class ProfileUpdateRequest {
     private AddressCity addressCity;
 
     @Schema(description = "시/군/구", example = "연수구")
-    private AddressDistinct addressDistinct;
+    private AddressDistrict addressDistrict;
 
     public ProfileUpdateRequest() {
     }
 
     public ProfileUpdateRequest(String nickname, int age, int gender, List<PersonalityType> personality,
                                 String introduce,
-                                String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+                                String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
@@ -66,6 +66,6 @@ public class ProfileUpdateRequest {
         this.subImg = subImg;
         this.job = job;
         this.addressCity = addressCity;
-        this.addressDistinct = addressDistinct;
+        this.addressDistrict = addressDistrict;
     }
 }

@@ -3,7 +3,7 @@ package com.hibit2.hibit2.profile.dto.response;
 import java.util.List;
 
 import com.hibit2.hibit2.profile.domain.AddressCity;
-import com.hibit2.hibit2.profile.domain.AddressDistinct;
+import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
 
@@ -22,7 +22,7 @@ public class ProfileResponse {
     // 선택 노출 정보
     private int age;
     private AddressCity addressCity;
-    private AddressDistinct addressDistinct;
+    private AddressDistrict addressDistrict;
     private String job;
 
     // @NoArgsConstructor(access = AccessLevel.PRIVATE) : 아무런 매개변수가 없는 생성자
@@ -32,7 +32,7 @@ public class ProfileResponse {
 
     // @AllArgsConstructor(access = AccessLevel.PRIVATE) : 해당 클래스 내의 모든 변수값을 가진 생성자를 자동으로 만들어 준다.
     public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce,
-                           String mainImg, int age, AddressCity addressCity, AddressDistinct addressDistinct, String job) {
+                           String mainImg, int age, AddressCity addressCity, AddressDistrict addressDistrict, String job) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;
@@ -40,7 +40,7 @@ public class ProfileResponse {
         this.mainImg = mainImg;
         this.age = age;
         this.addressCity = addressCity;
-        this.addressDistinct = addressDistinct;
+        this.addressDistrict = addressDistrict;
         this.job = job;
     }
 
@@ -52,7 +52,7 @@ public class ProfileResponse {
                 profile.getMainImg(),
                 profile.getAge(),
                 profile.getAddressCity(),
-                profile.getAddressDistinct(),
+                profile.getAddressDistrict(),
                 profile.getJob());
     }
 }

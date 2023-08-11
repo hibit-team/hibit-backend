@@ -4,7 +4,7 @@ package com.hibit2.hibit2.profile.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum AddressDistinct {
+public enum AddressDistrict {
 
     SEOUL_JONGRO("서울특별시", "110", "종로구"),
     SEOUL_JUNG("서울특별시", "140", "중구"),
@@ -296,12 +296,12 @@ public enum AddressDistinct {
 
     private final String cityName;
     private final String distinctCode;
-    private final String distinctName;
+    private final String districtName;
 
-    AddressDistinct(String cityName, String distinctCode, String distinctName) {
+    AddressDistrict(String cityName, String distinctCode, String districtName) {
         this.cityName = cityName;
         this.distinctCode = distinctCode;
-        this.distinctName = distinctName;
+        this.districtName = districtName;
     }
     public String getCityName() {
         return cityName;
@@ -311,14 +311,14 @@ public enum AddressDistinct {
     }
 
     @JsonValue
-    public String getDistinctName() {
-        return distinctName;
+    public String getDistrictName() {
+        return districtName;
     }
 
     @JsonCreator
-    public static AddressDistinct from(String value) {
-        for (AddressDistinct status : AddressDistinct.values()) {
-            if (status.getDistinctName().equals(value)) {
+    public static AddressDistrict from(String value) {
+        for (AddressDistrict status : AddressDistrict.values()) {
+            if (status.getDistrictName().equals(value)) {
                 return status;
             }
         }

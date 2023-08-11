@@ -1,7 +1,7 @@
 package com.hibit2.hibit2.profile.dto.response;
 
 import com.hibit2.hibit2.profile.domain.AddressCity;
-import com.hibit2.hibit2.profile.domain.AddressDistinct;
+import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
 
@@ -30,10 +30,10 @@ public class ProfileRegisterResponse {
 
     private AddressCity addressCity;
 
-    private AddressDistinct addressDistinct;
+    private AddressDistrict addressDistrict;
 
     public ProfileRegisterResponse(Long id, String nickname, int age, int gender, List<PersonalityType> personality, String introduce,
-                                   String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+                                   String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict) {
         this.id = id;
         this.nickname = nickname;
         this.age = age;
@@ -44,7 +44,7 @@ public class ProfileRegisterResponse {
         this.subImg = subImg;
         this.job = job;
         this.addressCity = addressCity;
-        this.addressDistinct = addressDistinct;
+        this.addressDistrict = addressDistrict;
     }
 
     public ProfileRegisterResponse(Profile saveProfile) {
@@ -58,7 +58,7 @@ public class ProfileRegisterResponse {
         this.subImg = saveProfile.getSubImg();
         this.job = saveProfile.getJob();
         this.addressCity = saveProfile.getAddressCity();
-        this.addressDistinct = saveProfile.getAddressDistinct();
+        this.addressDistrict = saveProfile.getAddressDistrict();
     }
 
     public Long getId() {
@@ -101,7 +101,7 @@ public class ProfileRegisterResponse {
         return addressCity;
     }
 
-    public AddressDistinct getAddressDistinct() {
-        return addressDistinct;
+    public AddressDistrict getAddressDistinct() {
+        return addressDistrict;
     }
 }
