@@ -1,5 +1,8 @@
 package com.hibit2.hibit2.profile.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum PersonalityType {
 
     TYPE_1("지적한"),
@@ -31,5 +34,19 @@ public enum PersonalityType {
 
     PersonalityType(String contents) {
         this.contents = contents;
+    }
+
+    @JsonCreator
+    public static PersonalityType from(String value) {
+        for (PersonalityType status : PersonalityType.values()) {
+            if (status.getContents().equals(value)) {
+                return status;
+            }
+        }
+        return null;
+    }
+    @JsonValue
+    public String getContents() {
+        return contents;
     }
 }
