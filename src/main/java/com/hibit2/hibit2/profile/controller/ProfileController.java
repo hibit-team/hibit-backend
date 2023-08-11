@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/profiles")
+@Slf4j
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -34,6 +36,8 @@ public class ProfileController {
     @Operation(description = "프로필 등록")
     public ResponseEntity<Void> save(@AuthenticationPrincipal final LoginMember loginMember,
                                      @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
+        log.info("로그인 멤버 {}", loginMember.getId());
+        log.info("프로필 등록 요청 {}---", profileRegisterRequest.getAge(), profileRegisterRequest.getJob());
         ProfileRegisterResponse response = profileService.save(loginMember.getId(), profileRegisterRequest);
         return ResponseEntity.created(URI.create("/api/profiles/" + response.getId())).build();
     }
