@@ -55,7 +55,7 @@ public class Profile extends BaseTimeEntity {
 
     @Column(name = "address_distinct")
     @Enumerated(EnumType.STRING)
-    private AddressDistinct addressDistinct;
+    private AddressDistrict addressDistrict;
 
     @Column(name = "ban")
     private int ban;
@@ -65,8 +65,8 @@ public class Profile extends BaseTimeEntity {
 
     @Builder
     public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-        AddressDistinct addressDistinct) {
+                   String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
+                   AddressDistrict addressDistrict) {
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -77,7 +77,7 @@ public class Profile extends BaseTimeEntity {
         this.subImg = subImg;
         this.job = job;
         this.addressCity = addressCity;
-        this.addressDistinct = addressDistinct;
+        this.addressDistrict = addressDistrict;
     }
 
     public Member getMember() {
@@ -124,8 +124,8 @@ public class Profile extends BaseTimeEntity {
         return addressCity;
     }
 
-    public AddressDistinct getAddressDistinct() {
-        return addressDistinct;
+    public AddressDistrict getAddressDistrict() {
+        return addressDistrict;
     }
 
     public int getBan() {
@@ -134,7 +134,7 @@ public class Profile extends BaseTimeEntity {
 
 
     private void validateProfile(String nickname, int age, int gender, List<PersonalityType> personality, String introduce
-            , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+            , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict) {
         if((nickname == null || nickname.isBlank())
                 || age < 0 || gender < 0
                 || personality == null || personality.isEmpty()
@@ -179,7 +179,7 @@ public class Profile extends BaseTimeEntity {
         this.addressCity = addressCity;
     }
 
-    public void updateAddressDistinct(AddressDistinct addressDistinct) {
-        this.addressDistinct = addressDistinct;
+    public void updateAddressDistinct(AddressDistrict addressDistrict) {
+        this.addressDistrict = addressDistrict;
     }
 }

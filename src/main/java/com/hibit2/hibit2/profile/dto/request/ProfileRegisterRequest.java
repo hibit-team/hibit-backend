@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.profile.domain.AddressCity;
-import com.hibit2.hibit2.profile.domain.AddressDistinct;
+import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
 
@@ -50,15 +50,15 @@ public class ProfileRegisterRequest {
     @Schema(description = "시/도", example = "서울특별시")
     private AddressCity addressCity;
 
-    @Schema(description = "시/군/구", example = "서울특별시 용산구")
-    private AddressDistinct addressDistinct;
+    @Schema(description = "시/군/구", example = "용산구")
+    private AddressDistrict addressDistrict;
 
     public ProfileRegisterRequest() {
     }
 
     public ProfileRegisterRequest(String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-        AddressDistinct addressDistinct) {
+                                  String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
+                                  AddressDistrict addressDistrict) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
@@ -68,9 +68,9 @@ public class ProfileRegisterRequest {
         this.subImg = subImg;
         this.job = job;
         this.addressCity = addressCity;
-        this.addressDistinct = addressDistinct;
+        this.addressDistrict = addressDistrict;
     }
     public Profile toEntity(final Member member) {
-        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistinct);
+        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict);
     }
 }

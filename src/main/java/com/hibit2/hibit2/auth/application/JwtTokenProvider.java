@@ -44,28 +44,28 @@ public class JwtTokenProvider implements TokenProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-            .setSubject(payload)
-            .setIssuedAt(now)
-            .setExpiration(validity)
-            .signWith(key, SignatureAlgorithm.HS256)
-            .compact();
+                .setSubject(payload)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public String getPayload(final String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getSubject();
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public void validateToken(final String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token);
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
 
             claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {

@@ -1,7 +1,10 @@
 package com.hibit2.hibit2.profile.domain;
 
 
-public enum AddressDistinct {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum AddressDistrict {
 
     SEOUL_JONGRO("서울특별시", "110", "종로구"),
     SEOUL_JUNG("서울특별시", "140", "중구"),
@@ -286,30 +289,39 @@ public enum AddressDistinct {
     GYEONGSANGNAMDO_HAMYANG("경상남도", "870", "함양군"),
     GYEONGSANGNAMDO_GEOMSUNG("경상남도", "880", "거창군"),
     GYEONGSANGNAMDO_HAPCHEON("경상남도", "890", "합천군"),
-    
+
     JEJU_JEJU("제주특별시", "110", "제주시"),
     JEJU_SEOGWIPO("제주특별시", "130", "서귀포시");
     ;
 
     private final String cityName;
     private final String distinctCode;
-    private final String distinctName;
+    private final String districtName;
 
-    AddressDistinct(String cityName, String distinctCode, String distinctName) {
+    AddressDistrict(String cityName, String distinctCode, String districtName) {
         this.cityName = cityName;
         this.distinctCode = distinctCode;
-        this.distinctName = distinctName;
+        this.districtName = districtName;
     }
-
     public String getCityName() {
         return cityName;
     }
-
     public String getDistinctCode() {
         return distinctCode;
     }
 
-    public String getDistinctName() {
-        return distinctName;
+    @JsonValue
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    @JsonCreator
+    public static AddressDistrict from(String value) {
+        for (AddressDistrict status : AddressDistrict.values()) {
+            if (status.getDistrictName().equals(value)) {
+                return status;
+            }
+        }
+        return null;
     }
 }
