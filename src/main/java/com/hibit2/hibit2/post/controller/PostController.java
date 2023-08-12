@@ -10,6 +10,8 @@ import com.hibit2.hibit2.post.dto.PostUpdateDto;
 import com.hibit2.hibit2.post.service.PostService;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
+import com.hibit2.hibit2.user.domain.Users;
+import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -36,6 +38,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final postHistoryRepository postHistoryRepository;
+    private final UsersRepository usersRepository;
 
 
     @PostMapping("/write")
@@ -146,10 +149,13 @@ public class PostController {
         return ResponseEntity.ok().build();
 
     }
+
     //게시글 좋아요
     @GetMapping("/{post_idx}/{user_idx}/like")
-    @Operation(summary = "post/{post_idx}/{user_idx}/like", description = "좋아요 누르기")
+    @Operation(summary = "post/{post_idx}/{user_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
     public ResponseEntity<Post> likeComment(@PathVariable int post_idx, @PathVariable int user_idx){
+        Users user = usersRepository.findById(user_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         Post post = postService.likePost(post_idx, user_idx);
         return ResponseEntity.ok(post);
     }
