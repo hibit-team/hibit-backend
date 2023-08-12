@@ -54,7 +54,7 @@ public class AlarmController {
     }
 
     @GetMapping("/list")
-    @Operation(summary = "alarm/list/{user_idx}", description = "알람 전체 리스트")
+    @Operation(summary = "alarm/list", description = "해당 유저 알람 전체 리스트")
     public ResponseEntity<List<AlarmListDto>> getAlarmList(@RequestParam int userIdx){
         List<Alarm> alarms = alarmService.getAlarmByUserIdx(userIdx);
         alarms.sort(Comparator.comparing(Alarm::getCreatedDate).reversed());

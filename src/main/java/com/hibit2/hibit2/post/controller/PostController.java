@@ -147,11 +147,10 @@ public class PostController {
 
     }
     //게시글 좋아요
-    @GetMapping("/{post_idx}/like")
-    @Operation(summary = "post/{post_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
-    public ResponseEntity<Post> likeComment(@PathVariable int post_idx){
-        String user_id = "b"; //나중에는 현재 로그인한 유저의 id 찾아오기
-        Post post = postService.likePost(post_idx, user_id);
+    @GetMapping("/{post_idx}/{user_idx}/like")
+    @Operation(summary = "post/{post_idx}/{user_idx}/like", description = "좋아요 누르기")
+    public ResponseEntity<Post> likeComment(@PathVariable int post_idx, @PathVariable int user_idx){
+        Post post = postService.likePost(post_idx, user_idx);
         return ResponseEntity.ok(post);
     }
 
@@ -168,5 +167,17 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    //게시글 취소 변경
+    @PutMapping("/{post_idx}/cancle")
+    @Operation(summary = "/post/1/cancle", description = "게시글 모집 완료")
+    public ResponseEntity<String> canclePost(@PathVariable int post_idx) {
+        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        postService.canclePost(post_idx);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 
 }

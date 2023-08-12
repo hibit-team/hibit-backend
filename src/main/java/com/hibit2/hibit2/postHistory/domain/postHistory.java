@@ -31,6 +31,9 @@ public class postHistory extends BaseTimeEntity {
     @JoinColumn(name = "post_idx")
     private Post post;
 
+    @Column(nullable = true)
+    @Schema(description = "글 상태 (완료 C, 취소 A)", example = "N")
+    private char status;
 
     // 성공 유저
     @ElementCollection
@@ -68,6 +71,12 @@ public class postHistory extends BaseTimeEntity {
     public void increaseNo() {this.noNum++;}
     public void calculatePercent(int ok, int no) {this.percent = ok*100/(ok+no);}
 
+    public void complete(){
+        this.status = 'C';
+    }
+    public void cancle(){
+        this.status = 'A';
+    }
 
 
 }
