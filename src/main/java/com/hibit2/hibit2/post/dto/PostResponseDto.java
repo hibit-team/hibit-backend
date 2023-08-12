@@ -22,6 +22,7 @@ import java.util.List;
 public class PostResponseDto {
     private int idx;
     private String writer;
+    private int writerIdx;
     private String writerImg;
     private String title;
     private String content;
@@ -42,6 +43,7 @@ public class PostResponseDto {
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
         this.writer=entity.getUser().getId();
+        this.writerIdx=entity.getUser().getIdx();
         this.writerImg=entity.getUser().getProfileImg();
         this.title=entity.getTitle();
         this.exhibiton=entity.getExhibition();
