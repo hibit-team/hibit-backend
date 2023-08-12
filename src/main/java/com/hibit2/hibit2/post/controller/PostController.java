@@ -10,6 +10,8 @@ import com.hibit2.hibit2.post.dto.PostUpdateDto;
 import com.hibit2.hibit2.post.service.PostService;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
+import com.hibit2.hibit2.user.domain.Users;
+import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -36,11 +38,11 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final postHistoryRepository postHistoryRepository;
+    private final UsersRepository usersRepository;
 
 
-    @PostMapping("/write")
-    //@Secured({"ROLE_USER"})
-    @Operation(summary = "post/write", description = "매칭 게시글 작성")
+    @PostMapping("/write/{user_idx}")
+    @Operation(summary = "post/write/{user_idx}", description = "매칭 게시글 작성")
     @Parameters({@Parameter(name = "title", description = "제목", example = "디뮤지엄 전시 보러가요"),
                 @Parameter(name = "content", description = "내용", example =  "본문내용"),
                 @Parameter(name = "number", description = "관람 인원", example =  "3"),
@@ -53,8 +55,9 @@ public class PostController {
                @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
                @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
     })
-    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto){
-        //Users user = (Users) authentication.getPrincipal();
+    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable int user_idx){
+        Users user = usersRepository.findById(user_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         Post post = postService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
 
@@ -146,12 +149,14 @@ public class PostController {
         return ResponseEntity.ok().build();
 
     }
+
     //게시글 좋아요
-    @GetMapping("/{post_idx}/like")
-    @Operation(summary = "post/{post_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
-    public ResponseEntity<Post> likeComment(@PathVariable int post_idx){
-        String user_id = "b"; //나중에는 현재 로그인한 유저의 id 찾아오기
-        Post post = postService.likePost(post_idx, user_id);
+    @GetMapping("/{post_idx}/{user_idx}/like")
+    @Operation(summary = "post/{post_idx}/{user_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
+    public ResponseEntity<Post> likeComment(@PathVariable int post_idx, @PathVariable int user_idx){
+        Users user = usersRepository.findById(user_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Post post = postService.likePost(post_idx, user_idx);
         return ResponseEntity.ok(post);
     }
 
@@ -168,5 +173,17 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    //게시글 취소 변경
+    @PutMapping("/{post_idx}/cancle")
+    @Operation(summary = "/post/1/cancle", description = "게시글 모집 완료")
+    public ResponseEntity<String> canclePost(@PathVariable int post_idx) {
+        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        postService.canclePost(post_idx);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 
 }

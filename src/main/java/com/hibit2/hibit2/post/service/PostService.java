@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,11 +106,12 @@ public class PostService {
         entity.delete();
     }
     @Transactional
-    public Post likePost(int post_idx, String userId){
+    public Post likePost(int post_idx, int user_idx){
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        Users user = usersRepository.findById(userId)
+        Users user = usersRepository.findById(user_idx)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        String userId = user.getId();
 
         Optional<Users> existingLike = post.getLikeUsers().stream()
                 .filter(likeUser -> likeUser.getId().equals(userId))
@@ -136,12 +138,14 @@ public class PostService {
         }
 
         postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
-
+        postHistory.complete();
         List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
         List<String> matchedUsers = matchingService.getMatchUserByPost(post_idx);
 
 
         postHistory.setOkUsers(matchedUsers);
+        LocalDateTime currentTime = LocalDateTime.now();
+        postHistory.setFinishTime(currentTime);
 
         post.complete();
         postRepository.save(post);
@@ -149,6 +153,18 @@ public class PostService {
 
     }
 
+    @Transactional
+    public void canclePost(int post_idx) {
+        Post post = postRepository.findById(post_idx)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        postHistory.cancle();
+        LocalDateTime currentTime = LocalDateTime.now();
+        postHistory.setFinishTime(currentTime);
+        post.cancle();
+        postRepository.save(post);
+        postHistoryRepository.save(postHistory);
 
+    }
 
 }

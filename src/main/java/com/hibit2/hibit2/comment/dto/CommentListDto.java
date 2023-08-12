@@ -17,6 +17,7 @@ public class CommentListDto {
 
     private int idx;
     private String writer;
+    private int writerIdx;
     private String writerImg;
     private String content;
     private List<CommentListDto> childComments;
@@ -27,6 +28,7 @@ public class CommentListDto {
     public CommentListDto(Comment entity) {
         this.idx = entity.getIdx();
         this.writer=entity.getUser().getId();
+        this.writerIdx=entity.getUser().getIdx();
         this.writerImg=entity.getUser().getProfileImg();
         this.content = entity.getContent();
         this.childComments = new ArrayList<>();

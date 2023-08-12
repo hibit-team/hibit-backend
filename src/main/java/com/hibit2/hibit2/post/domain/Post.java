@@ -148,7 +148,9 @@ public class Post extends BaseTimeEntity {
     public void complete(){
         this.status = 'C';
     }
-
+    public void cancle(){
+        this.status = 'A';
+    }
     public void makeMainimg(String url){this.mainimg= url;}
     public void makeSubimg(List<String> url){this.subimg= url;}
     public void increaseLike(){
@@ -163,10 +165,6 @@ public class Post extends BaseTimeEntity {
     public void decreaseCommentNumber(int count){
         this.comment_number= this.comment_number-count;
     }
-
-
-
-
     public void increaseRound(){
         this.round++;
     }
