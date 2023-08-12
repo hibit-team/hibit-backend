@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Tag(name = "declaration", description = "신고")
@@ -33,6 +34,13 @@ public class DeclarationController {
     public ResponseEntity<String> report(@RequestBody DeclarationSaveDto declarationSaveDto) {
         Declaration declaration = declarationService.createDeclaration(declarationSaveDto);
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "declaration/list", description = "모든 신고 내역을 조회합니다.")
+    public ResponseEntity<List<Declaration>> getDeclarationList() {
+        List<Declaration> declarationList = declarationRepository.findAll();
+        return ResponseEntity.ok(declarationList);
     }
 
     //신고 접수
