@@ -1,6 +1,8 @@
 package com.hibit2.hibit2.profile.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum AddressCity {
 
@@ -28,7 +30,18 @@ public enum AddressCity {
         this.name = name;
     }
 
+    @JsonValue
     public String getName() {
         return name;
+    }
+
+    @JsonCreator
+    public static AddressCity from(String value) {
+        for (AddressCity status : AddressCity.values()) {
+            if (status.getName().equals(value)) {
+                return status;
+            }
+        }
+        return null;
     }
 }

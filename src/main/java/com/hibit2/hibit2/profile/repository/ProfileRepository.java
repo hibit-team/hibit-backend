@@ -18,12 +18,12 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     default Profile getById(final Long id) {
         return this.findById(id)
-            .orElseThrow(NotFoundProfileException::new);
+                .orElseThrow(NotFoundProfileException::new);
     }
 
     default Profile getByMemberIdAndProfileId(final Long memberId, final Long profileId) {
         return findByMemberIdAndProfileId(memberId, profileId)
-            .orElseThrow(NotFoundProfileException::new);
+                .orElseThrow(NotFoundProfileException::new);
     }
 
 }

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.hibit2.hibit2.profile.domain.AddressCity;
-import com.hibit2.hibit2.profile.domain.AddressDistinct;
+import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public class ProfileUpdateRequest {
     private int gender;
 
     @NotBlank(message = "공백일 수 없습니다.")
-    @Schema(description = "본인의 성격을 골라주세요.(최대 5개)", example = "[\"TYPE_1\", \"TYPE_2\", \"TYPE_3\"]")
+    @Schema(description = "본인의 성격을 골라주세요.(최대 5개)", example = "[\"감성적인\", \"귀여\", \"열정적인\"]")
     private List<PersonalityType> personality;
 
     @NotBlank(message = "공백일 수 없습니다.")
@@ -45,18 +45,18 @@ public class ProfileUpdateRequest {
     @Schema(description = "직업 혹은 학교", example = "College student")
     private String job;
 
-    @Schema(description = "시/도", example = "SEOUL")
+    @Schema(description = "시/도", example = "인천광역시")
     private AddressCity addressCity;
 
-    @Schema(description = "시/군/구", example = "SEOUL_JONGRO")
-    private AddressDistinct addressDistinct;
+    @Schema(description = "시/군/구", example = "연수구")
+    private AddressDistrict addressDistrict;
 
     public ProfileUpdateRequest() {
     }
 
     public ProfileUpdateRequest(String nickname, int age, int gender, List<PersonalityType> personality,
-        String introduce,
-        String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistinct addressDistinct) {
+                                String introduce,
+                                String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
@@ -66,6 +66,6 @@ public class ProfileUpdateRequest {
         this.subImg = subImg;
         this.job = job;
         this.addressCity = addressCity;
-        this.addressDistinct = addressDistinct;
+        this.addressDistrict = addressDistrict;
     }
 }

@@ -30,15 +30,15 @@ class ProfileTest {
 
         String job = "Backend";
         AddressCity addressCity = AddressCity.SEOUL;
-        AddressDistinct addressDistinct = AddressDistinct.SEOUL_YONGSAN;
+        AddressDistrict addressDistrict = AddressDistrict.SEOUL_YONGSAN;
         int ban = 1;
 
         Profile profile = new Profile(member, nickname, age, gender,
-            personalityType, introduce, mainImg, subImg, job, addressCity, addressDistinct);
+            personalityType, introduce, mainImg, subImg, job, addressCity, addressDistrict);
 
         // when & then
         Assertions.assertDoesNotThrow(() -> new Profile(member, nickname, age, gender,
-            personalityType, introduce, mainImg, subImg, job, addressCity, addressDistinct));
+            personalityType, introduce, mainImg, subImg, job, addressCity, addressDistrict));
     }
 
 }
