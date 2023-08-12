@@ -30,9 +30,9 @@ public class DeclarationController {
 
     @PostMapping("/report")
     @Operation(summary = "declaration/report", description = "게시글 또는 댓글을 신고합니다.")
-    public ResponseEntity<Declaration> report(@RequestBody DeclarationSaveDto declarationSaveDto) {
+    public ResponseEntity<String> report(@RequestBody DeclarationSaveDto declarationSaveDto) {
         Declaration declaration = declarationService.createDeclaration(declarationSaveDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(declaration);
+        return ResponseEntity.ok("ok");
     }
 
     //신고 접수
@@ -44,7 +44,6 @@ public class DeclarationController {
         //추후 관리자 아이디로 변경
         Users sender = usersRepository.findById(1)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
 
         //회원 테이블 신고 횟수 증가
 
