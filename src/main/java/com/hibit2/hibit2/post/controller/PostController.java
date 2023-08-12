@@ -41,9 +41,8 @@ public class PostController {
     private final UsersRepository usersRepository;
 
 
-    @PostMapping("/write")
-    //@Secured({"ROLE_USER"})
-    @Operation(summary = "post/write", description = "매칭 게시글 작성")
+    @PostMapping("/write/{user_idx}")
+    @Operation(summary = "post/write/{user_idx}", description = "매칭 게시글 작성")
     @Parameters({@Parameter(name = "title", description = "제목", example = "디뮤지엄 전시 보러가요"),
                 @Parameter(name = "content", description = "내용", example =  "본문내용"),
                 @Parameter(name = "number", description = "관람 인원", example =  "3"),
@@ -56,8 +55,9 @@ public class PostController {
                @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
                @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
     })
-    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto){
-        //Users user = (Users) authentication.getPrincipal();
+    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable int user_idx){
+        Users user = usersRepository.findById(user_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         Post post = postService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
 
