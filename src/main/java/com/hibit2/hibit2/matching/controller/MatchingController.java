@@ -69,10 +69,13 @@ public class MatchingController {
     }
 
 
-
-
-
-
+    //매칭 수락하고 진짜 간 사람들 받아와서 history 저장
+    @PutMapping("/{post_idx}/oksave")
+    @Operation(summary = "/matching/1/oksave", description = "진짜 간 유저 저장")
+    public ResponseEntity<Void> saveOk(@PathVariable int post_idx, @RequestBody List<String> userIds) {
+        matchingService.saveOkuser(post_idx, userIds);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

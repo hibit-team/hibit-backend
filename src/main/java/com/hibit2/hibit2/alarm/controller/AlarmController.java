@@ -62,10 +62,20 @@ public class AlarmController {
         for (Alarm alarm : alarms){
             AlarmListDto alarmListDto = new AlarmListDto(alarm);
             alarmListDtos.add(alarmListDto);
-            alarm.readAlarm();
-            alarmRepository.save(alarm);
         }
         return ResponseEntity.ok(alarmListDtos);
     }
+
+    @PutMapping("/read/{alarm_idx}")
+    @Operation(summary = "alarm/read/1", description = "알람 읽음 처리")
+    public ResponseEntity<Void> alarmRead(@PathVariable int alarm_idx){
+        Alarm alarm = alarmRepository.findById(alarm_idx)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        alarm.readAlarm();
+        alarmRepository.save(alarm);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }

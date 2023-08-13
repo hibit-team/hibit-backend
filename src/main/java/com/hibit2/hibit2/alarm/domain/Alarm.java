@@ -35,6 +35,13 @@ public class Alarm extends BaseTimeEntity {
     @JoinColumn(name = "sender_idx")
     private Users sender;
 
+    @Column(nullable = true)
+    @Schema(description = "게시글 idx", example = "1")
+    private int postIdx;
+
+    @Column(nullable = true)
+    @Schema(description = "매칭 idx", example = "1")
+    private int matchingIdx;
 
     @Schema(description = "알림 타입", example = "COMMENT")
     @Enumerated(EnumType.STRING)
@@ -52,13 +59,19 @@ public class Alarm extends BaseTimeEntity {
     @Schema(description = "읽음 여부", example = "True")
     private boolean readed;
 
+    @Column(nullable = true)
+    @Schema(description = "수락 거절", example = "N")
+    private String history;
+
+
     @Builder
-    public Alarm(Users user, AlarmType alarmType, String content, String url, boolean reads){
+    public Alarm(Users user, AlarmType alarmType, String content, String url, boolean readed, String history){
         this.user=user;
         this.alarmType = alarmType;
         this.content=content;
         this.url=url;
         this.readed=readed;
+        this.history=history;
     }
 
     public void readAlarm() {this.readed = true;}
