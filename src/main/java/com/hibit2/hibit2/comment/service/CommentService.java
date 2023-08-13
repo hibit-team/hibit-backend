@@ -46,10 +46,10 @@ public class CommentService {
         if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
-        }
 
-        //알람 생성
-        alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
+            //알림 생성
+            alarmService.createAlarm(post.getUser(), user, post.getIdx(),matching.getId(), AlarmType.COMMENT, "");
+        }
         return commentRepository.save(comment);
     }
 
@@ -74,10 +74,12 @@ public class CommentService {
         if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
             Matching matching = new Matching(user, post);
             matchingRepository.save(matching);
+
+            //알람 생성 (게시글작성자 -> 댓글 알람, 댓글 작성자 -> 대댓글 알람)
+            alarmService.createAlarm(post.getUser(), user, post.getIdx(), matching.getId(),AlarmType.COMMENT, "");
+            alarmService.createAlarm(parentComment.getUser(), user, post.getIdx(), matching.getId(), AlarmType.RECOMMENT, "");
         }
-        //알람 생성 (게시글작성자 -> 댓글 알람, 댓글 작성자 -> 대댓글 알람)
-        alarmService.createAlarm(post.getUser(), user, AlarmType.COMMENT, "");
-        alarmService.createAlarm(parentComment.getUser(), user, AlarmType.RECOMMENT, "");
+
         return commentRepository.save(reply);
     }
 
@@ -137,7 +139,7 @@ public class CommentService {
             comment.getLikeUsers().add(user);
             comment.increaseLike();
             //알람 생성
-            alarmService.createAlarm(comment.getUser(), user, AlarmType.COMMENTHEART, "");
+            alarmService.createAlarm(comment.getUser(), user, comment.getPost().getIdx(), -1, AlarmType.COMMENTHEART, "");
 
         } else {
             // 좋아요 취소

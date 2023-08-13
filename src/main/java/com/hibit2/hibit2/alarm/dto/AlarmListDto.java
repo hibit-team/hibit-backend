@@ -13,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class AlarmListDto {
+    private int idx;
+    private int postIdx;
+    private int matchingIdx;
     private String nickname;
     private AlarmType type;
     private String imglink;
@@ -20,9 +23,13 @@ public class AlarmListDto {
     private String time;
     private String url;
     private boolean readed;
+    private String history;
 
 
     public AlarmListDto(Alarm entity){
+        this.idx = entity.getIdx();
+        this.postIdx =entity.getPostIdx();
+        this.matchingIdx=entity.getMatchingIdx();
         this.nickname = entity.getSender().getId();
         this.type = entity.getAlarmType();
         this.imglink = entity.getSender().getProfileImg();
@@ -30,7 +37,7 @@ public class AlarmListDto {
         this.time=entity.calculateTime();
         this.url=entity.getUrl();
         this.readed=entity.isReaded();
+        this.history=entity.getHistory();
     }
-
 
 }
