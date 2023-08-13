@@ -5,12 +5,15 @@ public class UserInfo {
     private String email;
     private String name;
 
+    private String picture;
+
     private UserInfo() {
     }
 
-    public UserInfo(final String email, final String name, final String picture) {
+    public UserInfo(String email, String name, String picture) {
         this.email = email;
         this.name = name;
+        this.picture = picture;
     }
 
     public String getEmail() {
@@ -21,4 +24,7 @@ public class UserInfo {
         return name;
     }
 
+    public String getPicture() {
+        return picture;
+    }
 }
