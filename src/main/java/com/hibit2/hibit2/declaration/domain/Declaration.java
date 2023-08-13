@@ -55,9 +55,9 @@ public class Declaration {
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     @Schema(description = "관리자 확인 여부", example = "True")
-    private boolean read;
+    private boolean readed;
 
-    public void changeRead() {this.read = true;}
+    public void changeRead() {this.readed = true;}
 
 
 }
