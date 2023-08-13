@@ -96,9 +96,9 @@
 
 ### PM & Designer
 
-| [<img src="./docs/readme/jaemok-profile-img.jpg" width="200"/>](https://www.linkedin.com/in/jaemok-kim-ba8658235/) | <img src="" width="200"/> | <img src="./docs/readme/minsung-profile-img.jpg" width="200"/> |
-| :----------------------------------------------------------------------------------------------------------------: | :-----------------------: | :------------------------------------------------------------: |
-|                                                      🌟 재목                                                       |           현정            |                         민성(Designer)                         |
+| [<img src="./docs/readme/jaemok-profile-img.jpg" width="200"/>](https://www.linkedin.com/in/jaemok-kim-ba8658235/) | <img src="./docs/readme/hj-profile.jpg" width="200"/> | <img src="./docs/readme/minsung-profile-img.jpg" width="200"/> |
+| :----------------------------------------------------------------------------------------------------------------: |:-----------------------------------------------------:| :------------------------------------------------------------: |
+|                                                      🌟 재목                                                       |                          현정                           |                         민성(Designer)                         |
 
 ## 협업 문화
 
@@ -154,4 +154,4 @@
 
 **DB |** H2, MySQL 8
 
-**CI/CD |** Git, GitHub Action, Jenkins
+**CI/CD |** Git, GitHub Action, Docker, Jenkins
