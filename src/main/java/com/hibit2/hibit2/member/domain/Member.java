@@ -21,6 +21,7 @@ import lombok.Getter;
 @Entity
 public class Member {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
+    private static final int MAX_DISPLAY_NAME_LENGTH = 100;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,6 +31,12 @@ public class Member {
     @Schema(description = "이메일", example = "teamhibit@gmail.com")
     private String email;
 
+    @Column(name = "display_name", nullable = false)
+    private String displayName;
+
+    @Column(name = "profile_image_url", nullable = false)
+    private String profileImageUrl;
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "social_type", nullable = false)
     @Schema(description = "소셜 로그인 유형", example = "GOOGLE")
@@ -38,10 +45,14 @@ public class Member {
     protected Member() {
     }
 
-    public  Member(final String email, final SocialType socialType) {
+    public Member(String email, String displayName, String profileImageUrl, SocialType socialType) {
+
         validateEmail(email);
+        validateDisplayName(displayName);
 
         this.email = email;
+        this.displayName = displayName;
+        this.profileImageUrl = profileImageUrl;
         this.socialType = socialType;
     }
 
@@ -52,6 +63,11 @@ public class Member {
         }
     }
 
+    private void validateDisplayName(final String displayName) {
+        if (displayName.isEmpty() || displayName.length() > MAX_DISPLAY_NAME_LENGTH) {
+            throw new InvalidMemberException(String.format("이름은 1자 이상 1자 %d이하여야 합니다.", MAX_DISPLAY_NAME_LENGTH));
+        }
+    }
     public Long getId() {
         return id;
     }
@@ -60,6 +76,13 @@ public class Member {
         return email;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
     public SocialType getSocialType() {
         return socialType;
     }
