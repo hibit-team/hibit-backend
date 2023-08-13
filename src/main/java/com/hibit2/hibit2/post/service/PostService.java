@@ -53,6 +53,7 @@ public class PostService {
         postHistory postHistory = new postHistory();
         postHistory.setPost(post);
         postHistory.setOkUsers(new ArrayList<>());
+        postHistory.setRealUsers(new ArrayList<>());
         postHistoryRepository.save(postHistory);
 
         return post;

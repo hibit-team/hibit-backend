@@ -84,6 +84,7 @@ public class MatchingService {
             }
         }
     }
+
     //매칭 수락 (알림에서 수락 누른 경우)
     public void okMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
@@ -138,6 +139,7 @@ public class MatchingService {
 
     }
 
+    //수락 유저 리스트
     public List<String> getMatchUserByPost(int post_idx) {
         List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
         List<String> matchedUsers = new ArrayList<>();
@@ -150,6 +152,26 @@ public class MatchingService {
         return matchedUsers;
     }
 
+    //수락한 유저 중, 진짜 간 유저들
+    @Transactional
+    public void saveOkuser(int postIdx, List<String> userIds) {
+        Post post = postRepository.findById(postIdx)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        postHistory postHistory = postHistoryRepository.findByPostIdx(postIdx);
+
+        // 기존의 okUsers 리스트에 userIds를 추가
+        postHistory.getRealUsers().addAll(userIds);
+
+        // postHistory 엔티티를 저장
+        postHistoryRepository.save(postHistory);
+
+        /*
+        for (String userId : userIds) {
+            Users user = usersRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        }
+        */
+    }
 
 
 }

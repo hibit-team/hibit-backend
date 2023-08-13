@@ -35,10 +35,15 @@ public class postHistory extends BaseTimeEntity {
     @Schema(description = "글 상태 (완료 C, 취소 A)", example = "N")
     private char status;
 
-    // 성공 유저
+    // 수락 유저
     @ElementCollection
     @Schema(description = "수락 유저 닉네임", example = "c, d")
     private List<String> okUsers = new ArrayList<>();
+
+    // 진짜 간 유저
+    @ElementCollection
+    @Schema(description = "진짜 깐 사람들 닉네임", example = "c, d")
+    private List<String> realUsers = new ArrayList<>();
 
     @Column(nullable = true)
     @Schema(description = "완료 시간", example = "2023-07-23 19:24" )
@@ -58,10 +63,11 @@ public class postHistory extends BaseTimeEntity {
     private float percent;
 
     @Builder
-    public postHistory(Post post, List<String> okUsers, LocalDateTime finishTime,
+    public postHistory(Post post, List<String> okUsers,  List<String> realUsers, LocalDateTime finishTime,
                        int okNum, int noNum, float percent){
         this.post=post;
         this.okUsers=okUsers;
+        this.realUsers=realUsers;
         this.finishTime=finishTime;
         this.okNum=okNum;
         this.noNum=noNum;
