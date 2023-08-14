@@ -117,7 +117,7 @@ public class PostController {
     }
 
     // 검색
-    @GetMapping("/search/{pageParam}")
+    @GetMapping("/list/search/{pageParam}")
     @Operation(summary = "post/list/search/1", description = "검색 결과")
     public ResponseEntity<List<PostListDto>> findByTitleOrExhibition(@PathVariable int pageParam, @RequestParam String keyword) {
         char flag = 'D';
