@@ -30,24 +30,32 @@ public enum OAuthFixtures {
 
     private static OAuthMember 관리자() {
         String 관리자_이메일 = "hibit.admin@gmail.com";
+        String 관리자_이름 = "관리자";
+        String 관리자_프로필 = "/hibit-admin.png";
         String 관리자_REFRESH_TOKEN = "aaaaaaaaaa.bbbbbbbbbb.cccccccccc";
-        return new OAuthMember(관리자_이메일, 관리자_REFRESH_TOKEN);
+        return new OAuthMember(관리자_이메일, 관리자_이름, 관리자_프로필,관리자_REFRESH_TOKEN);
     }
 
     private static OAuthMember 팬시() {
         String 팬시_이메일 = "parang@email.com";
+        String 팬시_이름 = "팬시";
+        String 팬시_프로필 = "/fancy.png";
         String 팬시_REFRESH_TOKEN = "aaaaaaaaaa.bbbbbbbbbb.cccccccccc";
-        return new OAuthMember(팬시_이메일, 팬시_REFRESH_TOKEN);
+        return new OAuthMember(팬시_이메일, 팬시_이름, 팬시_프로필, 팬시_REFRESH_TOKEN);
     }
     private static OAuthMember MEMBER() {
         String MEMBER_이메일 = "member@email.com";
+        String MEMBER_이름 = "member";
+        String MEMBER_프로필 = "/member.png";
         String MEMBER_REFRESH_TOKEN = "aaaaaaaaaa.bbbbbbbbbb.ccccccccc";
-        return new OAuthMember(MEMBER_이메일, MEMBER_REFRESH_TOKEN);
+        return new OAuthMember(MEMBER_이메일, MEMBER_이름, MEMBER_프로필, MEMBER_REFRESH_TOKEN);
     }
     private static OAuthMember CREATOR() {
         String CREATOR_이메일 = "creator@email.com";
+        String CREATOR_이름 = "creator";
+        String CREATOR_프로필 = "/creator.png";
         String CREATOR_REFRESH_TOKEN = "aaaaaaaaaa.bbbbbbbbbb.ccccccccc";
-        return new OAuthMember(CREATOR_이메일, CREATOR_REFRESH_TOKEN);
+        return new OAuthMember(CREATOR_이메일, CREATOR_이름, CREATOR_프로필, CREATOR_REFRESH_TOKEN);
     }
 
     public String getCode() {

@@ -10,6 +10,11 @@ import org.junit.jupiter.api.Test;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.domain.SocialType;
 
+import static com.hibit2.hibit2.common.fixtures.MemberFixtures.팬시_이메일;
+import static com.hibit2.hibit2.common.fixtures.MemberFixtures.팬시_이름;
+import static com.hibit2.hibit2.common.fixtures.MemberFixtures.팬시_프로필;
+
+
 class ProfileTest {
 
 
@@ -18,7 +23,7 @@ class ProfileTest {
     void 프로필을_생성한다() {
         // given
         Long id = 1L;
-        Member member = new Member("fancy.junyongmoon@gmail.com", SocialType.GOOGLE);
+        Member member = new Member(팬시_이메일, 팬시_이름, 팬시_프로필, SocialType.GOOGLE);
         String nickname = "fancy";
         int age = 26;
         int gender = 1;
