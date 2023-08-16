@@ -5,10 +5,12 @@ import com.hibit2.hibit2.alarm.domain.Alarm;
 import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.repository.AlarmRepository;
 import com.hibit2.hibit2.alarm.service.AlarmService;
-import com.hibit2.hibit2.global.repository.MatchingRepository;
 import com.hibit2.hibit2.mail.service.EmailService;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
+import com.hibit2.hibit2.matching.repository.MatchingRepository;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
@@ -32,10 +34,11 @@ public class MatchingService {
     private final EmailService emailService;
     private final postHistoryRepository postHistoryRepository;
     private final AlarmRepository alarmRepository;
+    private final MemberRepository memberRepository;
 
     //매칭 신청 유저 확인
-    public boolean exitMatching(Users user, Post post) {
-        Matching existing = matchingRepository.findByUserAndPost(user, post);
+    public boolean exitMatching(Member member, Post post) {
+        Matching existing = matchingRepository.findByMemberAndPost(member, post);
         return existing != null;
     }
 
@@ -52,9 +55,10 @@ public class MatchingService {
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         post.increaseRound();
         for (String userId : userIds) {
-            Users user = usersRepository.findById(userId)
+            Member member= memberRepository.findByNickname(userId)
                     .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-            Matching matchRequest = matchingRepository.findByUserAndPost(user, post);
+
+            Matching matchRequest = matchingRepository.findByMemberAndPost(member, post);
             if (matchRequest == null) {
                 throw new RuntimeException("매칭 요청을 찾을 수 없습니다.");
             }
@@ -71,7 +75,7 @@ public class MatchingService {
             //한 번 이상 보냈을 경우
             else{
                 Matching newmatching = new Matching();
-                newmatching.setUser(user);
+                newmatching.setMember(member);
                 newmatching.setPost(post);
                 newmatching.setStatus(MatchStatus.PENDING);
                 newmatching.setRound(post.getRound());
@@ -144,7 +148,7 @@ public class MatchingService {
         List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
         List<String> matchedUsers = new ArrayList<>();
         for (Matching matching : matchingList) {
-            String userId = matching.getUser().getId();
+            String userId = matching.getMember().getNickname();
             if (!matchedUsers.contains(userId)) {
                 matchedUsers.add(userId);
             }

@@ -32,18 +32,18 @@ public class CommentController {
     // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
     @PostMapping("/{post_idx}/{user_idx}")
     @Operation(summary = "/comment/1/1", description = "댓글 작성")
-    public ResponseEntity<Integer> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody CommentSaveDto commentSaveDto) {
+    public ResponseEntity<Integer> createComment(@PathVariable int post_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
-        Comment comment = commentService.createComment(post_idx, user_idx, content);
+        Comment comment = commentService.createComment(post_idx, member_idx, content);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment.getIdx());
     }
 
     // 대댓글 작성
     @PostMapping("/replies/{comment_idx}/{user_idx}")
     @Operation(summary = "/comment/replies/1/1", description = "댓글에 대한 대댓글 작성")
-    public ResponseEntity<Integer> createReply(@PathVariable int comment_idx, @PathVariable int user_idx, @RequestBody CommentSaveDto commentSaveDto) {
+    public ResponseEntity<Integer> createReply(@PathVariable int comment_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
-        Comment reply = commentService.createReply(comment_idx, user_idx, content);
+        Comment reply = commentService.createReply(comment_idx, member_idx, content);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply.getIdx());
     }
 

@@ -1,9 +1,9 @@
 package com.hibit2.hibit2.post.service;
 
 
-import com.hibit2.hibit2.global.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
+import com.hibit2.hibit2.matching.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.service.MatchingService;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final MatchingRepository matchingRepository;
     private final postHistoryRepository postHistoryRepository;
     private final MatchingService matchingService;

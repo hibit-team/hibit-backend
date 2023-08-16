@@ -44,8 +44,8 @@ public class PostController {
     private final MemberRepository memberRepository;
 
 
-    @PostMapping("/write/{user_idx}")
-    @Operation(summary = "post/write/{user_idx}", description = "매칭 게시글 작성")
+    @PostMapping("/write/{member_idx}")
+    @Operation(summary = "post/write/{member_idx}", description = "매칭 게시글 작성")
     @Parameters({@Parameter(name = "title", description = "제목", example = "디뮤지엄 전시 보러가요"),
                 @Parameter(name = "content", description = "내용", example =  "본문내용"),
                 @Parameter(name = "number", description = "관람 인원", example =  "3"),
@@ -58,11 +58,9 @@ public class PostController {
                @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
                @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
     })
-    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable Long user_idx){
-
-        Post post = postService.save(requestDto, user_idx);
+    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable Long member_idx){
+        Post post = postService.save(requestDto, member_idx);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
-
     }
     //기본 게시글 리스트
     @GetMapping("/list/allposts/{pageParam}")
