@@ -111,19 +111,18 @@ public class PostService {
         entity.delete();
     }
     @Transactional
-    public Post likePost(int post_idx, int user_idx){
+    public Post likePost(int post_idx, Long member_idx){
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        Users user = usersRepository.findById(user_idx)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        String userId = user.getId();
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
 
-        Optional<Users> existingLike = post.getLikeUsers().stream()
-                .filter(likeUser -> likeUser.getId().equals(userId))
+        Optional<Member> existingLike = post.getLikeUsers().stream()
+                .filter(likeUser -> likeUser.getNickname().equals(userId))
                 .findFirst();
 
         if (!existingLike.isPresent()) {
-            post.getLikeUsers().add(user);
+            post.getLikeUsers().add(member);
             post.increaseLike();
         } else {
             post.getLikeUsers().remove(existingLike.get());

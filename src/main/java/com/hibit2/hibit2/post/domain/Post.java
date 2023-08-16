@@ -102,9 +102,9 @@ public class Post extends BaseTimeEntity {
     @JoinTable(
             name = "post_likes",
             joinColumns = @JoinColumn(name = "post_idx"),
-            inverseJoinColumns = @JoinColumn(name = "user_idx")
+            inverseJoinColumns = @JoinColumn(name = "member_idx")
     )
-    private List<Users> likeUsers = new ArrayList<>();
+    private List<Member> likeUsers = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "integer default 0")
     @Schema(description = "댓글수", example = "15")
@@ -118,7 +118,7 @@ public class Post extends BaseTimeEntity {
     public Post(Member member,String title, String content, String exhibiton, int number, String openchat,
                 int view, char status, What_do what_do, List<DateTimeSlot> dateTimeSlots, String mainimg,
                 List<String> subimg, int liked,
-                List<Users> likeUsers, int comment_number, int round){
+                List<Member> likeUsers, int comment_number, int round){
         this.member=member;
         this.title=title;
         this.content=content;

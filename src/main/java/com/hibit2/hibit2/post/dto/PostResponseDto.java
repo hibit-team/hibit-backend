@@ -3,12 +3,11 @@ package com.hibit2.hibit2.post.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.dto.MemberListDto;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.TimeSlot;
 import com.hibit2.hibit2.post.domain.What_do;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.dto.UserlistDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,7 +37,7 @@ public class PostResponseDto {
     private List<String> subimg;
     private String time;
     private List<String> dateTime;
-    private List<UserlistDto> likeUsers;
+    private List<MemberListDto> likeUsers;
 
 
     public PostResponseDto(@NotNull Post entity){
@@ -61,10 +60,9 @@ public class PostResponseDto {
         this.dateTime = formatDateTimeSlots(entity.getDateTimeSlots());
         this.likeUsers= new ArrayList<>();
 
-
         if (entity.getLikeUsers() != null) {
-            for (Users likeUser : entity.getLikeUsers()) {
-                this.likeUsers.add(new UserlistDto(likeUser));
+            for (Member likeUser : entity.getLikeUsers()) {
+                this.likeUsers.add(new MemberListDto(likeUser));
             }
         }
 

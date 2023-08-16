@@ -2,6 +2,8 @@ package com.hibit2.hibit2.post.controller;
 
 
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
@@ -39,6 +41,7 @@ public class PostController {
     private final PostService postService;
     private final postHistoryRepository postHistoryRepository;
     private final UsersRepository usersRepository;
+    private final MemberRepository memberRepository;
 
 
     @PostMapping("/write/{user_idx}")
@@ -150,12 +153,10 @@ public class PostController {
     }
 
     //게시글 좋아요
-    @GetMapping("/{post_idx}/{user_idx}/like")
-    @Operation(summary = "post/{post_idx}/{user_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
-    public ResponseEntity<PostResponseDto> likeComment(@PathVariable int post_idx, @PathVariable int user_idx){
-        Users user = usersRepository.findById(user_idx)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        Post post = postService.likePost(post_idx, user_idx);
+    @GetMapping("/{post_idx}/{member_idx}/like")
+    @Operation(summary = "post/{post_idx}/{member_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
+    public ResponseEntity<PostResponseDto> likeComment(@PathVariable int post_idx, @PathVariable Long member_idx){
+        Post post = postService.likePost(post_idx, member_idx);
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return ResponseEntity.ok(postResponseDto);
     }
