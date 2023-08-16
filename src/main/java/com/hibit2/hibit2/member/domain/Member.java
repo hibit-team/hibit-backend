@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import com.hibit2.hibit2.member.exception.InvalidMemberException;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
+
 
 @Table(name = "members")
 @Entity
@@ -26,6 +26,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+
+    @Column(name = "nickname", nullable = true)
+    @Schema(description = "닉네임", example = "아아아")
+    private String nickname;
 
     @Column(name = "email", nullable = false)
     @Schema(description = "이메일", example = "teamhibit@gmail.com")
@@ -86,4 +91,10 @@ public class Member {
     public SocialType getSocialType() {
         return socialType;
     }
+
+    public java.lang.String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {this.nickname = nickname;}
 }

@@ -58,6 +58,11 @@ public class PostController {
     public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable int user_idx){
         Users user = usersRepository.findById(user_idx)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+
+
+
+
         Post post = postService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
 
