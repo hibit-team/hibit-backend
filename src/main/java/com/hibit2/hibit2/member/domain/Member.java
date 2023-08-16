@@ -47,6 +47,11 @@ public class Member {
     @Schema(description = "소셜 로그인 유형", example = "GOOGLE")
     private SocialType socialType;
 
+    @Column(name = "mainimg", nullable = true)
+    @Schema(description = "대표 이미지", example = "http")
+    private String mainImg;
+
+
     protected Member() {
     }
 
@@ -92,9 +97,15 @@ public class Member {
         return socialType;
     }
 
-    public java.lang.String getNickname() {
+    public String getNickname() {
         return nickname;
     }
 
     public void setNickname(String nickname) {this.nickname = nickname;}
+
+    public void setMainImg(String mainImg) {this.mainImg = mainImg;}
+    public String getMainImg() {
+        return mainImg;
+    }
+
 }

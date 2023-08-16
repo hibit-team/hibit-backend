@@ -2,6 +2,7 @@ package com.hibit2.hibit2.post.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.TimeSlot;
@@ -44,7 +45,7 @@ public class PostResponseDto {
         this.idx=entity.getIdx();
         this.writer=entity.getMember().getNickname();
         this.writerIdx=entity.getMember().getId();
-        this.writerImg=entity.getMember().getProfileImageUrl();
+        this.writerImg=MainImg(entity.getMember());
         this.title=entity.getTitle();
         this.exhibiton=entity.getExhibition();
         this.content=entity.getContent();
@@ -67,6 +68,12 @@ public class PostResponseDto {
             }
         }
 
+    }
+    private String MainImg(Member member){
+        if (member.getMainImg() != null) {
+            return member.getMainImg();
+        }
+        return "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/Group%201181.png";
     }
 
     private List<Object> number_and_What(int number, What_do what_do) {
