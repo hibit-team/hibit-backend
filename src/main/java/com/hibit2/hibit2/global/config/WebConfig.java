@@ -30,7 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addMapping("/**")
                 .allowedMethods("*")
-                .allowedOriginPatterns(patterns);
+                .allowedOriginPatterns(patterns)
+                .allowCredentials(true);
     }
 
     // 예외 발생의 원인인 부분을 처리하기 위해 해당 부분 임시 주석 처리

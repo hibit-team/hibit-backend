@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.hibit2.hibit2.common.Constants.팬시_이메일;
+import static com.hibit2.hibit2.common.Constants.*;
 
 
 @SpringBootTest(classes = ExternalApiConfig.class)
@@ -46,7 +46,7 @@ public abstract class ServiceTest {
 
     protected GivenBuilder 팬시() {
         GivenBuilder 팬시 = new GivenBuilder(builderSupporter);
-        팬시.회원_가입을_한다(팬시_이메일);
+        팬시.회원_가입을_한다(팬시_이메일, 팬시_이름, 팬시_프로필_URL);
         return 팬시;
     }
 }

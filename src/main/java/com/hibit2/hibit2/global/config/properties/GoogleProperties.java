@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
+import java.util.List;
+
 @ConfigurationProperties("oauth.google")
 @ConstructorBinding
 public class GoogleProperties {
@@ -11,7 +13,7 @@ public class GoogleProperties {
     private final String clientSecret;
     private final String oAuthEndPoint;
     private final String responseType;
-    private final String scopes;
+    private final List<String> scopes;
     private final String tokenUri;
     private final String accessType;
 
@@ -19,7 +21,7 @@ public class GoogleProperties {
                             @Value("${oauth.google.client-secret}") final String clientSecret,
                             @Value("${oauth.google.oauth-end-point}") final String oAuthEndPoint,
                             @Value("${oauth.google.response-type}") final String responseType,
-                            @Value("${oauth.google.scopes}") final String scopes,
+                            @Value("${oauth.google.scopes}") final List<String> scopes,
                             @Value("${oauth.google.token-uri}") final String tokenUri,
                             @Value("${oauth.google.access-type}") final String accessType) {
         this.clientId = clientId;
@@ -47,7 +49,7 @@ public class GoogleProperties {
         return responseType;
     }
 
-    public String getScopes() {
+    public List<String> getScopes() {
         return scopes;
     }
 

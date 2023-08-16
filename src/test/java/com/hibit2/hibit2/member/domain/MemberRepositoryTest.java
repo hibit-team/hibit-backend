@@ -8,6 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.hibit2.hibit2.member.repository.MemberRepository;
 
+import static com.hibit2.hibit2.common.fixtures.MemberFixtures.팬시;
+import static com.hibit2.hibit2.common.fixtures.MemberFixtures.팬시_이메일;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @DataJpaTest
 class MemberRepositoryTest {
 
@@ -18,27 +22,23 @@ class MemberRepositoryTest {
     @Test
     void 이메일을_통해_회원을_찾는다() {
         // given
-        String email = "fancy.junyongmoon@gmail.com";
-        Member member = new Member(email, SocialType.GOOGLE);
-        Member savedMember = memberRepository.save(member);
+        Member 팬시 = memberRepository.save(팬시());
 
         // when
-        Member foundMember = memberRepository.findByEmail(email).get();
+        Member actual = memberRepository.getByEmail(팬시_이메일);
 
         // then
-        Assertions.assertThat(savedMember.getId()).isEqualTo(foundMember.getId());
+        assertThat(actual.getId()).isEqualTo(팬시.getId());
     }
 
     @DisplayName("중복된 이메일이 존재하는 경우 true를 반환한다.")
     @Test
     void 중복된_이메일이_존재하는_경우_true를_반환한다() {
         // given
-        String email = "fancy.junyongmoon@gmail.com";
-        Member member = new Member(email, SocialType.GOOGLE);
-        memberRepository.save(member);
+        memberRepository.save(팬시());
 
         // when
-        boolean actual = memberRepository.existsByEmail(email);
+        boolean actual = memberRepository.existsByEmail(팬시_이메일);
 
         // then
         Assertions.assertThat(actual).isTrue();
