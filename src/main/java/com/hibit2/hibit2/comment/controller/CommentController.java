@@ -5,6 +5,8 @@ import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.comment.dto.CommentListDto;
 import com.hibit2.hibit2.comment.dto.CommentSaveDto;
 import com.hibit2.hibit2.comment.service.CommentService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +30,9 @@ public class CommentController {
 
     private final CommentService commentService;
     private final UsersRepository usersRepository;
+    private final MemberRepository memberRepository;
 
-    // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
-    @PostMapping("/{post_idx}/{user_idx}")
+    @PostMapping("/{post_idx}/{member_idx}")
     @Operation(summary = "/comment/1/1", description = "댓글 작성")
     public ResponseEntity<Integer> createComment(@PathVariable int post_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
@@ -39,7 +41,7 @@ public class CommentController {
     }
 
     // 대댓글 작성
-    @PostMapping("/replies/{comment_idx}/{user_idx}")
+    @PostMapping("/replies/{comment_idx}/{member_idx}")
     @Operation(summary = "/comment/replies/1/1", description = "댓글에 대한 대댓글 작성")
     public ResponseEntity<Integer> createReply(@PathVariable int comment_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
@@ -79,13 +81,13 @@ public class CommentController {
         return ResponseEntity.noContent().build();
     }
     //댓글 좋아요
-    @GetMapping("/like/{comment_idx}/{user_idx}")
+    @GetMapping("/like/{comment_idx}/{member_idx}")
     @Operation(summary = "/comment/like/1/1", description = "댓글 좋아요")
-    public ResponseEntity<Comment> likeComment(@PathVariable int comment_idx, @PathVariable int user_idx){
-        Users user = usersRepository.findById(user_idx)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+    public ResponseEntity<Comment> likeComment(@PathVariable int comment_idx, @PathVariable Long member_idx){
 
-        Comment comment = commentService.likeComment(comment_idx, user.getId());
+        Member member= memberRepository.getById(member_idx);
+
+        Comment comment = commentService.likeComment(comment_idx, member.getNickname());
         return ResponseEntity.ok(comment);
     }
 
