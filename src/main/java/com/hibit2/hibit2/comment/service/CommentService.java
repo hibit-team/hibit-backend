@@ -19,6 +19,7 @@ import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ public class CommentService {
     private final AlarmService alarmService;
     private final MemberRepository memberRepository;
     // 댓글 작성
+    @Transactional
     public Comment createComment(int post_idx, Long member_idx, String content) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
@@ -54,6 +56,7 @@ public class CommentService {
     }
 
     // 대댓글 작성
+    @Transactional
     public Comment createReply(int comment_idx, Long member_idx, String content) {
         Comment parentComment = commentRepository.findById(comment_idx)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
@@ -69,17 +72,17 @@ public class CommentService {
         reply.setPost(parentComment.getPost());
         parentComment.addChildComment(reply);
         post.increaseCommentNumber();
-/*
+
         //매칭 신청여부 확인
-        if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
-            Matching matching = new Matching(user, post);
+        if (!matchingService.exitMatching(member, post) && member_idx != post.getMember().getId()) {
+            Matching matching = new Matching(member, post);
             matchingRepository.save(matching);
 
             //알람 생성 (게시글작성자 -> 댓글 알람, 댓글 작성자 -> 대댓글 알람)
-            alarmService.createAlarm(post.getUser(), user, post.getIdx(), matching.getId(),AlarmType.COMMENT, "");
-            alarmService.createAlarm(parentComment.getUser(), user, post.getIdx(), matching.getId(), AlarmType.RECOMMENT, "");
+            //alarmService.createAlarm(post.getUser(), user, post.getIdx(), matching.getId(),AlarmType.COMMENT, "");
+            //alarmService.createAlarm(parentComment.getUser(), user, post.getIdx(), matching.getId(), AlarmType.RECOMMENT, "");
         }
-*/
+
         return commentRepository.save(reply);
     }
 

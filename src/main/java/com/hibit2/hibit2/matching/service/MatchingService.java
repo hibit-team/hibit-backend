@@ -50,13 +50,12 @@ public class MatchingService {
     }
     //초대장 발송
     @Transactional
-    public void sendInvitations(int postIdx, List<String> userIds) {
+    public void sendInvitations(int postIdx, List<Long> memberIds) {
         Post post = postRepository.findById(postIdx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         post.increaseRound();
-        for (String userId : userIds) {
-            Member member= memberRepository.findByNickname(userId)
-                    .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        for (Long memberId : memberIds) {
+            Member member= memberRepository.getById(memberId);
 
             Matching matchRequest = matchingRepository.findByMemberAndPost(member, post);
             if (matchRequest == null) {
@@ -158,23 +157,18 @@ public class MatchingService {
 
     //수락한 유저 중, 진짜 간 유저들
     @Transactional
-    public void saveOkuser(int postIdx, List<String> userIds) {
+    public void saveOkuser(int postIdx, List<Long> memberIds) {
         Post post = postRepository.findById(postIdx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         postHistory postHistory = postHistoryRepository.findByPostIdx(postIdx);
 
-        // 기존의 okUsers 리스트에 userIds를 추가
-        postHistory.getRealUsers().addAll(userIds);
+        // 기존의 okUsers 리스트에-> 이거 닉네임 추가로 변경하기
+        //postHistory.getRealUsers().addAll(memberIds);
 
         // postHistory 엔티티를 저장
-        postHistoryRepository.save(postHistory);
+        //postHistoryRepository.save(postHistory);
 
-        /*
-        for (String userId : userIds) {
-            Users user = usersRepository.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        }
-        */
+
     }
 
 
