@@ -43,13 +43,13 @@ public class CommentService {
         comment.setUser(user);
         comment.setContent(content);
         //댓글을 처음 단 상황인지 파악, 자신이 쓴 글은 매칭 추가 안함
-        if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
-            Matching matching = new Matching(user, post);
-            matchingRepository.save(matching);
+        //if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
+        //    Matching matching = new Matching(user, post);
+        //    matchingRepository.save(matching);
 
             //알림 생성
-            alarmService.createAlarm(post.getUser(), user, post.getIdx(),matching.getId(), AlarmType.COMMENT, "");
-        }
+        //    alarmService.createAlarm(post.getUser(), user, post.getIdx(),matching.getId(), AlarmType.COMMENT, "");
+        //}
         return commentRepository.save(comment);
     }
 
@@ -69,7 +69,7 @@ public class CommentService {
         reply.setPost(parentComment.getPost());
         parentComment.addChildComment(reply);
         post.increaseCommentNumber();
-
+/*
         //매칭 신청여부 확인
         if (!matchingService.exitMatching(user, post) && user_idx != post.getUser().getIdx()) {
             Matching matching = new Matching(user, post);
@@ -79,7 +79,7 @@ public class CommentService {
             alarmService.createAlarm(post.getUser(), user, post.getIdx(), matching.getId(),AlarmType.COMMENT, "");
             alarmService.createAlarm(parentComment.getUser(), user, post.getIdx(), matching.getId(), AlarmType.RECOMMENT, "");
         }
-
+*/
         return commentRepository.save(reply);
     }
 

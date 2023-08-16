@@ -35,9 +35,9 @@ public class SetupController {
 
     @GetMapping("/")
     public  List<Post> setup() {
-        Users user1 = new Users("a", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
-        Users user2 = new Users("b", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
-        Users user3 = new Users("c", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
+        Users user1 = new Users("a", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/Group%201181.png", "@naver.com");
+        Users user2 = new Users("b", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/Group%201181.png", "@naver.com");
+        Users user3 = new Users("c", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/Group%201181.png", "@naver.com");
 
         usersRepository.save(user1);
         usersRepository.save(user2);
@@ -50,7 +50,7 @@ public class SetupController {
         Random random = new Random();
         for (int i = 1; i <= 15; i++) {
             Post post = new Post();
-            post.setUser(user1);
+            //post.setUser(user1);
             post.setTitle("제목" + i);
             post.setContent("내용");
             post.setExhibition("에드워드 호퍼: 길 위에서");

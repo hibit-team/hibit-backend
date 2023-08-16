@@ -3,6 +3,7 @@ package com.hibit2.hibit2.post.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -29,10 +30,18 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
+    /*
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "user_idx")
     private Users user;
+*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "member_idx")
+    private Member member;
+
 
     @Column(length = 50, nullable = false)
     @Schema(description = "제목", example = "전시회 관람 같이가요")
@@ -106,11 +115,11 @@ public class Post extends BaseTimeEntity {
     private int round;
 
     @Builder
-    public Post(Users user,String title, String content, String exhibiton, int number, String openchat,
+    public Post(Member member,String title, String content, String exhibiton, int number, String openchat,
                 int view, char status, What_do what_do, List<DateTimeSlot> dateTimeSlots, String mainimg,
                 List<String> subimg, int liked,
                 List<Users> likeUsers, int comment_number, int round){
-        this.user=user;
+        this.member=member;
         this.title=title;
         this.content=content;
         this.exhibition=exhibiton;

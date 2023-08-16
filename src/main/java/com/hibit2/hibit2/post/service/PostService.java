@@ -5,6 +5,8 @@ import com.hibit2.hibit2.global.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.matching.service.MatchingService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
@@ -38,14 +40,16 @@ public class PostService {
     private final MatchingRepository matchingRepository;
     private final postHistoryRepository postHistoryRepository;
     private final MatchingService matchingService;
+    private final MemberRepository memberRepository;
+
 
     @Transactional
-    public Post save(PostSaveDto postSaveDto){
+    public Post save(PostSaveDto postSaveDto, Long idx){
 
-        Users user = usersRepository.findById("a")
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        usersRepository.save(user);
-        postSaveDto.setUser(user);
+        Member member= memberRepository.getById(idx);
+
+
+        postSaveDto.setMember(member);
 
         Post post = postSaveDto.toEntity();
         postRepository.save(post);

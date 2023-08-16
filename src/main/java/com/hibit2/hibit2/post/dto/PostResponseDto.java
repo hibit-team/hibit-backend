@@ -22,7 +22,7 @@ import java.util.List;
 public class PostResponseDto {
     private int idx;
     private String writer;
-    private int writerIdx;
+    private Long writerIdx;
     private String writerImg;
     private String title;
     private String content;
@@ -42,9 +42,9 @@ public class PostResponseDto {
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
-        this.writer=entity.getUser().getId();
-        this.writerIdx=entity.getUser().getIdx();
-        this.writerImg=entity.getUser().getProfileImg();
+        this.writer=entity.getMember().getNickname();
+        this.writerIdx=entity.getMember().getId();
+        this.writerImg=entity.getMember().getProfileImageUrl();
         this.title=entity.getTitle();
         this.exhibiton=entity.getExhibition();
         this.content=entity.getContent();

@@ -55,15 +55,9 @@ public class PostController {
                @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
                @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
     })
-    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable int user_idx){
-        Users user = usersRepository.findById(user_idx)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable Long user_idx){
 
-
-
-
-
-        Post post = postService.save(requestDto);
+        Post post = postService.save(requestDto, user_idx);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
 
     }
