@@ -3,6 +3,7 @@ package com.hibit2.hibit2.declaration.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.comment.domain.Comment;
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,13 +27,13 @@ public class Declaration {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "user_idx")
-    private Users user;
+    @JoinColumn(name = "member_idx")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "reportUser_idx")
-    private Users reportUser;
+    @JoinColumn(name = "report_idx")
+    private Member report;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})

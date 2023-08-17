@@ -15,7 +15,6 @@ import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -67,7 +66,7 @@ public class MatchingService {
                 matchRequest.setStatus(MatchStatus.PENDING);
                 matchRequest.setRound(post.getRound());
                 //알람 생성
-                //Alarm alarm = alarmService.createAlarm(user ,post.getUser(), post.getIdx(), matchRequest.getId(), AlarmType.INVITATION, "");
+                alarmService.createAlarm(member ,post.getMember(), post.getIdx(), matchRequest.getId(), AlarmType.INVITATION, "");
                 //초대장 발송 이메일 발송
                 //emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
             }
@@ -80,7 +79,7 @@ public class MatchingService {
                 newmatching.setRound(post.getRound());
                 matchingRepository.save(newmatching);
                 //알람 생성
-                //Alarm alarm = alarmService.createAlarm(user ,post.getUser(), post.getIdx(), newmatching.getId(), AlarmType.INVITATION, "");
+                alarmService.createAlarm(member ,post.getMember(), post.getIdx(), newmatching.getId(), AlarmType.INVITATION, "");
 
                 //초대장 발송 이메일 발송
                 //emailService.mailSend(user, "[히빗] 초대장이 도착했습니다.", alarm.getContent() + "\nhttps://hibit.shop");
@@ -100,17 +99,17 @@ public class MatchingService {
 
         //알람 생성 (옾챗링크
         String url = matching.getPost().getOpenchat();
-        //alarmService.createAlarm(matching.getUser() ,matching.getPost().getUser(),matching.getPost().getIdx(), matching_idx, AlarmType.OPENCHAT, url);
+        alarmService.createAlarm(matching.getMember() ,matching.getPost().getMember(),matching.getPost().getIdx(), matching_idx, AlarmType.OPENCHAT, url);
         //알림 생성(수락)
-        //Alarm alarm = alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() ,matching.getPost().getIdx(), matching_idx, AlarmType.ACCEPT, "");
+        alarmService.createAlarm(matching.getPost().getMember(), matching.getMember() ,matching.getPost().getIdx(), matching_idx, AlarmType.ACCEPT, "");
 
         //초대장 알림 history 추가
-        //List<Alarm> yetStatusAlarms = alarmRepository.findByUserIdxAndSenderIdxAndAlarmTypeAndHistory(matching.getUser().getIdx(), matching.getPost().getUser().getIdx(), AlarmType.INVITATION, "YET");
-        //yetStatusAlarms.forEach(yetAlarm -> {
-        //    yetAlarm.setHistory("OK");
-       // });
+        List<Alarm> yetStatusAlarms = alarmRepository.findByReceiverIdAndSenderIdAndAlarmTypeAndHistory(matching.getMember().getId(), matching.getPost().getMember().getId(), AlarmType.INVITATION, "YET");
+        yetStatusAlarms.forEach(yetAlarm -> {
+            yetAlarm.setHistory("OK");
+        });
 
-        //alarmRepository.saveAll(yetStatusAlarms);
+        alarmRepository.saveAll(yetStatusAlarms);
 
         //초대장 발송 이메일 발송
         //emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 수락되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
@@ -127,19 +126,16 @@ public class MatchingService {
         matchingRepository.save(matching);
 
         //알림 생성
-        //Alarm alarm = alarmService.createAlarm(matching.getPost().getUser(), matching.getUser() ,matching.getPost().getIdx(), matching_idx, AlarmType.REFUSE, "");
+        alarmService.createAlarm(matching.getPost().getMember(), matching.getMember() ,matching.getPost().getIdx(), matching_idx, AlarmType.REFUSE, "");
 
         //초대장 알림 history 추가
-        //List<Alarm> yetStatusAlarms = alarmRepository.findByUserIdxAndSenderIdxAndAlarmTypeAndHistory(matching.getUser().getIdx(), matching.getPost().getUser().getIdx(), AlarmType.INVITATION, "YET");
-        //yetStatusAlarms.forEach(yetAlarm -> {
-        //    yetAlarm.setHistory("NO");
-        //});
-
+        List<Alarm> yetStatusAlarms = alarmRepository.findByReceiverIdAndSenderIdAndAlarmTypeAndHistory(matching.getMember().getId(), matching.getPost().getMember().getId(), AlarmType.INVITATION, "YET");
+        yetStatusAlarms.forEach(yetAlarm -> {
+            yetAlarm.setHistory("NO");
+        });
 
         //초대장 발송 이메일 발송
         //emailService.mailSend(matching.getPost().getUser(), "[히빗] 초대가 거절되었습니다.", alarm.getContent() + "\nhttps://hibit.shop");
-
-
     }
 
     //수락 유저 리스트

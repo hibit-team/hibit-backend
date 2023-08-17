@@ -51,6 +51,10 @@ public class Member {
     @Schema(description = "대표 이미지", example = "http")
     private String mainImg;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Schema(description = "신고 수", example = "0")
+    private int report;
+
 
     protected Member() {
     }
@@ -107,5 +111,7 @@ public class Member {
     public String getMainImg() {
         return mainImg;
     }
+
+    public void AddReport(){this.report += 1;}
 
 }

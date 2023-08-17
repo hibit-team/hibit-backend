@@ -28,13 +28,13 @@ public class Alarm extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "member_idx")
+    @JoinColumn(name = "receiver_idx")
     private Member receiver;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "member_idx")
+    @JoinColumn(name = "sender_idx")
     private Member sender;
 
 

@@ -22,7 +22,6 @@ import java.util.List;
 public class AlarmService {
     private final MatchingRepository matchingRepository;
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
 
@@ -68,7 +67,7 @@ public class AlarmService {
 
     //알림 보기
     public List<Alarm> getAlarmByMemberId(Long member_idx){
-        return alarmRepository.findByMemberId(member_idx);
+        return alarmRepository.findByReceiverId(member_idx);
     }
 
 
