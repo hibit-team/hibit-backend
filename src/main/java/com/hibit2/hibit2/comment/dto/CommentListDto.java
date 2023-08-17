@@ -2,6 +2,8 @@ package com.hibit2.hibit2.comment.dto;
 
 
 import com.hibit2.hibit2.comment.domain.Comment;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.dto.MemberListDto;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.dto.UserlistDto;
 import lombok.Getter;
@@ -17,19 +19,19 @@ public class CommentListDto {
 
     private int idx;
     private String writer;
-    private int writerIdx;
+    private Long writerIdx;
     private String writerImg;
     private String content;
     private List<CommentListDto> childComments;
     private int liked;
     private String time;
-    private List<UserlistDto> likeUsers;
+    private List<MemberListDto> likeUsers;
 
     public CommentListDto(Comment entity) {
         this.idx = entity.getIdx();
-        this.writer=entity.getUser().getId();
-        this.writerIdx=entity.getUser().getIdx();
-        this.writerImg=entity.getUser().getProfileImg();
+        this.writer=entity.getMember().getNickname();
+        this.writerIdx=entity.getMember().getId();
+        this.writerImg=MainImg(entity.getMember());
         this.content = entity.getContent();
         this.childComments = new ArrayList<>();
         this.liked = entity.getLiked();
@@ -43,11 +45,18 @@ public class CommentListDto {
         }
 
         if (entity.getLikeUsers() != null) {
-            for (Users likeUser : entity.getLikeUsers()) {
-                this.likeUsers.add(new UserlistDto(likeUser));
+            for (Member likeUser : entity.getLikeUsers()) {
+                this.likeUsers.add(new MemberListDto(likeUser));
             }
         }
 
+    }
+    //프로필 이미지 없는 경우 기본이미지 설정
+    private String MainImg(Member member){
+        if (member.getMainImg() != null) {
+            return member.getMainImg();
+        }
+        return "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/Group%201181.png";
     }
 
 }

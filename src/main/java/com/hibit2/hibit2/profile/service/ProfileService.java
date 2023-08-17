@@ -49,6 +49,14 @@ public class ProfileService {
                 .addressDistrict(request.getAddressDistrict())
                 .build();
         Profile saveProfile = profileRepository.save(profile1);
+
+        foundMember.setNickname(profile1.getNickname());
+        foundMember.setMainImg(profile1.getMainImg());
+        memberRepository.save(foundMember);
+
+
+        System.out.println(foundMember.getNickname());
+
         return new ProfileRegisterResponse(saveProfile);
     }
 

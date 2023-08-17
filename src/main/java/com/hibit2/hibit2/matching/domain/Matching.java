@@ -1,8 +1,9 @@
 package com.hibit2.hibit2.matching.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.Post;
-import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +21,11 @@ public class Matching {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "member_idx")
+    private Member member;
+
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -35,15 +38,16 @@ public class Matching {
     @Schema(description = "글 작성자가 초대장 보낸 순서", example = "2")
     private int round;
 
-    public Matching(Users user, Post post) {
-        this.user = user;
+    public Matching(Member member, Post post) {
+        this.member = member;
         this.post = post;
         this.status = MatchStatus.HOLDING;
         this.round = round;
     }
 
-    public void setUser(Users user) {this.user = user;}
     public void setPost(Post post) {this.post = post;}
+    public void setMember(Member member) {this.member = member;}
+
 
     public void setRound(int round) {this.round = round;}
 

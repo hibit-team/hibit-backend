@@ -1,10 +1,12 @@
 package com.hibit2.hibit2.post.service;
 
 
-import com.hibit2.hibit2.global.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
+import com.hibit2.hibit2.matching.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.service.MatchingService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
@@ -34,18 +36,19 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final MatchingRepository matchingRepository;
     private final postHistoryRepository postHistoryRepository;
     private final MatchingService matchingService;
+    private final MemberRepository memberRepository;
+
 
     @Transactional
-    public Post save(PostSaveDto postSaveDto){
+    public Post save(PostSaveDto postSaveDto, Long idx){
 
-        Users user = usersRepository.findById("a")
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        usersRepository.save(user);
-        postSaveDto.setUser(user);
+        Member member= memberRepository.getById(idx);
+
+
+        postSaveDto.setMember(member);
 
         Post post = postSaveDto.toEntity();
         postRepository.save(post);
@@ -107,19 +110,18 @@ public class PostService {
         entity.delete();
     }
     @Transactional
-    public Post likePost(int post_idx, int user_idx){
+    public Post likePost(int post_idx, Long member_idx){
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        Users user = usersRepository.findById(user_idx)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        String userId = user.getId();
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
 
-        Optional<Users> existingLike = post.getLikeUsers().stream()
-                .filter(likeUser -> likeUser.getId().equals(userId))
+        Optional<Member> existingLike = post.getLikeUsers().stream()
+                .filter(likeUser -> likeUser.getNickname().equals(userId))
                 .findFirst();
 
         if (!existingLike.isPresent()) {
-            post.getLikeUsers().add(user);
+            post.getLikeUsers().add(member);
             post.increaseLike();
         } else {
             post.getLikeUsers().remove(existingLike.get());
@@ -134,24 +136,18 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
         postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
-        if (postHistory.getOkNum() == 0) {
-            throw new RuntimeException("매칭이 진행되지 않았습니다. 매칭 진행 이후 모집 완료를 눌러주세요.");
-        }
 
         postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
         postHistory.complete();
-        List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
-        List<String> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+        postHistory.setFinishTimeCurrent();
 
-
+        List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
         postHistory.setOkUsers(matchedUsers);
-        LocalDateTime currentTime = LocalDateTime.now();
-        postHistory.setFinishTime(currentTime);
+
 
         post.complete();
         postRepository.save(post);
         postHistoryRepository.save(postHistory);
-
     }
 
     @Transactional
@@ -160,8 +156,7 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
         postHistory.cancle();
-        LocalDateTime currentTime = LocalDateTime.now();
-        postHistory.setFinishTime(currentTime);
+        postHistory.setFinishTimeCurrent();
         post.cancle();
         postRepository.save(post);
         postHistoryRepository.save(postHistory);

@@ -3,6 +3,7 @@ package com.hibit2.hibit2.alarm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -27,13 +28,15 @@ public class Alarm extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "user_idx")
-    private Users user;
+    @JoinColumn(name = "receiver_idx")
+    private Member receiver;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "sender_idx")
-    private Users sender;
+    private Member sender;
+
 
     @Column(nullable = true)
     @Schema(description = "게시글 idx", example = "1")
@@ -65,8 +68,9 @@ public class Alarm extends BaseTimeEntity {
 
 
     @Builder
-    public Alarm(Users user, AlarmType alarmType, String content, String url, boolean readed, String history){
-        this.user=user;
+    public Alarm(Member receiver, Member sender, AlarmType alarmType, String content, String url, boolean readed, String history){
+        this.receiver=receiver;
+        this.sender=sender;
         this.alarmType = alarmType;
         this.content=content;
         this.url=url;

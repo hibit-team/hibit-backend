@@ -30,9 +30,9 @@ public class AlarmListDto {
         this.idx = entity.getIdx();
         this.postIdx =entity.getPostIdx();
         this.matchingIdx=entity.getMatchingIdx();
-        this.nickname = entity.getSender().getId();
+        this.nickname = entity.getSender().getNickname();
         this.type = entity.getAlarmType();
-        this.imglink = entity.getSender().getProfileImg();
+        this.imglink = entity.getSender().getMainImg();
         this.content=entity.getContent();
         this.time=entity.calculateTime();
         this.url=entity.getUrl();

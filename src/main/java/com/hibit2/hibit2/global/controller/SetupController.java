@@ -2,6 +2,9 @@ package com.hibit2.hibit2.global.controller;
 
 
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.SocialType;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.TimeSlot;
@@ -29,28 +32,23 @@ import java.util.Random;
 @RequestMapping("/setup")
 public class SetupController {
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final postHistoryRepository postHistoryRepository;
+    private final MemberRepository memberRepository;
 
 
     @GetMapping("/")
     public  List<Post> setup() {
-        Users user1 = new Users("a", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
-        Users user2 = new Users("b", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
-        Users user3 = new Users("c", "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/2.png", "@naver.com");
-
-        usersRepository.save(user1);
-        usersRepository.save(user2);
-        usersRepository.save(user3);
-        List<Post> posts = createPosts(user1);
+        Member member = new Member("a@gmail.com", "관리자", "dd", SocialType.GOOGLE);
+        member.setNickname("관리자");
+        memberRepository.save(member);
+        List<Post> posts = createPosts();
         return posts;
     }
-    private List<Post> createPosts(Users user1) {
+    private List<Post> createPosts() {
         List<Post> posts = new ArrayList<>();
         Random random = new Random();
         for (int i = 1; i <= 15; i++) {
             Post post = new Post();
-            post.setUser(user1);
             post.setTitle("제목" + i);
             post.setContent("내용");
             post.setExhibition("에드워드 호퍼: 길 위에서");

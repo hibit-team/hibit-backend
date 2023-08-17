@@ -7,6 +7,8 @@ import com.hibit2.hibit2.declaration.domain.Declaration;
 import com.hibit2.hibit2.declaration.dto.DeclarationSaveDto;
 import com.hibit2.hibit2.declaration.repository.DeclarationRepository;
 import com.hibit2.hibit2.declaration.service.DeclarationService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,13 +28,13 @@ import java.util.Optional;
 public class DeclarationController {
     private final DeclarationService declarationService;
     private final DeclarationRepository declarationRepository;
-    private final UsersRepository usersRepository;
     private final AlarmRepository alarmRepository;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/report")
     @Operation(summary = "declaration/report", description = "게시글 또는 댓글을 신고합니다.")
     public ResponseEntity<String> report(@RequestBody DeclarationSaveDto declarationSaveDto) {
-        Declaration declaration = declarationService.createDeclaration(declarationSaveDto);
+        declarationService.createDeclaration(declarationSaveDto);
         return ResponseEntity.ok("ok");
     }
 
@@ -50,14 +52,15 @@ public class DeclarationController {
         Declaration declaration = declarationRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 신고가 없습니다. id="+idx));
         declaration.changeRead();
         //추후 관리자 아이디로 변경
-        Users sender = usersRepository.findById(1)
+        Member sender = memberRepository.findByNickname("관리자")
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         //회원 테이블 신고 횟수 증가
+        declaration.getMember().AddReport();
 
         //신고 접수 알람
         Alarm alarm = new Alarm();
-        alarm.setUser(declaration.getUser());
+        alarm.setReceiver(declaration.getMember());
         alarm.setSender(sender);
         alarm.setAlarmType(AlarmType.REPORT);
         alarm.setUrl("");

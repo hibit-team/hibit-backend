@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import com.hibit2.hibit2.member.exception.InvalidMemberException;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
+
 
 @Table(name = "members")
 @Entity
@@ -26,6 +26,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+
+    @Column(name = "nickname", nullable = true)
+    @Schema(description = "닉네임", example = "아아아")
+    private String nickname;
 
     @Column(name = "email", nullable = false)
     @Schema(description = "이메일", example = "teamhibit@gmail.com")
@@ -41,6 +46,15 @@ public class Member {
     @Column(name = "social_type", nullable = false)
     @Schema(description = "소셜 로그인 유형", example = "GOOGLE")
     private SocialType socialType;
+
+    @Column(name = "mainimg", nullable = true)
+    @Schema(description = "대표 이미지", example = "http")
+    private String mainImg;
+
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Schema(description = "신고 수", example = "0")
+    private int report;
+
 
     protected Member() {
     }
@@ -86,4 +100,18 @@ public class Member {
     public SocialType getSocialType() {
         return socialType;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {this.nickname = nickname;}
+
+    public void setMainImg(String mainImg) {this.mainImg = mainImg;}
+    public String getMainImg() {
+        return mainImg;
+    }
+
+    public void AddReport(){this.report += 1;}
+
 }
