@@ -40,15 +40,22 @@ public class SetupController {
     public  List<Post> setup() {
         Member member = new Member("a@gmail.com", "관리자", "dd", SocialType.GOOGLE);
         member.setNickname("관리자");
+
+        Member member2 = new Member("a@gmail.com", "관리자", "dd", SocialType.GOOGLE);
+        member.setNickname("테스트");
+
         memberRepository.save(member);
-        List<Post> posts = createPosts();
+        memberRepository.save(member2);
+
+        List<Post> posts = createPosts(member2);
         return posts;
     }
-    private List<Post> createPosts() {
+    private List<Post> createPosts(Member member) {
         List<Post> posts = new ArrayList<>();
         Random random = new Random();
         for (int i = 1; i <= 15; i++) {
             Post post = new Post();
+            post.setMember(member);
             post.setTitle("제목" + i);
             post.setContent("내용");
             post.setExhibition("에드워드 호퍼: 길 위에서");
