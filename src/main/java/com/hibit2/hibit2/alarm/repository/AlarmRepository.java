@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
-    List<Alarm> findByUserIdx(int user_idx);
     List<Alarm> findByUserIdxAndSenderIdxAndAlarmTypeAndHistory(int userIdx, int senderIdx, AlarmType alarmType,  String history);
 
+    List<Alarm> findByMemberId(Long member_idx);
 }

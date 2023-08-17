@@ -5,6 +5,8 @@ import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.repository.AlarmRepository;
 import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.matching.repository.MatchingRepository;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.user.domain.Users;
@@ -22,10 +24,11 @@ public class AlarmService {
     private final PostRepository postRepository;
     private final UsersRepository usersRepository;
     private final AlarmRepository alarmRepository;
+    private final MemberRepository memberRepository;
 
     //알림 생성
     @Transactional
-    public Alarm createAlarm(Users user, Users sender, int postIdx, int matchingIdx, AlarmType alarmType, String url){
+    public Alarm createAlarm(Member receiver, Member sender, int postIdx, int matchingIdx, AlarmType alarmType, String url){
         Alarm alarm = new Alarm();
 
         String content;
@@ -52,7 +55,7 @@ public class AlarmService {
         } else {
             throw new IllegalArgumentException("알 수 없는 알림 타입입니다.");
         }
-        alarm.setUser(user);
+        alarm.setReceiver(receiver);
         alarm.setSender(sender);
         alarm.setAlarmType(alarmType);
         alarm.setUrl(url);
@@ -64,23 +67,24 @@ public class AlarmService {
     }
 
     //알림 보기
-    public List<Alarm> getAlarmByUserIdx(int user_idx){
-        return alarmRepository.findByUserIdx(user_idx);
+    public List<Alarm> getAlarmByMemberId(Long member_idx){
+        return alarmRepository.findByMemberId(member_idx);
     }
 
 
     //리마인더 알람 생성
     @Transactional
-    public Alarm createRemind(Users user){
+    public Alarm createRemind(Member sender){
 
-        //추후 관리자 아이디로 변경
-        Users sender = usersRepository.findById("a")
+
+        Member member = memberRepository.findByNickname("관리자")
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
 
         String content;
         content = "전시회 다녀오셨나요? 추후 변경";
         Alarm alarm = new Alarm();
-        alarm.setUser(user);
+        alarm.setReceiver(member);
         alarm.setSender(sender);
         alarm.setAlarmType(AlarmType.REMIND);
         alarm.setUrl("");

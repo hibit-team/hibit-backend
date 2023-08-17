@@ -29,7 +29,6 @@ import java.util.Map;
 public class CommentController {
 
     private final CommentService commentService;
-    private final UsersRepository usersRepository;
     private final MemberRepository memberRepository;
 
     @PostMapping("/{post_idx}/{member_idx}")

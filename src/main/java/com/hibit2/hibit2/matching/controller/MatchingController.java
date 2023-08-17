@@ -40,7 +40,7 @@ public class MatchingController {
 
         return ResponseEntity.ok(memberListDtoList);
     }
-    //초대장 발송 -> 닉네임으로 바꿔야함
+    //초대장 발송
     @PutMapping("/{post_idx}/send")
     @Operation(summary = "/matching/1/send", description = "초대장 발송")
     public ResponseEntity<Void> sendInvitations(@PathVariable int post_idx, @RequestBody List<Long> memberIds) {
@@ -66,9 +66,15 @@ public class MatchingController {
     //매칭에서 ok한 사람들 list반환
     @GetMapping("/{post_idx}/oklist")
     @Operation(summary = "/matching/1/oklist", description = "매칭 수락자 리스트")
-    public ResponseEntity<List<String>> getMatchUserByPost(@PathVariable int post_idx) {
-        List<String> matchUsers = matchingService.getMatchUserByPost(post_idx);
-        return ResponseEntity.ok(matchUsers);
+    public ResponseEntity<List<MemberListDto>> getMatchUserByPost(@PathVariable int post_idx) {
+        List<Member> matchUsers = matchingService.getMatchUserByPost(post_idx);
+        //matchUsers에 member에서 닉네임 리스트로 받아오기
+        List<MemberListDto> matchUserList = new ArrayList<>();
+
+        for (Member member : matchUsers) {
+            matchUserList.add(new MemberListDto(member));
+        }
+        return ResponseEntity.ok(matchUserList);
     }
 
 

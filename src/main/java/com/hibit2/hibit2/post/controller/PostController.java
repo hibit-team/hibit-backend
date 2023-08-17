@@ -40,7 +40,6 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final postHistoryRepository postHistoryRepository;
-    private final UsersRepository usersRepository;
     private final MemberRepository memberRepository;
 
 
@@ -167,7 +166,6 @@ public class PostController {
         if (postHistory.getOkNum() == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("매칭이 진행되지 않았습니다. 매칭 진행 이후 모집 완료를 눌러주세요.");
         }
-
         postService.completePost(post_idx);
 
         return ResponseEntity.ok().build();
@@ -177,7 +175,6 @@ public class PostController {
     @PutMapping("/{post_idx}/cancle")
     @Operation(summary = "/post/1/cancle", description = "게시글 모집 완료")
     public ResponseEntity<String> canclePost(@PathVariable int post_idx) {
-        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
         postService.canclePost(post_idx);
         return ResponseEntity.ok().build();
     }

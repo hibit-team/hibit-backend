@@ -2,6 +2,7 @@ package com.hibit2.hibit2.postHistory.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,15 +36,24 @@ public class postHistory extends BaseTimeEntity {
     @Schema(description = "글 상태 (완료 C, 취소 A)", example = "N")
     private char status;
 
+
     // 수락 유저
-    @ElementCollection
-    @Schema(description = "수락 유저 닉네임", example = "c, d")
-    private List<String> okUsers = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name ="ok_users",
+            joinColumns = @JoinColumn(name = "post_history"),
+            inverseJoinColumns = @JoinColumn(name = "member_idx")
+    )
+    private List<Member> okUsers = new ArrayList<>();
 
     // 진짜 간 유저
-    @ElementCollection
-    @Schema(description = "진짜 깐 사람들 닉네임", example = "c, d")
-    private List<String> realUsers = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name ="real_users",
+            joinColumns = @JoinColumn(name = "post_history"),
+            inverseJoinColumns = @JoinColumn(name = "member_idx")
+    )
+    private List<Member> realUsers = new ArrayList<>();
 
     @Column(nullable = true)
     @Schema(description = "완료 시간", example = "2023-07-23 19:24" )
@@ -63,7 +73,7 @@ public class postHistory extends BaseTimeEntity {
     private float percent;
 
     @Builder
-    public postHistory(Post post, List<String> okUsers,  List<String> realUsers, LocalDateTime finishTime,
+    public postHistory(Post post, List<Member> okUsers,  List<Member> realUsers, LocalDateTime finishTime,
                        int okNum, int noNum, float percent){
         this.post=post;
         this.okUsers=okUsers;
@@ -82,6 +92,11 @@ public class postHistory extends BaseTimeEntity {
     }
     public void cancle(){
         this.status = 'A';
+    }
+
+    public void setFinishTimeCurrent() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        this.finishTime = currentTime;
     }
 
 

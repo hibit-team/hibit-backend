@@ -143,13 +143,13 @@ public class MatchingService {
     }
 
     //수락 유저 리스트
-    public List<String> getMatchUserByPost(int post_idx) {
+    public List<Member> getMatchUserByPost(int post_idx) {
         List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
-        List<String> matchedUsers = new ArrayList<>();
+        List<Member> matchedUsers = new ArrayList<>();
         for (Matching matching : matchingList) {
-            String userId = matching.getMember().getNickname();
-            if (!matchedUsers.contains(userId)) {
-                matchedUsers.add(userId);
+            Member member =  matching.getMember();
+            if (!matchedUsers.contains(member)) {
+                matchedUsers.add(member);
             }
         }
         return matchedUsers;
@@ -161,12 +161,20 @@ public class MatchingService {
         Post post = postRepository.findById(postIdx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         postHistory postHistory = postHistoryRepository.findByPostIdx(postIdx);
+        List<Member> realUsers = new ArrayList<>();
 
-        // 기존의 okUsers 리스트에-> 이거 닉네임 추가로 변경하기
-        //postHistory.getRealUsers().addAll(memberIds);
+        for (Long id : memberIds){
+            Member member= memberRepository.getById(id);
+            if(!realUsers.contains(member)){
+                realUsers.add(member);
+            }
+        }
+
+        // 기존의 okUsers 리스트에 추가
+        postHistory.getRealUsers().addAll(realUsers);
 
         // postHistory 엔티티를 저장
-        //postHistoryRepository.save(postHistory);
+        postHistoryRepository.save(postHistory);
 
 
     }

@@ -2,6 +2,9 @@ package com.hibit2.hibit2.global.controller;
 
 
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.domain.SocialType;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.TimeSlot;
@@ -29,13 +32,15 @@ import java.util.Random;
 @RequestMapping("/setup")
 public class SetupController {
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final postHistoryRepository postHistoryRepository;
+    private final MemberRepository memberRepository;
 
 
     @GetMapping("/")
     public  List<Post> setup() {
-
+        Member member = new Member("a@gmail.com", "관리자", "dd", SocialType.GOOGLE);
+        member.setNickname("관리자");
+        memberRepository.save(member);
         List<Post> posts = createPosts();
         return posts;
     }

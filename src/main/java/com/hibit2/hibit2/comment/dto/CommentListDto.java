@@ -51,7 +51,7 @@ public class CommentListDto {
         }
 
     }
-
+    //프로필 이미지 없는 경우 기본이미지 설정
     private String MainImg(Member member){
         if (member.getMainImg() != null) {
             return member.getMainImg();

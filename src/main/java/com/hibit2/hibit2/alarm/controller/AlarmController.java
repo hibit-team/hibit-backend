@@ -6,6 +6,8 @@ import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.dto.AlarmListDto;
 import com.hibit2.hibit2.alarm.repository.AlarmRepository;
 import com.hibit2.hibit2.alarm.service.AlarmService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,23 +29,22 @@ import java.util.List;
 @RequestMapping("/alarm")
 public class AlarmController {
     private final AlarmService alarmService;
-    private final UsersRepository usersRepository;
     private final AlarmRepository alarmRepository;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/make")
     @Operation(summary = "alarm/make", description = "모든 유저에게 알림 생성(이벤트)")
     public ResponseEntity<Alarm> save(@RequestBody String content){
 
-        //추후 관리자 아이디로 변경
-        Users sender = usersRepository.findById(1)
+        Member receiver = memberRepository.findByNickname("관리자")
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        List<Users> allUsers = usersRepository.findAll();
+        List<Member> allMembers = memberRepository.findAll();
 
-        for (Users user : allUsers) {
+        for (Member member : allMembers) {
             Alarm alarm = new Alarm();
-            alarm.setUser(user);
-            alarm.setSender(sender);
+            alarm.setReceiver(receiver);
+            alarm.setSender(member);
             alarm.setAlarmType(AlarmType.EVENT);
             alarm.setUrl("");
             alarm.setContent(content);
@@ -55,8 +56,8 @@ public class AlarmController {
 
     @GetMapping("/list")
     @Operation(summary = "alarm/list", description = "해당 유저 알람 전체 리스트")
-    public ResponseEntity<List<AlarmListDto>> getAlarmList(@RequestParam int userIdx){
-        List<Alarm> alarms = alarmService.getAlarmByUserIdx(userIdx);
+    public ResponseEntity<List<AlarmListDto>> getAlarmList(@RequestParam Long member_idx){
+        List<Alarm> alarms = alarmService.getAlarmByMemberId(member_idx);
         alarms.sort(Comparator.comparing(Alarm::getCreatedDate).reversed());
         List<AlarmListDto> alarmListDtos = new ArrayList<>();
         for (Alarm alarm : alarms){

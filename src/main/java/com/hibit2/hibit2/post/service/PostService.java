@@ -136,24 +136,18 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
         postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
-        if (postHistory.getOkNum() == 0) {
-            throw new RuntimeException("매칭이 진행되지 않았습니다. 매칭 진행 이후 모집 완료를 눌러주세요.");
-        }
 
         postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
         postHistory.complete();
-        List<Matching> matchingList = matchingRepository.findByPostIdxAndStatus(post_idx, MatchStatus.OK);
-        List<String> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+        postHistory.setFinishTimeCurrent();
 
-
+        List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
         postHistory.setOkUsers(matchedUsers);
-        LocalDateTime currentTime = LocalDateTime.now();
-        postHistory.setFinishTime(currentTime);
+
 
         post.complete();
         postRepository.save(post);
         postHistoryRepository.save(postHistory);
-
     }
 
     @Transactional
@@ -162,8 +156,7 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
         postHistory.cancle();
-        LocalDateTime currentTime = LocalDateTime.now();
-        postHistory.setFinishTime(currentTime);
+        postHistory.setFinishTimeCurrent();
         post.cancle();
         postRepository.save(post);
         postHistoryRepository.save(postHistory);
