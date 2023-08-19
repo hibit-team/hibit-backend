@@ -8,16 +8,22 @@ import org.springframework.stereotype.Component;
 public class AuthTokenCreator implements TokenCreator {
     private final TokenProvider tokenProvider;
     private final TokenRepository tokenRepository;
+    private final AuthTokenResponseHandler authTokenResponseHandler;
 
-    public AuthTokenCreator(final TokenProvider tokenProvider, final TokenRepository tokenRepository) {
+    public AuthTokenCreator(final TokenProvider tokenProvider, final TokenRepository tokenRepository, final AuthTokenResponseHandler authTokenResponseHandler) {
         this.tokenProvider = tokenProvider;
         this.tokenRepository = tokenRepository;
+        this.authTokenResponseHandler = authTokenResponseHandler;
     }
 
     public AuthToken createAuthToken(final Long memberId) {
         Long id =  memberId;
         String accessToken = tokenProvider.createAccessToken(String.valueOf(memberId));
         String refreshToken = createRefreshToken(memberId);
+
+        // 클라이언트로 리프레시 토큰 값을 전달하는 부분
+        authTokenResponseHandler.setRefreshTokenCookie(refreshToken);
+
         return new AuthToken(id, accessToken, refreshToken);
     }
 
@@ -28,7 +34,6 @@ public class AuthTokenCreator implements TokenCreator {
         String refreshToken = tokenProvider.createRefreshToken(String.valueOf(memberId));
         return tokenRepository.save(memberId, refreshToken);
     }
-
     public AuthToken renewAuthToken(final String refreshToken) {
         tokenProvider.validateToken(refreshToken);
         Long memberId = Long.valueOf(tokenProvider.getPayload(refreshToken));
