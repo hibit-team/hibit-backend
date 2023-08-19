@@ -50,18 +50,9 @@ public class AuthController {
     @PostMapping("/{oauthProvider}/token")
     @Operation(summary = "/{oauthProvider}/token", description = "액세스 토큰, 리프레시 토큰 발급 받기")
     public ResponseEntity<AccessAndRefreshTokenResponse> generateAccessAndRefreshToken(
-            @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest,
-            HttpServletResponse httpResponse) {
+            @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthMember oAuthMember = oAuthClient.getOAuthMember(tokenRequest.getCode(), tokenRequest.getRedirectUri());
         AccessAndRefreshTokenResponse authResponse = authService.generateAccessAndRefreshToken(oAuthMember);
-
-        // 리프레시 토큰을 쿠키에 설정
-        Cookie refreshTokenCookie = new Cookie("refreshToken", authResponse.getRefreshToken());
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setMaxAge(14 * 24 * 60 * 60); // 리프레시 토큰 유효 기간 설정 (14일)
-        refreshTokenCookie.setPath("/"); // 쿠키의 유효 경로 설정 (애플리케이션 전체)
-        httpResponse.addCookie(refreshTokenCookie);
-
         return ResponseEntity.ok(authResponse);
     }
 
