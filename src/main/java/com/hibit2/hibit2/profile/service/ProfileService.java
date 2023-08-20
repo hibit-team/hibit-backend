@@ -115,4 +115,11 @@ public class ProfileService {
         // 해당 멤버의 다른 프로필 중 닉네임이 같은 것이 있는지 확인
         return profileRepository.existsByMemberIdAndNickname(memberId, nickname);
     }
+
+    public ProfileResponse findProfileByMemberId(Long memberId) {
+        Profile profile = profileRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
+
+        return new ProfileResponse(profile);
+    }
 }
