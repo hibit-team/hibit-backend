@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.auth.application;
 
+import com.hibit2.hibit2.auth.domain.AuthAccessToken;
 import com.hibit2.hibit2.auth.domain.AuthToken;
 import com.hibit2.hibit2.auth.domain.OAuthToken;
 import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
@@ -35,14 +36,15 @@ public class AuthService {
         this.eventPublisher = eventPublisher;
     }
     @Transactional
-    public AccessAndRefreshTokenResponse generateAccessAndRefreshToken(final OAuthMember oAuthMember) {
+    public AccessTokenResponse generateAccessAndRefreshToken(final OAuthMember oAuthMember) {
         Member foundMember = findMember(oAuthMember);
 
         OAuthToken oAuthToken = getOAuthToken(oAuthMember, foundMember);
         oAuthToken.change(oAuthMember.getRefreshToken());
 
-        AuthToken authToken = tokenCreator.createAuthToken(foundMember.getId());
-        return new AccessAndRefreshTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getRefreshToken());
+        AuthAccessToken authToken = tokenCreator.createAuthAccessToken(foundMember.getId());
+
+        return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getIsProfileRegistered());
     }
 
     private OAuthToken getOAuthToken(final OAuthMember oAuthMember, final Member member) {
@@ -67,10 +69,10 @@ public class AuthService {
         return savedMember;
     }
 
-    public AccessTokenResponse generateAccessToken(final TokenRenewalRequest tokenRenewalRequest) {
+    public AccessAndRefreshTokenResponse generateAccessToken(final TokenRenewalRequest tokenRenewalRequest) {
         String refreshToken = tokenRenewalRequest.getRefreshToken();
         AuthToken authToken = tokenCreator.renewAuthToken(refreshToken);
-        return new AccessTokenResponse(authToken.getAccessToken());
+        return new AccessAndRefreshTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getRefreshToken());
     }
 
     public Long extractMemberId(final String accessToken) {
