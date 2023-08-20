@@ -39,8 +39,8 @@ public class ProfileUpdateRequest {
     @Schema(description = "나의 대표사진", example = "http://hibitbucket")
     private String mainImg;
 
-    @Schema(description = "나머지 이미지 url 리스트", example = "[\"http://hibitbucket1\", \"http://hibitbucket2\"]" )
-    private List<String > subImg;
+    @Schema(description = "나머지 이미지 url 리스트", example = "[\"http://hibitbucket1\", \"http://hibitbucket2\"]")
+    private List<String> subImg;
 
     @Schema(description = "직업 혹은 학교", example = "디자이너")
     private String job;

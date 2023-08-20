@@ -41,8 +41,8 @@ public class ProfileRegisterRequest {
     @Schema(description = "나의 대표사진", example = "http://hibitbucket")
     private String mainImg;
 
-    @Schema(description = "나머지 이미지 url 리스트", example = "[\"http://hibitbucket1\", \"http://hibitbucket2\"]" )
-    private List<String > subImg;
+    @Schema(description = "나머지 이미지 url 리스트", example = "[\"http://hibitbucket1\", \"http://hibitbucket2\"]")
+    private List<String> subImg;
 
     @Schema(description = "직업 혹은 학교", example = "대학생")
     private String job;
@@ -70,6 +70,7 @@ public class ProfileRegisterRequest {
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
     }
+
     public Profile toEntity(final Member member) {
         return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict);
     }

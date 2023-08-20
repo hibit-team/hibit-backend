@@ -94,6 +94,7 @@ public class ProfileService {
         return profileRepository.findById(profileId)
                 .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
     }
+
     public void updateProfile(final Long memberId, final ProfileUpdateRequest request) {
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));

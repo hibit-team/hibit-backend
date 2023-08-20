@@ -41,7 +41,7 @@ public class ProfileController {
     @PostMapping
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<ProfileRegisterResponse> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                     @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
+                                                        @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
 
         //프로필 등록 API에서 요청 데이터의 성격 정보를 검증하고 최대 5개까지만 선택되었는지 확인한다.
         List<PersonalityType> selectedPersonalities = profileRegisterRequest.getPersonality();
@@ -74,7 +74,7 @@ public class ProfileController {
     }
 
     @GetMapping("/personalities")
-    @Operation(summary = "/personalities",description = "사용자에게 선택할 수 있는 성격 목록을 반환합니다.")
+    @Operation(summary = "/personalities", description = "사용자에게 선택할 수 있는 성격 목록을 반환합니다.")
     public ResponseEntity<List<PersonalityType>> getAvailablePersonalities() {
         List<PersonalityType> personalities = Arrays.asList(PersonalityType.values());
         return ResponseEntity.ok(personalities);
