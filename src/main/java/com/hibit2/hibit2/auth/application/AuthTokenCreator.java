@@ -3,7 +3,6 @@ package com.hibit2.hibit2.auth.application;
 import com.hibit2.hibit2.auth.domain.AuthAccessToken;
 import com.hibit2.hibit2.auth.domain.AuthToken;
 import com.hibit2.hibit2.auth.domain.TokenRepository;
-import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.profile.domain.Profile;
 import com.hibit2.hibit2.profile.repository.ProfileRepository;
 import org.springframework.stereotype.Component;
@@ -60,16 +59,20 @@ public class AuthTokenCreator implements TokenCreator {
         String refreshToken = tokenProvider.createRefreshToken(String.valueOf(memberId));
         return tokenRepository.save(memberId, refreshToken);
     }
-    public AuthToken renewAuthToken(final String refreshToken) {
+    public AuthAccessToken renewAuthToken(final String refreshToken) {
         tokenProvider.validateToken(refreshToken);
         Long memberId = Long.valueOf(tokenProvider.getPayload(refreshToken));
 
         String accessTokenForRenew = tokenProvider.createAccessToken(String.valueOf(memberId));
         String refreshTokenForRenew = tokenRepository.getToken(memberId);
+        int isProfileRegistered = isProfileRegistered(memberId);
 
-        AuthToken renewalAuthToken = new AuthToken(memberId, accessTokenForRenew, refreshTokenForRenew);
-        renewalAuthToken.validateHasSameRefreshToken(refreshToken);
-        return renewalAuthToken;
+        // 클라이언트로 리프레시 토큰 값을 전달하는 부분
+        authTokenResponseHandler.setRefreshTokenCookie(refreshTokenForRenew);
+
+        AuthAccessToken renewalAuthAccessToken = new AuthAccessToken(memberId, accessTokenForRenew, isProfileRegistered);
+        renewalAuthAccessToken.validateHasSameRefreshToken(refreshTokenForRenew, refreshToken);
+        return renewalAuthAccessToken;
     }
 
     public Long extractPayLoad(final String accessToken) {

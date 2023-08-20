@@ -8,7 +8,7 @@ public interface TokenCreator {
 
     AuthAccessToken createAuthAccessToken(final Long memberId);
 
-    AuthToken renewAuthToken(final String outRefreshToken);
+    AuthAccessToken renewAuthToken(final String outRefreshToken);
 
     Long extractPayLoad(final String accessToken);
 }

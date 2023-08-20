@@ -1,5 +1,7 @@
 package com.hibit2.hibit2.auth.domain;
 
+import com.hibit2.hibit2.auth.exception.NoSuchTokenException;
+
 // 소셜 로그인으로 액세스 토큰 발급과 프로필 여부를 확인하는 클래스
 public class AuthAccessToken {
 
@@ -24,5 +26,11 @@ public class AuthAccessToken {
 
     public int getIsProfileRegistered() {
         return isProfileRegistered;
+    }
+
+    public void validateHasSameRefreshToken(final String refreshTokenForRenew , final String otherRefreshToken) {
+        if (!refreshTokenForRenew.equals(otherRefreshToken)) {
+            throw new NoSuchTokenException("회원의 리프레시 토큰이 아닙니다.");
+        }
     }
 }

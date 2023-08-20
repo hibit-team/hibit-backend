@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,9 +56,10 @@ public class AuthController {
 
     @PostMapping("/token/access")
     @Operation(summary = "/token/access", description = "리프레시 토큰으로 새로운 액세스 토큰 발급 받기")
-    public ResponseEntity<AccessAndRefreshTokenResponse> generateAccessToken(
-            @Valid @RequestBody final TokenRenewalRequest tokenRenewalRequest) {
-        AccessAndRefreshTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
+    public ResponseEntity<AccessTokenResponse> generateAccessToken(
+           @RequestHeader("refreshToken") String refreshToken) {
+        TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
+        AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
         return ResponseEntity.ok(response);
     }
 

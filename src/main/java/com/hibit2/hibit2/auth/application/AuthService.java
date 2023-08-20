@@ -69,10 +69,10 @@ public class AuthService {
         return savedMember;
     }
 
-    public AccessAndRefreshTokenResponse generateAccessToken(final TokenRenewalRequest tokenRenewalRequest) {
+    public AccessTokenResponse generateAccessToken(final TokenRenewalRequest tokenRenewalRequest) {
         String refreshToken = tokenRenewalRequest.getRefreshToken();
-        AuthToken authToken = tokenCreator.renewAuthToken(refreshToken);
-        return new AccessAndRefreshTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getRefreshToken());
+        AuthAccessToken authToken = tokenCreator.renewAuthToken(refreshToken);
+        return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getIsProfileRegistered());
     }
 
     public Long extractMemberId(final String accessToken) {
