@@ -26,4 +26,9 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
                 .orElseThrow(NotFoundProfileException::new);
     }
 
+    @Query("SELECT p "
+    + "FROM Profile p "
+    + "WHERE p.member.id = :memberId")
+    Optional<Profile> findByMemberId(@Param("memberId") Long memberId);
+
 }

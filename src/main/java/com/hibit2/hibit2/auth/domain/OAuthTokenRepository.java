@@ -20,4 +20,5 @@ public interface OAuthTokenRepository extends JpaRepository<OAuthToken, Long> {
         return findByMemberId(memberId)
                 .orElseThrow(NoSuchOAuthTokenException::new);
     }
+    void deleteAllByMemberId(Long memberId);
 }
