@@ -3,11 +3,11 @@ package com.hibit2.hibit2.auth.presentation;
 import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.auth.dto.OAuthMember;
 import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
-import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.OAuthUriResponse;
 import com.hibit2.hibit2.global.token.Login;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
 import com.hibit2.hibit2.auth.dto.request.TokenRequest;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
+@Tag(name = "auth", description = "인증/인가")
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
