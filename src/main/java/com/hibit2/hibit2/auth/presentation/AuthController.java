@@ -71,7 +71,7 @@ public class AuthController {
     }
     @GetMapping("/logout")
     @Operation(summary = "/logout", description = "로그아웃 시, 서버에서 accessToken과 refreshToken값을 만료시킨다.")
-    public ResponseEntity<Void> logout(@AuthenticationPrincipal @Login LoginMember loginMember) {
+    public ResponseEntity<Void> logout(@Login LoginMember loginMember) {
         authService.deleteToken(loginMember.getId());
         return ResponseEntity.noContent().build();
     }
