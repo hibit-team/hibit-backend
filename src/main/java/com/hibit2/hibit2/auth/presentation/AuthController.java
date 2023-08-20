@@ -6,6 +6,7 @@ import com.hibit2.hibit2.auth.dto.request.TokenRenewalRequest;
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
 import com.hibit2.hibit2.auth.dto.response.OAuthUriResponse;
+import com.hibit2.hibit2.global.token.Login;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 
@@ -67,5 +68,11 @@ public class AuthController {
     @Operation(summary = "/validate/token", description = "웹 페이지 로딩시 유효한 토큰인지 확인")
     public ResponseEntity<Void> validateToken(@AuthenticationPrincipal final LoginMember loginMember) {
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/logout")
+    @Operation(summary = "/logout", description = "로그아웃 시, 서버에서 accessToken과 refreshToken값을 만료시킨다.")
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal @Login LoginMember loginMember) {
+        authService.deleteToken(loginMember.getId());
+        return ResponseEntity.noContent().build();
     }
 }

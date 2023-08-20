@@ -80,4 +80,9 @@ public class AuthService {
         memberRepository.validateExistById(memberId);
         return memberId;
     }
+
+    @Transactional
+    public void deleteToken(Long id) {
+        oAuthTokenRepository.deleteAllByMemberId(id);
+    }
 }
