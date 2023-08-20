@@ -67,7 +67,9 @@ public class JwtTokenProvider implements TokenProvider {
                     .build()
                     .parseClaimsJws(token);
 
-            claims.getBody().getExpiration().before(new Date());
+            if (claims.getBody().getExpiration().before(new Date())) { // 만료 시간이 현재 시간보다 이전 시간인지 확인하는 조건문
+                throw new InvalidTokenException("토큰이 만료되었습니다.");
+            }
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidTokenException();
         }
