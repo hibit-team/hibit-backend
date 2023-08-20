@@ -95,7 +95,7 @@ public class ProfileController {
     }
 
     @GetMapping("/other/{otherMemberId}")
-    @Operation(summary = "other", description = "타인 프로필을 조회한다.")
+    @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
     public ResponseEntity<ProfileOtherResponse> findProfileByOtherId(@AuthenticationPrincipal final LoginMember loginMember,
                                                                      @PathVariable final Long otherMemberId) {
         ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
