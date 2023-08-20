@@ -22,7 +22,7 @@ public class ProfileRegisterRequest {
     private String nickname;
 
     @NotNull(message = "공백일 수 없습니다.")
-    @Schema(description = "나이", example = "20")
+    @Schema(description = "나이", example = "25")
     private int age;
 
     @NotNull(message = "공백일 수 없습니다.")
@@ -30,11 +30,11 @@ public class ProfileRegisterRequest {
     private int gender;
 
     @NotBlank(message = "공백일 수 없습니다.")
-    @Schema(description = "본인의 성격을 골라주세요.(최대 5개)", example = "[\"유머있는\", \"낙천적인\", \"외향적인\"]")
+    @Schema(description = "본인의 성격을 골라주세요.(최대 5개)", example = "[\"창의적인\", \"책임감이 강한\", \"외향적인\", \"개성있는\", \"계획적인\"]")
     private List<PersonalityType> personality;
 
     @NotBlank(message = "공백일 수 없습니다.")
-    @Schema(description = "메이트에게 자신을 소개해주세요", example = "안녕하세요 저는 20살 남성 히빗이라고 합니다.")
+    @Schema(description = "메이트에게 자신을 소개해주세요", example = "안녕하세요 저는 25살 남성 히빗이라고 합니다.")
     private String introduce;
 
     @NotBlank(message = "공백일 수 없습니다.")
@@ -44,7 +44,7 @@ public class ProfileRegisterRequest {
     @Schema(description = "나머지 이미지 url 리스트", example = "[\"http://hibitbucket1\", \"http://hibitbucket2\"]" )
     private List<String > subImg;
 
-    @Schema(description = "직업 혹은 학교", example = "College student")
+    @Schema(description = "직업 혹은 학교", example = "대학생")
     private String job;
 
     @Schema(description = "시/도", example = "서울특별시")
