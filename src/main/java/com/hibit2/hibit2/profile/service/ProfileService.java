@@ -93,8 +93,9 @@ public class ProfileService {
         return profileRepository.findById(profileId)
                 .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
     }
-    public void update(final Long memberId, final Long profileId, final ProfileUpdateRequest request) {
-        Profile profile = profileRepository.getByMemberIdAndProfileId(memberId, profileId);
+    public void updateProfile(final Long memberId, final ProfileUpdateRequest request) {
+        Profile profile = profileRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
         profile.updateNickname(request.getNickname());
         profile.updateAge(request.getAge());
@@ -108,5 +109,10 @@ public class ProfileService {
         profile.updateAddressDistinct(request.getAddressDistrict());
 
         profileRepository.save(profile);
+    }
+
+    public boolean existsOtherProfileWithNickname(Long memberId, String nickname) {
+        // 해당 멤버의 다른 프로필 중 닉네임이 같은 것이 있는지 확인
+        return profileRepository.existsByMemberIdAndNickname(memberId, nickname);
     }
 }

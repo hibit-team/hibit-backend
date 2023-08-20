@@ -11,6 +11,7 @@ import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
 import com.hibit2.hibit2.profile.exception.InvalidPersonalityException;
+import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -103,11 +104,15 @@ public class ProfileController {
     }
 
     @PutMapping("/me/{profileId}")
-    @Operation(summary = "/me/1", description = "프로필 수정")
+    @Operation(summary = "/me/1", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                       @PathVariable final Long profileId,
                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
-        profileService.update(loginMember.getId(), profileId, profileUpdateRequest);
+        // 닉네임이 이미 존재하는 경우라면 예외 처리 발생
+        if (profileService.existsOtherProfileWithNickname(loginMember.getId(), profileUpdateRequest.getNickname())) {
+            throw new NicknameAlreadyTakenException();
+        }
+
+        profileService.updateProfile(loginMember.getId(), profileUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
