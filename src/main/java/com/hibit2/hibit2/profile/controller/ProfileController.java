@@ -1,6 +1,7 @@
 package com.hibit2.hibit2.profile.controller;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -69,6 +70,13 @@ public class ProfileController {
         // 이 방식은 생성된 리소스의 URI를 반환하면서 동시에 응답 본문에 프로필 등록에 대한 세부 정보를 포함함.
         // 클라이언트는 프로필 정보를 추가 요청 없이 바로 확인할 수 있음.
         return ResponseEntity.created(URI.create("/api/profiles/" + response.getId())).body(response);
+    }
+
+    @GetMapping("/personalities")
+    @Operation(summary = "/personalities",description = "사용자에게 선택할 수 있는 성격 목록을 반환합니다.")
+    public ResponseEntity<List<PersonalityType>> getAvailablePersonalities() {
+        List<PersonalityType> personalities = Arrays.asList(PersonalityType.values());
+        return ResponseEntity.ok(personalities);
     }
 
     @GetMapping
