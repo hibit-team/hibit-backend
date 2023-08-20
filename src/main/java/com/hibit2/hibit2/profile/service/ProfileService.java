@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class ProfileService {
 
     private final MemberRepository memberRepository;
@@ -33,16 +33,23 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    public ProfileRegisterResponse save(Long memberId, ProfileRegisterRequest request) {
+    public ProfileRegisterResponse saveProfile(Long memberId, ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
 
-        // 닉네임이 이미 존재한 경우라면 예외 처리 발생
+        // 닉네임 중복 여부 검사하여 예외 메시지 추가
         if (profileRepository.existsByNickname(request.getNickname())) {
-            throw new NicknameAlreadyTakenException();
+            throw new NicknameAlreadyTakenException("이미 사용 중인 닉네임입니다.");
         }
 
-        Profile profile1 = Profile.builder()
-                .member(foundMember)
+        Profile newProfile = createProfile(foundMember, request);
+        updateMemberInfo(foundMember, newProfile);
+
+        return new ProfileRegisterResponse(newProfile);
+    }
+
+    private Profile createProfile(Member member, ProfileRegisterRequest request) {
+        return profileRepository.save(Profile.builder()
+                .member(member)
                 .nickname(request.getNickname())
                 .age(request.getAge())
                 .gender(request.getGender())
@@ -53,14 +60,13 @@ public class ProfileService {
                 .job(request.getJob())
                 .addressCity(request.getAddressCity())
                 .addressDistrict(request.getAddressDistrict())
-                .build();
-        Profile saveProfile = profileRepository.save(profile1);
+                .build());
+    }
 
-        foundMember.setNickname(profile1.getNickname());
-        foundMember.setMainImg(profile1.getMainImg());
-        memberRepository.save(foundMember);
-
-        return new ProfileRegisterResponse(saveProfile);
+    private void updateMemberInfo(Member member, Profile profile) {
+        member.setNickname(profile.getNickname());
+        member.setMainImg(profile.getMainImg());
+        memberRepository.save(member);
     }
 
     public ProfileResponse findProfileByIdAndMemberId(LoginMember loginMember, Long profileId) {
@@ -87,7 +93,6 @@ public class ProfileService {
         return profileRepository.findById(profileId)
                 .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
     }
-    @Transactional
     public void update(final Long memberId, final Long profileId, final ProfileUpdateRequest request) {
         Profile profile = profileRepository.getByMemberIdAndProfileId(memberId, profileId);
 

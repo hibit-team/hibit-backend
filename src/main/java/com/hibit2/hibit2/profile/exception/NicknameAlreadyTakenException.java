@@ -5,6 +5,6 @@ public class NicknameAlreadyTakenException extends RuntimeException {
         super(message);
     }
     public NicknameAlreadyTakenException() {
-        this("이미 존재하는 닉네임 입니다.");
+        this("이미 사용중인 닉네임 입니다.");
     }
 }
