@@ -83,10 +83,11 @@ public class ProfileService {
     }
 
 
-    public ProfileOtherResponse findOtherProfile(Long profileId) {
-        Profile profile = findProfileById(profileId);
+    public ProfileOtherResponse findOtherProfile(Long otherMemberId) {
+        Profile profile = profileRepository.findByMemberId(otherMemberId)
+                .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
 
-        return ProfileOtherResponse.from(profile);
+        return new ProfileOtherResponse(profile);
     }
 
     public Profile findProfileById(Long profileId) {

@@ -94,11 +94,11 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/other/{profileId}")
-    @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
-    public ResponseEntity<ProfileOtherResponse> findProfileByOtherId(@PathVariable Long profileId) {
-        ProfileOtherResponse response = profileService.findOtherProfile(profileId);
-
+    @GetMapping("/other/{otherMemberId}")
+    @Operation(summary = "other", description = "타인 프로필을 조회한다.")
+    public ResponseEntity<ProfileOtherResponse> findProfileByOtherId(@AuthenticationPrincipal final LoginMember loginMember,
+                                                                     @PathVariable final Long otherMemberId) {
+        ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
         return ResponseEntity.ok(response);
     }
 

@@ -19,6 +19,9 @@ public class ProfileOtherResponse {
     private String introduce;
     private String mainImg;
 
+    public ProfileOtherResponse(Profile profile) {
+    }
+
     public static ProfileOtherResponse from(Profile profile) {
         return ProfileOtherResponse.builder()
                 .id(profile.getId())
