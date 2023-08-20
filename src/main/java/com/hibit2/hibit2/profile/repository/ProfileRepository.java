@@ -31,4 +31,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     + "WHERE p.member.id = :memberId")
     Optional<Profile> findByMemberId(@Param("memberId") Long memberId);
 
+    boolean existsByNickname(String nickname);
+
 }

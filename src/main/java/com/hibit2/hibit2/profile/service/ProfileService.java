@@ -3,6 +3,7 @@ package com.hibit2.hibit2.profile.service;
 import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +33,14 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    @Transactional
     public ProfileRegisterResponse save(Long memberId, ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
+
+        // 닉네임이 이미 존재한 경우라면 예외 처리 발생
+        if (profileRepository.existsByNickname(request.getNickname())) {
+            throw new NicknameAlreadyTakenException();
+        }
+
         Profile profile1 = Profile.builder()
                 .member(foundMember)
                 .nickname(request.getNickname())
@@ -53,9 +59,6 @@ public class ProfileService {
         foundMember.setNickname(profile1.getNickname());
         foundMember.setMainImg(profile1.getMainImg());
         memberRepository.save(foundMember);
-
-
-        System.out.println(foundMember.getNickname());
 
         return new ProfileRegisterResponse(saveProfile);
     }
