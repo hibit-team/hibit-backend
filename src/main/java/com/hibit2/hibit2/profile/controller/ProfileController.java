@@ -87,7 +87,7 @@ public class ProfileController {
     }
 
     @GetMapping("/me/{profileId}")
-    @Operation(summary = "/me/profile", description = "본인 프로필을 조회한다.")
+    @Operation(summary = "/me/1", description = "본인 프로필을 조회한다.")
     public ResponseEntity<ProfileResponse> findProfileById(@AuthenticationPrincipal final LoginMember loginMember,
                                                            @PathVariable final Long profileId) {
         ProfileResponse response = profileService.findProfileByIdAndMemberId(loginMember, profileId);
@@ -95,7 +95,7 @@ public class ProfileController {
     }
 
     @GetMapping("/other/{profileId}")
-    @Operation(summary = "other/profile", description = "타인 프로필을 조회한다.")
+    @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
     public ResponseEntity<ProfileOtherResponse> findProfileByOtherId(@PathVariable Long profileId) {
         ProfileOtherResponse response = profileService.findOtherProfile(profileId);
 
@@ -103,7 +103,7 @@ public class ProfileController {
     }
 
     @PutMapping("/me/{profileId}")
-    @Operation(summary = "/me/profile", description = "프로필 수정")
+    @Operation(summary = "/me/1", description = "프로필 수정")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                        @PathVariable final Long profileId,
                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
