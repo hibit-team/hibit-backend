@@ -6,11 +6,14 @@ import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.dto.AlarmListDto;
 import com.hibit2.hibit2.alarm.repository.AlarmRepository;
 import com.hibit2.hibit2.alarm.service.AlarmService;
+import com.hibit2.hibit2.auth.dto.LoginMember;
+import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +59,8 @@ public class AlarmController {
 
     @GetMapping("/list")
     @Operation(summary = "alarm/list", description = "해당 유저 알람 전체 리스트")
-    public ResponseEntity<List<AlarmListDto>> getAlarmList(@RequestParam Long member_idx){
-        List<Alarm> alarms = alarmService.getAlarmByMemberId(member_idx);
+    public ResponseEntity<List<AlarmListDto>> getAlarmList(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember){
+        List<Alarm> alarms = alarmService.getAlarmByMemberId(loginMember.getId());
         alarms.sort(Comparator.comparing(Alarm::getCreatedDate).reversed());
         List<AlarmListDto> alarmListDtos = new ArrayList<>();
         for (Alarm alarm : alarms){
@@ -69,14 +72,16 @@ public class AlarmController {
 
     @PutMapping("/read/{alarm_idx}")
     @Operation(summary = "alarm/read/1", description = "알람 읽음 처리")
-    public ResponseEntity<Void> alarmRead(@PathVariable int alarm_idx){
+    public ResponseEntity<Void> alarmRead(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int alarm_idx){
         Alarm alarm = alarmRepository.findById(alarm_idx)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        alarm.readAlarm();
-        alarmRepository.save(alarm);
-        return ResponseEntity.ok().build();
+                .orElseThrow(() -> new RuntimeException("를 찾을 수 없습니다."));
+        if (alarm.getReceiver().getId() == loginMember.getId()){
+            alarm.readAlarm();
+            alarmRepository.save(alarm);
+            return ResponseEntity.ok().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
-
-
-
 }
