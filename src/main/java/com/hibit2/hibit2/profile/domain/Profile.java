@@ -3,6 +3,7 @@ package com.hibit2.hibit2.profile.domain;
 
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
 import lombok.Builder;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Profile extends BaseTimeEntity {
     @ElementCollection(targetClass = PersonalityType.class)
     private List<PersonalityType> personality;
 
-    @Column(name ="introduce", length = 200)
+    @Column(name = "introduce", length = 200)
     private String introduce;
 
     @Column(name = "main_img", length = 100)
@@ -44,7 +45,6 @@ public class Profile extends BaseTimeEntity {
 
     @ElementCollection
     private List<String> subImg;
-
 
     @Column(name = "job", length = 50)
     private String job;
@@ -60,7 +60,7 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "ban")
     private int ban;
 
-    protected  Profile() {
+    protected Profile() {
     }
 
     @Builder
@@ -132,17 +132,6 @@ public class Profile extends BaseTimeEntity {
         return ban;
     }
 
-
-    private void validateProfile(String nickname, int age, int gender, List<PersonalityType> personality, String introduce
-            , String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict) {
-        if((nickname == null || nickname.isBlank())
-                || age < 0 || gender < 0
-                || personality == null || personality.isEmpty()
-                || introduce == null || introduce.isBlank()) {
-            throw new InvalidProfileInfoException();
-        }
-    }
-
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -168,7 +157,7 @@ public class Profile extends BaseTimeEntity {
     }
 
     public void updateSubImg(List<String> subImg) {
-        this.subImg =subImg;
+        this.subImg = subImg;
     }
 
     public void updateJob(String job) {

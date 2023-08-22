@@ -291,8 +291,7 @@ public enum AddressDistrict {
     GYEONGSANGNAMDO_HAPCHEON("경상남도", "890", "합천군"),
 
     JEJU_JEJU("제주특별시", "110", "제주시"),
-    JEJU_SEOGWIPO("제주특별시", "130", "서귀포시");
-    ;
+    JEJU_SEOGWIPO("제주특별시", "130", "서귀포시");;
 
     private final String cityName;
     private final String distinctCode;
@@ -303,9 +302,11 @@ public enum AddressDistrict {
         this.distinctCode = distinctCode;
         this.districtName = districtName;
     }
+
     public String getCityName() {
         return cityName;
     }
+
     public String getDistinctCode() {
         return distinctCode;
     }

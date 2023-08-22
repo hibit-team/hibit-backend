@@ -3,6 +3,7 @@ package com.hibit2.hibit2.profile.service;
 import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class ProfileService {
 
     private final MemberRepository memberRepository;
@@ -32,11 +33,23 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    @Transactional
-    public ProfileRegisterResponse save(Long memberId, ProfileRegisterRequest request) {
+    public ProfileRegisterResponse saveProfile(Long memberId, ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
-        Profile profile1 = Profile.builder()
-                .member(foundMember)
+
+        // 닉네임 중복 여부 검사하여 예외 메시지 추가
+        if (profileRepository.existsByNickname(request.getNickname())) {
+            throw new NicknameAlreadyTakenException("이미 사용 중인 닉네임입니다.");
+        }
+
+        Profile newProfile = createProfile(foundMember, request);
+        updateMemberInfo(foundMember, newProfile);
+
+        return new ProfileRegisterResponse(newProfile);
+    }
+
+    private Profile createProfile(Member member, ProfileRegisterRequest request) {
+        return profileRepository.save(Profile.builder()
+                .member(member)
                 .nickname(request.getNickname())
                 .age(request.getAge())
                 .gender(request.getGender())
@@ -47,17 +60,13 @@ public class ProfileService {
                 .job(request.getJob())
                 .addressCity(request.getAddressCity())
                 .addressDistrict(request.getAddressDistrict())
-                .build();
-        Profile saveProfile = profileRepository.save(profile1);
+                .build());
+    }
 
-        foundMember.setNickname(profile1.getNickname());
-        foundMember.setMainImg(profile1.getMainImg());
-        memberRepository.save(foundMember);
-
-
-        System.out.println(foundMember.getNickname());
-
-        return new ProfileRegisterResponse(saveProfile);
+    private void updateMemberInfo(Member member, Profile profile) {
+        member.setNickname(profile.getNickname());
+        member.setMainImg(profile.getMainImg());
+        memberRepository.save(member);
     }
 
     public ProfileResponse findProfileByIdAndMemberId(LoginMember loginMember, Long profileId) {
@@ -74,19 +83,21 @@ public class ProfileService {
     }
 
 
-    public ProfileOtherResponse findOtherProfile(Long profileId) {
-        Profile profile = findProfileById(profileId);
+    public ProfileOtherResponse findOtherProfile(Long otherMemberId) {
+        Profile profile = profileRepository.findByMemberId(otherMemberId)
+                .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
 
-        return ProfileOtherResponse.from(profile);
+        return new ProfileOtherResponse(profile);
     }
 
     public Profile findProfileById(Long profileId) {
         return profileRepository.findById(profileId)
                 .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
     }
-    @Transactional
-    public void update(final Long memberId, final Long profileId, final ProfileUpdateRequest request) {
-        Profile profile = profileRepository.getByMemberIdAndProfileId(memberId, profileId);
+
+    public void updateProfile(final Long memberId, final ProfileUpdateRequest request) {
+        Profile profile = profileRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
         profile.updateNickname(request.getNickname());
         profile.updateAge(request.getAge());
@@ -100,5 +111,17 @@ public class ProfileService {
         profile.updateAddressDistinct(request.getAddressDistrict());
 
         profileRepository.save(profile);
+    }
+
+    public boolean existsOtherProfileWithNickname(Long memberId, String nickname) {
+        // 해당 멤버의 다른 프로필 중 닉네임이 같은 것이 있는지 확인
+        return profileRepository.existsByMemberIdAndNickname(memberId, nickname);
+    }
+
+    public ProfileResponse findProfileByMemberId(Long memberId) {
+        Profile profile = profileRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
+
+        return new ProfileResponse(profile);
     }
 }
