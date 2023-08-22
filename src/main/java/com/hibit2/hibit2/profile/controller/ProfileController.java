@@ -10,6 +10,7 @@ import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
 import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import com.hibit2.hibit2.profile.exception.InvalidOtherProfileException;
 import com.hibit2.hibit2.profile.exception.InvalidPersonalityException;
 import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -96,9 +97,14 @@ public class ProfileController {
 
     @GetMapping("/other/{otherMemberId}")
     @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
-    public ResponseEntity<ProfileOtherResponse> findProfileByOtherId(@AuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<ProfileOtherResponse> findOtherProfileByMemberId(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                                                      @PathVariable final Long otherMemberId) {
-        ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
+        // 로그인한 사용자의 ID와 타인의 프로필 조회 대상 ID 비교
+        if (loginMember.getId().equals(otherMemberId)) {
+            throw new InvalidOtherProfileException("자신의 프로필은 다른 방식으로 조회하세요.");
+        }
+
+        ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
         return ResponseEntity.ok(response);
     }
 
