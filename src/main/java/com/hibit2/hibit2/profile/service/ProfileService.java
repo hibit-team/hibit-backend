@@ -82,14 +82,6 @@ public class ProfileService {
         return new ProfilesResponse(profileResponses);
     }
 
-
-    public ProfileOtherResponse findOtherProfile(Long otherMemberId) {
-        Profile profile = profileRepository.findByMemberId(otherMemberId)
-                .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
-
-        return new ProfileOtherResponse(profile);
-    }
-
     public Profile findProfileById(Long profileId) {
         return profileRepository.findById(profileId)
                 .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
@@ -123,5 +115,12 @@ public class ProfileService {
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
         return new ProfileResponse(profile);
+    }
+
+    public ProfileOtherResponse findOtherProfileByMemberId(Long otherMemberId) {
+        Profile profile = profileRepository.findByMemberId(otherMemberId)
+                .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
+
+        return new ProfileOtherResponse(profile);
     }
 }
