@@ -1,15 +1,20 @@
 package com.hibit2.hibit2.comment.controller;
 
 
+import com.hibit2.hibit2.auth.dto.LoginMember;
+import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.comment.dto.CommentListDto;
 import com.hibit2.hibit2.comment.dto.CommentSaveDto;
+import com.hibit2.hibit2.comment.repository.CommentRepository;
 import com.hibit2.hibit2.comment.service.CommentService;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
+import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +35,13 @@ public class CommentController {
 
     private final CommentService commentService;
     private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
-    @PostMapping("/{post_idx}/{member_idx}")
+    @PostMapping("/{post_idx}")
     @Operation(summary = "/comment/1/1", description = "댓글 작성")
-    public ResponseEntity<Integer> createComment(@PathVariable int post_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
+    public ResponseEntity<Integer> createComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
-        Comment comment = commentService.createComment(post_idx, member_idx, content);
+        Comment comment = commentService.createComment(post_idx, loginMember.getId(), content);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment.getIdx());
     }
 
@@ -66,18 +72,30 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/update/{comment_idx}")
     @Operation(summary = "/comment/update/1", description = "댓글 수정")
-    public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody CommentSaveDto commentSaveDto) {
-        String content = commentSaveDto.getContent();
-        Comment updatedComment = commentService.updateComment(comment_idx, content);
-        return ResponseEntity.ok(updatedComment);
+    public ResponseEntity<Comment> updateComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int comment_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        Comment comment = commentRepository.findById(comment_idx).orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다. id="+comment_idx));;
+        if (loginMember.getId() == comment.getMember().getId()) {
+            String content = commentSaveDto.getContent();
+            Comment updatedComment = commentService.updateComment(comment_idx, content);
+            return ResponseEntity.ok(updatedComment);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     // 댓글 삭제
     @DeleteMapping("/delete/{comment_idx}")
     @Operation(summary = "/comment/delete/1", description = "댓글 삭제")
-    public ResponseEntity<Void> deleteComment(@PathVariable int comment_idx) {
-        commentService.deleteComment(comment_idx);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,@PathVariable int comment_idx) {
+        Comment comment = commentRepository.findById(comment_idx).orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다. id="+comment_idx));;
+        if (loginMember.getId() == comment.getMember().getId()) {
+            commentService.deleteComment(comment_idx);
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
     //댓글 좋아요
     @GetMapping("/like/{comment_idx}/{member_idx}")

@@ -14,7 +14,7 @@ public enum PersonalityType {
     TYPE_7("감성적인"),
     TYPE_8("상냥한"),
     TYPE_9("귀여운"),
-    TYPE_10( "열정적인"),
+    TYPE_10("열정적인"),
     TYPE_11("듬직한"),
     TYPE_12("개성있는"),
     TYPE_13("친절한"),
@@ -45,6 +45,7 @@ public enum PersonalityType {
         }
         return null;
     }
+
     @JsonValue
     public String getContents() {
         return contents;

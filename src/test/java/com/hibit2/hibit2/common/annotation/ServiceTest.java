@@ -5,6 +5,7 @@ import com.hibit2.hibit2.auth.dto.OAuthMember;
 import com.hibit2.hibit2.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibit2.hibit2.auth.domain.TokenRepository;
 import com.hibit2.hibit2.auth.application.AuthService;
+import com.hibit2.hibit2.auth.dto.response.AccessTokenResponse;
 import com.hibit2.hibit2.common.DatabaseCleaner;
 import com.hibit2.hibit2.common.builder.BuilderSupporter;
 import com.hibit2.hibit2.common.builder.GivenBuilder;
@@ -40,8 +41,8 @@ public abstract class ServiceTest {
     }
 
     protected Long toMemberId(final OAuthMember oAuthMember) {
-        AccessAndRefreshTokenResponse response = authService.generateAccessAndRefreshToken(oAuthMember);
-        return authService.extractMemberId(response.getRefreshToken());
+        AccessTokenResponse response = authService.generateAccessAndRefreshToken(oAuthMember);
+        return authService.extractMemberId(response.getAccessToken());
     }
 
     protected GivenBuilder 팬시() {
