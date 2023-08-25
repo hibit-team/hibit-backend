@@ -2,6 +2,8 @@ package com.hibit2.hibit2.post.controller;
 
 
 
+import com.hibit2.hibit2.auth.dto.LoginMember;
+import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
@@ -9,6 +11,7 @@ import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
 import com.hibit2.hibit2.post.dto.PostSaveDto;
 import com.hibit2.hibit2.post.dto.PostUpdateDto;
+import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.post.service.PostService;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
@@ -41,6 +44,7 @@ public class PostController {
     private final PostService postService;
     private final postHistoryRepository postHistoryRepository;
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
 
 
     @PostMapping("/write/{member_idx}")
@@ -136,15 +140,27 @@ public class PostController {
 
     @PutMapping("/{post_idx}")
     @Operation(summary = "post/{post_idx}",description = "매칭 글 수정")
-    public ResponseEntity<Post> update(@PathVariable int post_idx, @RequestBody PostUpdateDto requestDto){
-        Post post = postService.update(post_idx, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(post);
+    public ResponseEntity<Post> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,@PathVariable int post_idx, @RequestBody PostUpdateDto requestDto){
+        Post entity= postRepository.findById(post_idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+post_idx));
+        if (loginMember.getId() == entity.getMember().getId()) {
+            Post post = postService.update(post_idx, requestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(post);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @DeleteMapping("/{post_idx}")
     @Operation(summary = "post/{post_idx}", description = "매칭 글 삭제")
-    public ResponseEntity<Void> delete(@PathVariable int post_idx){
-        postService.delete(post_idx);
+    public ResponseEntity<Void> delete(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx){
+        Post entity= postRepository.findById(post_idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+post_idx));
+        if (loginMember.getId() == entity.getMember().getId()){
+            postService.delete(post_idx);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok().build();
 
     }
