@@ -38,12 +38,23 @@ jobs:
 
     ## create application-database.properties
     - name: make application-database.yml
+      if: contains(github.ref, 'main')
       run: |
           cd ./src/main/resources
           touch ./application-database.yml
           echo "${{ secrets.DATABASE }}" > ./application-database.yml
       shell: bash
-      
+
+      ## create application-dev.properties
+    - name: make application-dev-database.yml
+      if: contains(github.ref, 'develop')
+      run: |
+        cd ./src/main/resources
+        touch ./application-dev.yml
+        echo "${{ secrets.DATABASE_DEV }}" > ./application-dev.yml
+      shell: bash
+
+
     ## permission change
     - name: Change gradlew permissions
       run: chmod +x ./gradlew
@@ -59,8 +70,16 @@ jobs:
           docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/hibit2 .
           docker push ${{ secrets.DOCKER_REPO }}/hibit2
 
+      ## docker build & push to develop
+    - name: Docker build & push to dev
+      if: contains(github.ref, 'develop')
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_REPO }}/hibitdev .
+        docker push ${{ secrets.DOCKER_REPO }}/hibitdev
 
-    ## deploy to productionhibitdb
+
+    ## deploy to production
     - name: Deploy to prod
       uses: appleboy/ssh-action@master
       id: deploy-prod
@@ -74,3 +93,21 @@ jobs:
               sudo docker pull ${{ secrets.DOCKER_REPO }}/hibit2
               docker-compose up -d
               docker image prune -f
+      
+      
+
+      ## deploy to develop
+    - name: Deploy to dev
+      uses: appleboy/ssh-action@master
+      id: deploy-dev
+      if: contains(github.ref, 'develop')
+      with:
+        host: ${{ secrets.HOST_DEV }}
+        username: ubuntu
+        envs: GITHUB_SHA
+        key: ${{ secrets.KEY_DEV }}
+        script: |
+          sudo docker rm -f $(docker ps -qa)
+          sudo docker pull ${{ secrets.DOCKER_REPO }}/hibitdev
+          docker-compose up -d
+          docker image prune -f
