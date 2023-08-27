@@ -55,10 +55,21 @@ public class FileUploadController {
     @PostMapping(value = "/upload/{mainimgIdx}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "이미지 저장", description = "이미지를 저장하는 메소드입니다.")
     public ResponseEntity<List<Object>> uploadFiles(@RequestParam(value ="file", required=false) List<MultipartFile> files, @PathVariable int mainimgIdx) {
+        if (files == null) {
+            System.out.println("files is null");
+        } else if (files.isEmpty()) {
+            System.out.println("files is empty");
+        }
+        System.out.println("mainimgIdx: " + mainimgIdx);
+        System.out.println("Number of files: " + files.size());
+
+
+
         List<String> fileUrls = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
             String fileUrl = fileUploadService.uploadFile(file);
+            System.out.println("File URL: " + fileUrl);
             fileUrls.add(fileUrl);
         }
         String mainImg = fileUrls.remove(mainimgIdx);
@@ -68,5 +79,5 @@ public class FileUploadController {
         response.add(fileUrls);
         return ResponseEntity.ok(response);
     }
-    
+
 }
