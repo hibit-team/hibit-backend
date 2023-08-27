@@ -75,7 +75,7 @@ jobs:
       if: contains(github.ref, 'develop')
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_REPO }}/hibitdev .
+        docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/hibitdev .
         docker push ${{ secrets.DOCKER_REPO }}/hibitdev
 
 
