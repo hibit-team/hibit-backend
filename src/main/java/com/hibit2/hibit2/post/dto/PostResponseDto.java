@@ -2,14 +2,17 @@ package com.hibit2.hibit2.post.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.dto.MemberListDto;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
+import com.hibit2.hibit2.post.domain.TimeSlot;
 import com.hibit2.hibit2.post.domain.What_do;
-import com.hibit2.hibit2.user.domain.Users;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 public class PostResponseDto {
     private int idx;
     private String writer;
+    private Long writerIdx;
     private String writerImg;
     private String title;
     private String content;
@@ -32,11 +36,15 @@ public class PostResponseDto {
     private String mainimg;
     private List<String> subimg;
     private String time;
+    private List<String> dateTime;
+    private List<MemberListDto> likeUsers;
+
 
     public PostResponseDto(@NotNull Post entity){
         this.idx=entity.getIdx();
-        this.writer=entity.getUser().getId();
-        this.writerImg=entity.getUser().getProfileImg();
+        this.writer=entity.getMember().getNickname();
+        this.writerIdx=entity.getMember().getId();
+        this.writerImg=MainImg(entity.getMember());
         this.title=entity.getTitle();
         this.exhibiton=entity.getExhibition();
         this.content=entity.getContent();
@@ -49,6 +57,21 @@ public class PostResponseDto {
         this.mainimg=entity.getMainimg();
         this.subimg=entity.getSubimg();
         this.time = entity.calculateTime();
+        this.dateTime = formatDateTimeSlots(entity.getDateTimeSlots());
+        this.likeUsers= new ArrayList<>();
+
+        if (entity.getLikeUsers() != null) {
+            for (Member likeUser : entity.getLikeUsers()) {
+                this.likeUsers.add(new MemberListDto(likeUser));
+            }
+        }
+
+    }
+    private String MainImg(Member member){
+        if (member.getMainImg() != null) {
+            return member.getMainImg();
+        }
+        return "https://hibit2bucket.s3.ap-northeast-2.amazonaws.com/Group%201181.png";
     }
 
     private List<Object> number_and_What(int number, What_do what_do) {
@@ -57,5 +80,23 @@ public class PostResponseDto {
         number_and_What.add(what_do.getDecs());
         return number_and_What;
     }
+
+
+    private List<String> formatDateTimeSlots(List<DateTimeSlot> dateTimeSlots) {
+        List<String> formattedSlots = new ArrayList<>();
+
+        for (DateTimeSlot dateTimeSlot : dateTimeSlots) {
+            LocalDate date = dateTimeSlot.getDate();
+            TimeSlot timeSlot = dateTimeSlot.getTimeSlot();
+
+            String formattedDate = date.toString();
+            String formattedTimeSlot = timeSlot == TimeSlot.AM ? "오전" : "오후";
+
+            formattedSlots.add(formattedDate + " " + formattedTimeSlot);
+        }
+
+        return formattedSlots;
+    }
+
 
 }

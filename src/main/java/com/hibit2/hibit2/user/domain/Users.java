@@ -28,9 +28,15 @@ public class Users {
     @Column(length = 100)
     @Schema(description = "프로필이미지 url", example = "https://qqqq")
     private String profileImg;
+
+    @Column(nullable = true, length = 30)
+    @Schema(description = "이메일", example = "abc@naver.com")
+    private String email;
+
     @Builder
-    public Users(String id, String profileImg){
+    public Users(String id, String profileImg, String email){
         this.id=id;
         this.profileImg = profileImg;
+        this.email=email;
     }
 }

@@ -15,7 +15,6 @@ out/
 
 # Google login oauth - clientId, clientSecret
 application-oauth.properties
-application.yml
 
 # User-specific stuff
 .idea/**/workspace.xml

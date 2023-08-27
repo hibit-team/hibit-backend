@@ -1,12 +1,20 @@
 package com.hibit2.hibit2.post.service;
 
 
+import com.hibit2.hibit2.matching.domain.MatchStatus;
+import com.hibit2.hibit2.matching.domain.Matching;
+import com.hibit2.hibit2.matching.repository.MatchingRepository;
+import com.hibit2.hibit2.matching.service.MatchingService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
 import com.hibit2.hibit2.post.dto.PostSaveDto;
 import com.hibit2.hibit2.post.dto.PostUpdateDto;
 import com.hibit2.hibit2.post.repository.PostRepository;
+import com.hibit2.hibit2.postHistory.domain.postHistory;
+import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
 import com.hibit2.hibit2.user.domain.Users;
 import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,18 +36,29 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
+    private final MatchingRepository matchingRepository;
+    private final postHistoryRepository postHistoryRepository;
+    private final MatchingService matchingService;
+    private final MemberRepository memberRepository;
+
 
     @Transactional
-    public Post save(PostSaveDto postSaveDto){
+    public Post save(PostSaveDto postSaveDto, Long idx){
 
-        Users user = new Users();
-        user.setId("a");
-        usersRepository.save(user);
-        postSaveDto.setUser(user);
+        Member member= memberRepository.getById(idx);
+
+
+        postSaveDto.setMember(member);
 
         Post post = postSaveDto.toEntity();
         postRepository.save(post);
+
+        postHistory postHistory = new postHistory();
+        postHistory.setPost(post);
+        postHistory.setOkUsers(new ArrayList<>());
+        postHistory.setRealUsers(new ArrayList<>());
+        postHistoryRepository.save(postHistory);
+
         return post;
     }
 
@@ -89,18 +110,18 @@ public class PostService {
         entity.delete();
     }
     @Transactional
-    public Post likePost(int post_idx, String userId){
+    public Post likePost(int post_idx, Long member_idx){
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
 
-        Optional<Users> existingLike = post.getLikeUsers().stream()
-                .filter(likeUser -> likeUser.getId().equals(userId))
+        Optional<Member> existingLike = post.getLikeUsers().stream()
+                .filter(likeUser -> likeUser.getNickname().equals(userId))
                 .findFirst();
 
         if (!existingLike.isPresent()) {
-            post.getLikeUsers().add(user);
+            post.getLikeUsers().add(member);
             post.increaseLike();
         } else {
             post.getLikeUsers().remove(existingLike.get());
@@ -109,6 +130,37 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @Transactional
+    public void completePost(int post_idx) {
+        Post post = postRepository.findById(post_idx)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
+        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+
+        postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
+        postHistory.complete();
+        postHistory.setFinishTimeCurrent();
+
+        List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+        postHistory.setOkUsers(matchedUsers);
+
+
+        post.complete();
+        postRepository.save(post);
+        postHistoryRepository.save(postHistory);
+    }
+
+    @Transactional
+    public void canclePost(int post_idx) {
+        Post post = postRepository.findById(post_idx)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        postHistory.cancle();
+        postHistory.setFinishTimeCurrent();
+        post.cancle();
+        postRepository.save(post);
+        postHistoryRepository.save(postHistory);
+
+    }
 
 }

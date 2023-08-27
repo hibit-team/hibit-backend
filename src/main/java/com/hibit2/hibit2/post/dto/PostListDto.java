@@ -58,6 +58,13 @@ public class PostListDto {
 
         int remainingCount = dateTimeSlots.size() - 1;
 
-        return earliestDate + " " + earliestTimeSlot.toString() + " 외 " + remainingCount + "개";
+        String formattedTimeSlot;
+        if (earliestTimeSlot == TimeSlot.AM) {
+            formattedTimeSlot = "오전";
+        } else {
+            formattedTimeSlot = "오후";
+        }
+
+        return earliestDate + " " + formattedTimeSlot + " 외 " + remainingCount + "개";
     }
 }

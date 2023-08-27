@@ -1,5 +1,6 @@
 package com.hibit2.hibit2.post.dto;
 
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.What_do;
@@ -17,7 +18,7 @@ import java.util.List;
 @Getter
 public class PostSaveDto {
     @Schema(description = "유저", example = "소셜 로그인 후 수정 예정")
-    private Users user;
+    private Member member;
     @Schema(description = "제목", example = "전시 관람해요")
     private String title;
     @Schema(description = "내용", example = "내용내용")
@@ -46,10 +47,10 @@ public class PostSaveDto {
             "    ]")
     private List<String> subimg;
     @Builder
-    public PostSaveDto(Users user, String title, String content, String exhibition, char status,
+    public PostSaveDto(Member member, String title, String content, String exhibition, char status,
                        int number, String openchat, What_do what_do, List<DateTimeSlot> dateTimeSlots,
                        String mainimg, List<String>  subimg){
-        this.user = user;
+        this.member = member;
         this.title=title;
         this.content=content;
         this.exhibition=exhibition;
@@ -63,7 +64,7 @@ public class PostSaveDto {
     }
     public Post toEntity(){
         return Post.builder()
-                .user(user)
+                .member(member)
                 .title(title)
                 .content(content)
                 .exhibiton(exhibition)
@@ -77,6 +78,6 @@ public class PostSaveDto {
                 .build();
     }
 
-    public void setUser(Users user) {this.user = user;}
+    public void setMember(Member member) {this.member = member;}
 }
 

@@ -1,10 +1,22 @@
 package com.hibit2.hibit2.comment.controller;
 
 
+import com.hibit2.hibit2.auth.dto.LoginMember;
+import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.comment.dto.CommentListDto;
+import com.hibit2.hibit2.comment.dto.CommentSaveDto;
+import com.hibit2.hibit2.comment.repository.CommentRepository;
 import com.hibit2.hibit2.comment.service.CommentService;
+import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.repository.MemberRepository;
+import com.hibit2.hibit2.post.domain.Post;
+import com.hibit2.hibit2.user.domain.Users;
+import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,32 +24,34 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+@Tag(name = "comment", description = "댓글 및 대댓글")
 
 @RestController
 @RequestMapping("/comment")
+@RequiredArgsConstructor
+
 public class CommentController {
 
     private final CommentService commentService;
+    private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
-    @Autowired
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
-    // 댓글 작성 -> user_idx는 추후 로그인한유저로 변경
-    @PostMapping("/{post_idx}/{user_idx}")
+    @PostMapping("/{post_idx}")
     @Operation(summary = "/comment/1/1", description = "댓글 작성")
-    public ResponseEntity<Comment> createComment(@PathVariable int post_idx, @PathVariable int user_idx, @RequestBody String content) {
-        Comment comment = commentService.createComment(post_idx, user_idx, content);
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+    public ResponseEntity<Integer> createComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        String content = commentSaveDto.getContent();
+        Comment comment = commentService.createComment(post_idx, loginMember.getId(), content);
+        return ResponseEntity.status(HttpStatus.CREATED).body(comment.getIdx());
     }
 
     // 대댓글 작성
-    @PostMapping("/replies/{comment_idx}/{user_idx}")
+    @PostMapping("/replies/{comment_idx}/{member_idx}")
     @Operation(summary = "/comment/replies/1/1", description = "댓글에 대한 대댓글 작성")
-    public ResponseEntity<Comment> createReply(@PathVariable int comment_idx, @PathVariable int user_idx, @RequestBody String content) {
-        Comment reply = commentService.createReply(comment_idx, user_idx, content);
-        return ResponseEntity.status(HttpStatus.CREATED).body(reply);
+    public ResponseEntity<Integer> createReply(@PathVariable int comment_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        String content = commentSaveDto.getContent();
+        Comment reply = commentService.createReply(comment_idx, member_idx, content);
+        return ResponseEntity.status(HttpStatus.CREATED).body(reply.getIdx());
     }
 
     // 댓글 조회
@@ -58,28 +72,40 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/update/{comment_idx}")
     @Operation(summary = "/comment/update/1", description = "댓글 수정")
-    public ResponseEntity<Comment> updateComment(@PathVariable int comment_idx, @RequestBody String newContent) {
-        Comment updatedComment = commentService.updateComment(comment_idx, newContent);
-        return ResponseEntity.ok(updatedComment);
+    public ResponseEntity<Comment> updateComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int comment_idx, @RequestBody CommentSaveDto commentSaveDto) {
+        Comment comment = commentRepository.findById(comment_idx).orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다. id="+comment_idx));;
+        if (loginMember.getId() == comment.getMember().getId()) {
+            String content = commentSaveDto.getContent();
+            Comment updatedComment = commentService.updateComment(comment_idx, content);
+            return ResponseEntity.ok(updatedComment);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     // 댓글 삭제
     @DeleteMapping("/delete/{comment_idx}")
     @Operation(summary = "/comment/delete/1", description = "댓글 삭제")
-    public ResponseEntity<Void> deleteComment(@PathVariable int comment_idx) {
-        commentService.deleteComment(comment_idx);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,@PathVariable int comment_idx) {
+        Comment comment = commentRepository.findById(comment_idx).orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다. id="+comment_idx));;
+        if (loginMember.getId() == comment.getMember().getId()) {
+            commentService.deleteComment(comment_idx);
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
-
     //댓글 좋아요
-    @GetMapping("/like/{comment_idx}")
-    @Operation(summary = "/comment/like/1", description = "댓글 좋아요")
-    public ResponseEntity<Comment> likeComment(@PathVariable int comment_idx){
-        String user_id = "b"; //나중에는 현재 로그인한 유저의 id 찾아오기
-        Comment comment = commentService.likeComment(comment_idx, user_id);
+    @GetMapping("/like/{comment_idx}/{member_idx}")
+    @Operation(summary = "/comment/like/1/1", description = "댓글 좋아요")
+    public ResponseEntity<Comment> likeComment(@PathVariable int comment_idx, @PathVariable Long member_idx){
+
+        Member member= memberRepository.getById(member_idx);
+
+        Comment comment = commentService.likeComment(comment_idx, member.getNickname());
         return ResponseEntity.ok(comment);
     }
-
-    //대댓글 수정/삭제/좋아요 만들기
 
 }

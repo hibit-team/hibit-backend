@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,11 +41,10 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "post_idx")
     private Post post;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @JoinColumn(name = "user_idx")
-    private Users user;
+    @JoinColumn(name = "member_idx")
+    private Member member;
 
     @ManyToOne
     @JsonIgnore
@@ -64,9 +64,9 @@ public class Comment extends BaseTimeEntity {
     @JoinTable(
             name = "comment_likes",
             joinColumns = @JoinColumn(name = "comment_idx"),
-            inverseJoinColumns = @JoinColumn(name = "user_idx")
+            inverseJoinColumns = @JoinColumn(name = "member_idx")
     )
-    private List<Users> likeUsers = new ArrayList<>();
+    private List<Member> likeUsers = new ArrayList<>();
 
 
     public void addChildComment(Comment childComment) {
