@@ -65,6 +65,7 @@ jobs:
 
     ## docker build & push to production
     - name: Docker build & push to prod
+      if: contains(github.ref, 'main')
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/hibit2 .
@@ -83,6 +84,7 @@ jobs:
     - name: Deploy to prod
       uses: appleboy/ssh-action@master
       id: deploy-prod
+      if: contains(github.ref, 'main')
       with:
           host: ${{ secrets.HOST}}
           username: ubuntu
