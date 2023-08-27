@@ -52,9 +52,9 @@ public class FileUploadController {
     }
 */
     //게시글 사진 업로드 누른 경우 -> 이미지 업로드 이후, dto에서 이미지가 전달받는 경우
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload/{mainimgIdx}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "이미지 저장", description = "이미지를 저장하는 메소드입니다.")
-    public ResponseEntity<List<Object>> uploadFiles(@RequestParam(value ="file", required=false) List<MultipartFile> files,  @RequestParam int mainimgIdx) {
+    public ResponseEntity<List<Object>> uploadFiles(@RequestParam(value ="file", required=false) List<MultipartFile> files, @PathVariable int mainimgIdx) {
         List<String> fileUrls = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
@@ -68,8 +68,5 @@ public class FileUploadController {
         response.add(fileUrls);
         return ResponseEntity.ok(response);
     }
-
-
-
-
+    
 }
