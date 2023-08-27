@@ -65,6 +65,7 @@ jobs:
 
     ## docker build & push to production
     - name: Docker build & push to prod
+      if: contains(github.ref, 'main')
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/hibit2 .
