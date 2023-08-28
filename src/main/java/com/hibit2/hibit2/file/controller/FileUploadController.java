@@ -56,11 +56,20 @@ public class FileUploadController {
         try {
             String imageUrl = fileUploadService.uploadFile(multipartFile);
             String jsonResponse = "{\"message\":\"Image uploaded successfully.\",\"imageUrl\":\"" + imageUrl + "\"}";
+
+            // 업로드 성공 로그
+            System.out.println("Image uploaded successfully. URL: " + imageUrl);
+
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         } catch (Exception e) {
             String errorResponse = "{\"error\":\"UploadController().uploadFile().Exception : " + e.getMessage() + "\"}";
+
+            // 업로드 실패 로그
+            System.out.println("Image upload failed. Exception: " + e.getMessage());
+
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 }
