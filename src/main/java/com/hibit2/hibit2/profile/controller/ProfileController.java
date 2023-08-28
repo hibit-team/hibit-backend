@@ -64,7 +64,10 @@ public class ProfileController {
                 profileRegisterRequest.getSubImg(),
                 profileRegisterRequest.getJob(),
                 profileRegisterRequest.getAddressCity(),
-                profileRegisterRequest.getAddressDistrict()
+                profileRegisterRequest.getAddressDistrict(),
+                profileRegisterRequest.isJobVisibility(),       // 직업 공개 여부
+                profileRegisterRequest.isSubImgVisibility(),    // 서브 이미지 공개 여부
+                profileRegisterRequest.isAddressVisibility()     // 주소 공개 여부
         );
 
         //  프로필을 등록하고, 그에 대한 결과로 생성된 프로필 정보를 받아오는 부분
@@ -105,6 +108,19 @@ public class ProfileController {
         }
 
         ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
+
+        // 공개 여부에 따라 필요한 정보만 반환하도록 처리
+        if (!response.isJobVisibility()) {
+            response.setJob(null);
+        }
+        if (!response.isSubImgVisibility()) {
+            response.setSubImg(null);
+        }
+        if (!response.isAddressVisibility()) {
+            response.setAddressCity(null);
+            response.setAddressDistrict(null);
+        }
+
         return ResponseEntity.ok(response);
     }
 

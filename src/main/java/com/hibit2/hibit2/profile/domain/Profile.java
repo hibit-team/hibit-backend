@@ -60,6 +60,15 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "ban")
     private int ban;
 
+    @Column(name = "job_visible")
+    private boolean jobVisible;
+
+    @Column(name = "sub_img_visible")
+    private boolean subImgVisible;
+
+    @Column(name = "address_visible")
+    private boolean addressVisible;
+
     protected Profile() {
     }
 
@@ -130,6 +139,18 @@ public class Profile extends BaseTimeEntity {
 
     public int getBan() {
         return ban;
+    }
+
+    public boolean isJobVisible() {
+        return jobVisible;
+    }
+
+    public boolean isSubImgVisible() {
+        return subImgVisible;
+    }
+
+    public boolean isAddressVisible() {
+        return addressVisible;
     }
 
     public void updateNickname(String nickname) {
