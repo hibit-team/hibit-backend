@@ -106,7 +106,7 @@ public class ProfileController {
         if (loginMember.getId().equals(otherMemberId)) {
             throw new InvalidOtherProfileException("자신의 프로필은 다른 방식으로 조회하세요.");
         }
-
+      
         ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
 
         return ResponseEntity.ok(response);

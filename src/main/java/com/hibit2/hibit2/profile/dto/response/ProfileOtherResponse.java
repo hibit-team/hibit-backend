@@ -28,7 +28,7 @@ public class ProfileOtherResponse {
     private int jobVisibility;
     private int subImgVisibility;
     private int addressVisibility;
-
+  
     public ProfileOtherResponse() {
     }
 
