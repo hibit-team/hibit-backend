@@ -57,7 +57,7 @@ public class ProfileRegisterResponse {
         this.addressDistrict = saveProfile.getAddressDistrict();
         this.jobVisibility = saveProfile.getJobVisible();
         this.subImgVisibility = saveProfile.getSubImgVisible();
-        this.jobVisibility = saveProfile.getJobVisible();
+        this.addressVisibility = saveProfile.getAddressVisible();
     }
 
     public Long getId() {
