@@ -60,6 +60,15 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "ban")
     private int ban;
 
+    @Column(name = "job_visible")
+    private int jobVisible;
+
+    @Column(name = "sub_img_visible")
+    private int subImgVisible;
+
+    @Column(name = "address_visible")
+    private int addressVisible;
+
     protected Profile() {
     }
 
@@ -132,6 +141,18 @@ public class Profile extends BaseTimeEntity {
         return ban;
     }
 
+    public int isJobVisible() {
+        return jobVisible;
+    }
+
+    public int isSubImgVisible() {
+        return subImgVisible;
+    }
+
+    public int isAddressVisible() {
+        return addressVisible;
+    }
+
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -170,5 +191,14 @@ public class Profile extends BaseTimeEntity {
 
     public void updateAddressDistinct(AddressDistrict addressDistrict) {
         this.addressDistrict = addressDistrict;
+    }
+    public void updateJobVisible(int jobVisible) {
+        this.jobVisible = jobVisible;
+    }
+    public void updateSubImgVisible(int subImgVisible) {
+        this.subImgVisible = subImgVisible;
+    }
+    public void updateAddressVisible(int addressVisible) {
+        this.addressVisible = addressVisible;
     }
 }

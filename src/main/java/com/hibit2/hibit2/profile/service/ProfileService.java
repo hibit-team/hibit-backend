@@ -101,7 +101,9 @@ public class ProfileService {
         profile.updateJob(request.getJob());
         profile.updateAddressCity(request.getAddressCity());
         profile.updateAddressDistinct(request.getAddressDistrict());
-
+        profile.updateJobVisible(request.getJobVisibility());
+        profile.updateSubImgVisible(request.getSubImgVisibility());
+        profile.updateAddressVisible(request.getAddressVisibility());
         profileRepository.save(profile);
     }
 

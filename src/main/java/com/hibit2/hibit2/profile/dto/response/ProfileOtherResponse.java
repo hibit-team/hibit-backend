@@ -9,6 +9,7 @@ import lombok.*;
 import java.util.List;
 
 @Getter
+@Setter
 public class ProfileOtherResponse {
     // 필수 노출 정보
     private String nickname;
@@ -16,14 +17,18 @@ public class ProfileOtherResponse {
     private List<PersonalityType> personality;
     private String introduce;
     private String mainImg;
-    private String subImg;
-
-    // 선택 노출 정보
     private int age;
+
+    // 선택 노출 정보(공개/비공개)
+    private String subImg;
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
     private String job;
 
+    private int jobVisibility;
+    private int subImgVisibility;
+    private int addressVisibility;
+  
     public ProfileOtherResponse() {
     }
 
@@ -37,10 +42,27 @@ public class ProfileOtherResponse {
                 profile.getAge(),
                 profile.getAddressCity(),
                 profile.getAddressDistrict(),
-                profile.getJob());
+                profile.getJob(),
+                profile.isJobVisible(),
+                profile.isSubImgVisible(),
+                profile.isAddressVisible());
+
+        // 공개 여부에 따라 값 설정
+        if (profile.isSubImgVisible() == 0 ) {
+            this.subImg = null;
+        }
+        if (profile.isAddressVisible() == 0 ) {
+            this.addressCity = null;
+            this.addressDistrict = null;
+        }
+        if (profile.isJobVisible() == 0 ) {
+            this.job = null;
+        }
     }
 
-    public ProfileOtherResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, String subImg, int age, AddressCity addressCity, AddressDistrict addressDistrict, String job) {
+    public ProfileOtherResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, String subImg,
+                                int age, AddressCity addressCity, AddressDistrict addressDistrict, String job,
+                                int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;
@@ -51,5 +73,8 @@ public class ProfileOtherResponse {
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
         this.job = job;
+        this.jobVisibility = jobVisibility;
+        this.subImgVisibility = subImgVisibility;
+        this.addressVisibility = addressVisibility;
     }
 }

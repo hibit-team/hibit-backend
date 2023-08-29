@@ -64,7 +64,10 @@ public class ProfileController {
                 profileRegisterRequest.getSubImg(),
                 profileRegisterRequest.getJob(),
                 profileRegisterRequest.getAddressCity(),
-                profileRegisterRequest.getAddressDistrict()
+                profileRegisterRequest.getAddressDistrict(),
+                profileRegisterRequest.getJobVisibility(),       // 직업 공개 여부
+                profileRegisterRequest.getSubImgVisibility(),    // 서브 이미지 공개 여부
+                profileRegisterRequest.getAddressVisibility()     // 주소 공개 여부
         );
 
         //  프로필을 등록하고, 그에 대한 결과로 생성된 프로필 정보를 받아오는 부분
@@ -103,8 +106,9 @@ public class ProfileController {
         if (loginMember.getId().equals(otherMemberId)) {
             throw new InvalidOtherProfileException("자신의 프로필은 다른 방식으로 조회하세요.");
         }
-
+      
         ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
+
         return ResponseEntity.ok(response);
     }
 
