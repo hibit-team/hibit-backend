@@ -60,6 +60,9 @@ public class ProfileService {
                 .job(request.getJob())
                 .addressCity(request.getAddressCity())
                 .addressDistrict(request.getAddressDistrict())
+                .jobVisible(request.getJobVisibility())
+                .subImgVisible(request.getSubImgVisibility())
+                .addressVisible(request.getAddressVisibility())
                 .build());
     }
 
