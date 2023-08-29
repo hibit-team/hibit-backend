@@ -54,13 +54,13 @@ public class ProfileRegisterRequest {
     private AddressDistrict addressDistrict;
 
     @Schema(description = "직업 공개 여부", example = "true")
-    private boolean jobVisibility;
+    private int jobVisibility;
 
     @Schema(description = "서브 이미지 공개 여부", example = "true")
-    private boolean subImgVisibility;
+    private int subImgVisibility;
 
     @Schema(description = "주소 공개 여부", example = "true")
-    private boolean addressVisibility;
+    private int addressVisibility;
 
     public ProfileRegisterRequest() {
     }
@@ -68,7 +68,7 @@ public class ProfileRegisterRequest {
     public ProfileRegisterRequest(String nickname, int age, int gender, List<PersonalityType> personality,
                                   String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
                                   AddressDistrict addressDistrict,
-                                  boolean jobVisibility, boolean subImgVisibility, boolean addressVisibility) {
+                                  int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;

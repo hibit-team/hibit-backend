@@ -25,9 +25,9 @@ public class ProfileOtherResponse {
     private AddressDistrict addressDistrict;
     private String job;
 
-    private boolean jobVisibility;
-    private boolean subImgVisibility;
-    private boolean addressVisibility;
+    private int jobVisibility;
+    private int subImgVisibility;
+    private int addressVisibility;
 
     public ProfileOtherResponse() {
     }
@@ -38,30 +38,31 @@ public class ProfileOtherResponse {
                 profile.getPersonality(),
                 profile.getIntroduce(),
                 profile.getMainImg(),
-                null,  // subImg 초기값은 null로 설정
+                profile.getSubImg().toString(),
                 profile.getAge(),
-                null,  // addressCity 초기값은 null로 설정
-                null,  // addressDistrict 초기값은 null로 설정
-                null,  // job 초기값은 null로 설정
+                profile.getAddressCity(),
+                profile.getAddressDistrict(),
+                profile.getJob(),
                 profile.isJobVisible(),
                 profile.isSubImgVisible(),
                 profile.isAddressVisible());
+
         // 공개 여부에 따라 값 설정
-        if (profile.isSubImgVisible()) {
-            this.subImg = profile.getSubImg().toString();
+        if (profile.isSubImgVisible() == 0 ) {
+            this.subImg = null;
         }
-        if (profile.isAddressVisible()) {
-            this.addressCity = profile.getAddressCity();
-            this.addressDistrict = profile.getAddressDistrict();
+        if (profile.isAddressVisible() == 0 ) {
+            this.addressCity = null;
+            this.addressDistrict = null;
         }
-        if (profile.isJobVisible()) {
-            this.job = profile.getJob();
+        if (profile.isJobVisible() == 0 ) {
+            this.job = null;
         }
     }
 
     public ProfileOtherResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, String subImg,
                                 int age, AddressCity addressCity, AddressDistrict addressDistrict, String job,
-                                boolean jobVisibility, boolean subImgVisibility, boolean addressVisibility) {
+                                int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;
