@@ -75,7 +75,7 @@ public class Profile extends BaseTimeEntity {
     @Builder
     public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
                    String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-                   AddressDistrict addressDistrict) {
+                   AddressDistrict addressDistrict, int jobVisible, int subImgVisible, int addressVisible) {
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -87,6 +87,9 @@ public class Profile extends BaseTimeEntity {
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
+        this.jobVisible = jobVisible;
+        this.subImgVisible = subImgVisible;
+        this.addressVisible = addressVisible;
     }
 
     public Member getMember() {
@@ -141,15 +144,15 @@ public class Profile extends BaseTimeEntity {
         return ban;
     }
 
-    public int isJobVisible() {
+    public int getJobVisible() {
         return jobVisible;
     }
 
-    public int isSubImgVisible() {
+    public int getSubImgVisible() {
         return subImgVisible;
     }
 
-    public int isAddressVisible() {
+    public int getAddressVisible() {
         return addressVisible;
     }
 

@@ -53,13 +53,13 @@ public class ProfileRegisterRequest {
     @Schema(description = "시/군/구", example = "용산구")
     private AddressDistrict addressDistrict;
 
-    @Schema(description = "직업 공개 여부", example = "true")
+    @Schema(description = "직업 공개 여부", example = "1")
     private int jobVisibility;
 
-    @Schema(description = "서브 이미지 공개 여부", example = "true")
+    @Schema(description = "서브 이미지 공개 여부", example = "1")
     private int subImgVisibility;
 
-    @Schema(description = "주소 공개 여부", example = "true")
+    @Schema(description = "주소 공개 여부", example = "1")
     private int addressVisibility;
 
     public ProfileRegisterRequest() {
@@ -85,6 +85,6 @@ public class ProfileRegisterRequest {
     }
 
     public Profile toEntity(final Member member) {
-        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict);
+        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict, jobVisibility, subImgVisibility, addressVisibility);
     }
 }

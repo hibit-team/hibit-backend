@@ -51,13 +51,13 @@ public class ProfileUpdateRequest {
     @Schema(description = "시/군/구", example = "연수구")
     private AddressDistrict addressDistrict;
 
-    @Schema(description = "직업 공개 여부", example = "true")
+    @Schema(description = "직업 공개 여부", example = "0")
     private int jobVisibility;
 
-    @Schema(description = "서브 이미지 공개 여부", example = "true")
+    @Schema(description = "서브 이미지 공개 여부", example = "0")
     private int subImgVisibility;
 
-    @Schema(description = "주소 공개 여부", example = "true")
+    @Schema(description = "주소 공개 여부", example = "0")
     private int addressVisibility;
 
     public ProfileUpdateRequest() {

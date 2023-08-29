@@ -7,6 +7,7 @@ import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
@@ -25,16 +26,15 @@ public class ProfileResponse {
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
     private String job;
-
-    // @NoArgsConstructor(access = AccessLevel.PRIVATE) : 아무런 매개변수가 없는 생성자
-    // dto - AccessLevel.PRIVATE / entity - AccessLevel.PROTECTED
+    private int jobVisibility;
+    private int subImgVisibility;
+    private int addressVisibility;
     public ProfileResponse() {
     }
 
-    // @AllArgsConstructor(access = AccessLevel.PRIVATE) : 해당 클래스 내의 모든 변수값을 가진 생성자를 자동으로 만들어 준다.
-
-
-    public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, String subImg, int age, AddressCity addressCity, AddressDistrict addressDistrict, String job) {
+    public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, String subImg
+            , int age, AddressCity addressCity, AddressDistrict addressDistrict, String job
+            , int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;
@@ -45,6 +45,9 @@ public class ProfileResponse {
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
         this.job = job;
+        this.jobVisibility = jobVisibility;
+        this.subImgVisibility = subImgVisibility;
+        this.addressVisibility = addressVisibility;
     }
 
     public ProfileResponse(Profile profile) {
@@ -57,6 +60,9 @@ public class ProfileResponse {
                 profile.getAge(),
                 profile.getAddressCity(),
                 profile.getAddressDistrict(),
-                profile.getJob());
+                profile.getJob(),
+                profile.getJobVisible(),
+                profile.getSubImgVisible(),
+                profile.getAddressVisible());
     }
 }

@@ -43,19 +43,19 @@ public class ProfileOtherResponse {
                 profile.getAddressCity(),
                 profile.getAddressDistrict(),
                 profile.getJob(),
-                profile.isJobVisible(),
-                profile.isSubImgVisible(),
-                profile.isAddressVisible());
+                profile.getJobVisible(),
+                profile.getSubImgVisible(),
+                profile.getAddressVisible());
 
         // 공개 여부에 따라 값 설정
-        if (profile.isSubImgVisible() == 0 ) {
+        if (profile.getSubImgVisible() == 0 ) {
             this.subImg = null;
         }
-        if (profile.isAddressVisible() == 0 ) {
+        if (profile.getAddressVisible() == 0 ) {
             this.addressCity = null;
             this.addressDistrict = null;
         }
-        if (profile.isJobVisible() == 0 ) {
+        if (profile.getJobVisible() == 0 ) {
             this.job = null;
         }
     }
