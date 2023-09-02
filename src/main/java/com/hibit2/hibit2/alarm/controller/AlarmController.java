@@ -39,9 +39,9 @@ public class AlarmController {
     @Operation(summary = "alarm/make", description = "모든 유저에게 알림 생성(이벤트)")
     public ResponseEntity<Alarm> save(@RequestBody String content){
 
-        Member receiver = memberRepository.findByNickname("관리자")
+        Member sender = memberRepository.findByEmail("teamhibit@gmail.com")
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
+        
         List<Member> allMembers = memberRepository.findAll();
 
         for (Member member : allMembers) {
