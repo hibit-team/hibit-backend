@@ -40,14 +40,14 @@ public class AlarmController {
     public ResponseEntity<Alarm> save(@RequestBody String content){
 
         Member sender = memberRepository.findByEmail("teamhibit@gmail.com")
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        
+                .orElseThrow(() -> new RuntimeException("관리자를 찾을 수 없습니다."));
+
         List<Member> allMembers = memberRepository.findAll();
 
         for (Member member : allMembers) {
             Alarm alarm = new Alarm();
-            alarm.setReceiver(receiver);
-            alarm.setSender(member);
+            alarm.setReceiver(member);
+            alarm.setSender(sender);
             alarm.setAlarmType(AlarmType.EVENT);
             alarm.setUrl("");
             alarm.setContent(content);
