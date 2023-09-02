@@ -51,8 +51,9 @@ public class DeclarationController {
     public ResponseEntity<Declaration> countReport(@PathVariable Integer idx){
         Declaration declaration = declarationRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 신고가 없습니다. id="+idx));
         declaration.changeRead();
+
         //추후 관리자 아이디로 변경
-        Member sender = memberRepository.findByNickname("관리자")
+        Member sender = memberRepository.findByEmail("teamhibit@gmail.com")
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         //회원 테이블 신고 횟수 증가
