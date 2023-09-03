@@ -84,4 +84,140 @@ public class AlarmController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
+    @PostMapping("/dummy")
+    public void DummyData() {
+        Member sender = memberRepository.findById(1L).orElse(null);
+        Member receiver = memberRepository.findById(3L).orElse(null);
+
+        if (sender != null && receiver != null) {
+            Alarm alarm1 = new Alarm();
+            alarm1.setReceiver(receiver);
+            alarm1.setSender(sender);
+            alarm1.setPostIdx(1);
+            //alarm1.setMatchingIdx(0);
+            alarm1.setAlarmType(AlarmType.COMMENT);
+            alarm1.setContent("더미 알림 1");
+            alarm1.setUrl("더미 URL 1");
+            alarm1.setReaded(false);
+            alarm1.setHistory("N");
+
+            Alarm alarm2 = new Alarm();
+            alarm2.setReceiver(receiver);
+            alarm2.setSender(sender);
+            alarm2.setPostIdx(1);
+            alarm2.setMatchingIdx(0);
+            alarm2.setAlarmType(AlarmType.RECOMMENT);
+            alarm2.setContent("더미 알림 2");
+            alarm2.setUrl("더미 URL 2");
+            alarm2.setReaded(false);
+            alarm2.setHistory("N");
+
+            Alarm alarm3 = new Alarm();
+            alarm3.setReceiver(receiver);
+            alarm3.setSender(sender);
+            alarm3.setPostIdx(1);
+            //alarm1.setMatchingIdx(0);
+            alarm3.setAlarmType(AlarmType.COMMENTHEART);
+            alarm3.setContent("더미 알림 3");
+            alarm3.setUrl("더미 URL 3");
+            alarm3.setReaded(false);
+            alarm3.setHistory("N");
+
+
+            Alarm alarm4 = new Alarm();
+            alarm4.setReceiver(receiver);
+            alarm4.setSender(sender);
+            alarm4.setPostIdx(1);
+            alarm4.setMatchingIdx(0);
+            alarm4.setAlarmType(AlarmType.INVITATION);
+            alarm4.setContent("더미 알림 4");
+            alarm4.setUrl("더미 URL 4");
+            alarm4.setReaded(false);
+            alarm4.setHistory("N");
+
+
+            Alarm alarm5 = new Alarm();
+            alarm5.setReceiver(receiver);
+            alarm5.setSender(sender);
+            alarm5.setPostIdx(1);
+            //alarm1.setMatchingIdx(0);
+            alarm5.setAlarmType(AlarmType.OPENCHAT);
+            alarm5.setContent("더미 알림 5");
+            alarm5.setUrl("더미 URL 5");
+            alarm5.setReaded(false);
+            alarm5.setHistory("N");
+
+
+            Alarm alarm6 = new Alarm();
+            alarm6.setReceiver(receiver);
+            alarm6.setSender(sender);
+            alarm6.setPostIdx(1);
+            alarm6.setMatchingIdx(0);
+            alarm6.setAlarmType(AlarmType.ACCEPT);
+            alarm6.setContent("더미 알림 6");
+            alarm6.setUrl("더미 URL 6");
+            alarm6.setReaded(false);
+            alarm6.setHistory("N");
+
+            Alarm alarm7 = new Alarm();
+            alarm7.setReceiver(receiver);
+            alarm7.setSender(sender);
+            alarm7.setPostIdx(1);
+            alarm7.setMatchingIdx(0);
+            alarm7.setAlarmType(AlarmType.REFUSE);
+            alarm7.setContent("더미 알림 7");
+            alarm7.setUrl("더미 URL 7");
+            alarm7.setReaded(false);
+            alarm7.setHistory("N");
+
+            Alarm alarm8 = new Alarm();
+            alarm8.setReceiver(receiver);
+            alarm8.setSender(sender);
+            alarm8.setPostIdx(1);
+            alarm8.setMatchingIdx(0);
+            alarm8.setAlarmType(AlarmType.REPORT);
+            alarm8.setContent("더미 알림 8");
+            alarm8.setUrl("더미 URL 8");
+            alarm8.setReaded(false);
+            alarm8.setHistory("N");
+
+            Alarm alarm9 = new Alarm();
+            alarm9.setReceiver(receiver);
+            alarm9.setSender(sender);
+            //alarm1.setPostIdx(1);
+            //alarm1.setMatchingIdx(0);
+            alarm9.setAlarmType(AlarmType.EVENT);
+            alarm9.setContent("더미 알림 9");
+            alarm9.setUrl("더미 URL 9");
+            alarm9.setReaded(false);
+            alarm9.setHistory("N");
+
+            Alarm alarm10 = new Alarm();
+            alarm10.setReceiver(receiver);
+            alarm10.setSender(sender);
+            alarm10.setPostIdx(1);
+            //alarm1.setMatchingIdx(0);
+            alarm10.setAlarmType(AlarmType.REMIND);
+            alarm10.setContent("더미 알림 10");
+            alarm10.setUrl("더미 URL 10");
+            alarm10.setReaded(false);
+            alarm10.setHistory("N");
+
+            alarmRepository.save(alarm1);
+            alarmRepository.save(alarm2);
+
+            alarmRepository.save(alarm3);
+
+            alarmRepository.save(alarm4);
+            alarmRepository.save(alarm5);
+            alarmRepository.save(alarm6);
+            alarmRepository.save(alarm7);
+            alarmRepository.save(alarm8);
+            alarmRepository.save(alarm9);
+            alarmRepository.save(alarm10);
+
+        }
+    }
+
 }
