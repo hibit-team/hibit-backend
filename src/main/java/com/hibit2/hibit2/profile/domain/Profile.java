@@ -23,7 +23,7 @@ public class Profile extends BaseTimeEntity {
     @JoinColumn(name = "members_id")
     private Member member;
 
-    @Column(name = "nickname", length = 20)
+    @Column(name = "nickname", length = 20, unique = true)
     private String nickname;
 
     @Column(name = "age")
