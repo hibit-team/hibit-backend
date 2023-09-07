@@ -43,13 +43,33 @@ public class FileUploadController {
             System.out.println("File URL: " + fileUrl);
             fileUrls.add(fileUrl);
         }
-        String mainImg = fileUrls.remove(mainimgIdx);
+        String mainImg = fileUrls.get(mainimgIdx);
 
         List<Object> response = new ArrayList<>();
         response.add(mainImg);
         response.add(fileUrls);
         return ResponseEntity.ok(response);
     }
+    //게시글 수정 이미지 url
+    @PostMapping(value = "/edit/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "이미지 저장(수정API)", description = "수정 API에서 이미지를 저장하는 메소드입니다.")
+    public ResponseEntity<List<String>> edituploadFiles(@RequestParam(value ="file", required=false) List<MultipartFile> files) {
+        if (files == null) {
+            System.out.println("files is null");
+        } else if (files.isEmpty()) {
+            System.out.println("files is empty");
+        }
+
+        List<String> fileUrls = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile file = files.get(i);
+            String fileUrl = fileUploadService.uploadFile(file);
+            System.out.println("File URL: " + fileUrl);
+            fileUrls.add(fileUrl);
+        }
+        return ResponseEntity.ok(fileUrls);
+    }
+
 
     @PostMapping(value = "/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> uploadFile(@RequestPart(value = "file") MultipartFile multipartFile) {
