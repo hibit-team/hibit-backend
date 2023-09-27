@@ -7,9 +7,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
+import com.hibit2.hibit2.member.service.MemberService;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
-import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
-import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import com.hibit2.hibit2.profile.dto.response.*;
 import com.hibit2.hibit2.profile.exception.InvalidOtherProfileException;
 import com.hibit2.hibit2.profile.exception.InvalidPersonalityException;
 import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
 import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
-import com.hibit2.hibit2.profile.dto.response.ProfileRegisterResponse;
-import com.hibit2.hibit2.profile.dto.response.ProfileResponse;
 import com.hibit2.hibit2.profile.service.ProfileService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +62,10 @@ public class ProfileController {
                 profileRegisterRequest.getSubImg(),
                 profileRegisterRequest.getJob(),
                 profileRegisterRequest.getAddressCity(),
-                profileRegisterRequest.getAddressDistrict()
+                profileRegisterRequest.getAddressDistrict(),
+                profileRegisterRequest.getJobVisibility(),       // 직업 공개 여부
+                profileRegisterRequest.getSubImgVisibility(),    // 서브 이미지 공개 여부
+                profileRegisterRequest.getAddressVisibility()     // 주소 공개 여부
         );
 
         //  프로필을 등록하고, 그에 대한 결과로 생성된 프로필 정보를 받아오는 부분
@@ -103,8 +104,9 @@ public class ProfileController {
         if (loginMember.getId().equals(otherMemberId)) {
             throw new InvalidOtherProfileException("자신의 프로필은 다른 방식으로 조회하세요.");
         }
-
+      
         ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
+
         return ResponseEntity.ok(response);
     }
 
@@ -119,5 +121,15 @@ public class ProfileController {
 
         profileService.updateProfile(loginMember.getId(), profileUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/nickname/exists", params = "nickname")
+    public ResponseEntity<UniqueResponse> validateUniqueNickname(@RequestParam String nickname) {
+        try {
+            profileService.validateUniqueNickname(nickname);
+            return ResponseEntity.ok(new UniqueResponse(true));
+        } catch (NicknameAlreadyTakenException ex) {
+            return ResponseEntity.ok(new UniqueResponse(false));
+        }
     }
 }

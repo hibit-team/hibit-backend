@@ -1,8 +1,7 @@
 package com.hibit2.hibit2.profile.service;
 
 import com.hibit2.hibit2.auth.dto.LoginMember;
-import com.hibit2.hibit2.profile.dto.response.ProfileOtherResponse;
-import com.hibit2.hibit2.profile.dto.response.ProfilesResponse;
+import com.hibit2.hibit2.profile.dto.response.*;
 import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,6 @@ import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.profile.domain.Profile;
 import com.hibit2.hibit2.profile.dto.request.ProfileRegisterRequest;
 import com.hibit2.hibit2.profile.dto.request.ProfileUpdateRequest;
-import com.hibit2.hibit2.profile.dto.response.ProfileRegisterResponse;
-import com.hibit2.hibit2.profile.dto.response.ProfileResponse;
 import com.hibit2.hibit2.profile.repository.ProfileRepository;
 
 import java.util.List;
@@ -60,6 +57,9 @@ public class ProfileService {
                 .job(request.getJob())
                 .addressCity(request.getAddressCity())
                 .addressDistrict(request.getAddressDistrict())
+                .jobVisible(request.getJobVisibility())
+                .subImgVisible(request.getSubImgVisibility())
+                .addressVisible(request.getAddressVisibility())
                 .build());
     }
 
@@ -101,7 +101,9 @@ public class ProfileService {
         profile.updateJob(request.getJob());
         profile.updateAddressCity(request.getAddressCity());
         profile.updateAddressDistinct(request.getAddressDistrict());
-
+        profile.updateJobVisible(request.getJobVisibility());
+        profile.updateSubImgVisible(request.getSubImgVisibility());
+        profile.updateAddressVisible(request.getAddressVisibility());
         profileRepository.save(profile);
     }
 
@@ -122,5 +124,11 @@ public class ProfileService {
                 .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
 
         return new ProfileOtherResponse(profile);
+    }
+
+    public void validateUniqueNickname(String nickname) {
+        if (profileRepository.existsByNickname(nickname)) {
+            throw new NicknameAlreadyTakenException("이미 사용중인 닉네임 입니다.");
+        }
     }
 }

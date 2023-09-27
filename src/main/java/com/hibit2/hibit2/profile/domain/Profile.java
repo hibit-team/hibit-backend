@@ -23,7 +23,7 @@ public class Profile extends BaseTimeEntity {
     @JoinColumn(name = "members_id")
     private Member member;
 
-    @Column(name = "nickname", length = 20)
+    @Column(name = "nickname", length = 20, unique = true)
     private String nickname;
 
     @Column(name = "age")
@@ -60,13 +60,22 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "ban")
     private int ban;
 
+    @Column(name = "job_visible")
+    private int jobVisible;
+
+    @Column(name = "sub_img_visible")
+    private int subImgVisible;
+
+    @Column(name = "address_visible")
+    private int addressVisible;
+
     protected Profile() {
     }
 
     @Builder
     public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
                    String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-                   AddressDistrict addressDistrict) {
+                   AddressDistrict addressDistrict, int jobVisible, int subImgVisible, int addressVisible) {
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -78,6 +87,9 @@ public class Profile extends BaseTimeEntity {
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
+        this.jobVisible = jobVisible;
+        this.subImgVisible = subImgVisible;
+        this.addressVisible = addressVisible;
     }
 
     public Member getMember() {
@@ -132,6 +144,18 @@ public class Profile extends BaseTimeEntity {
         return ban;
     }
 
+    public int getJobVisible() {
+        return jobVisible;
+    }
+
+    public int getSubImgVisible() {
+        return subImgVisible;
+    }
+
+    public int getAddressVisible() {
+        return addressVisible;
+    }
+
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -170,5 +194,14 @@ public class Profile extends BaseTimeEntity {
 
     public void updateAddressDistinct(AddressDistrict addressDistrict) {
         this.addressDistrict = addressDistrict;
+    }
+    public void updateJobVisible(int jobVisible) {
+        this.jobVisible = jobVisible;
+    }
+    public void updateSubImgVisible(int subImgVisible) {
+        this.subImgVisible = subImgVisible;
+    }
+    public void updateAddressVisible(int addressVisible) {
+        this.addressVisible = addressVisible;
     }
 }

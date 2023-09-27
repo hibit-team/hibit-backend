@@ -51,12 +51,22 @@ public class ProfileUpdateRequest {
     @Schema(description = "시/군/구", example = "연수구")
     private AddressDistrict addressDistrict;
 
+    @Schema(description = "직업 공개 여부", example = "0")
+    private int jobVisibility;
+
+    @Schema(description = "서브 이미지 공개 여부", example = "0")
+    private int subImgVisibility;
+
+    @Schema(description = "주소 공개 여부", example = "0")
+    private int addressVisibility;
+
     public ProfileUpdateRequest() {
     }
 
     public ProfileUpdateRequest(String nickname, int age, int gender, List<PersonalityType> personality,
                                 String introduce,
-                                String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict) {
+                                String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict,
+                                int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
@@ -67,5 +77,8 @@ public class ProfileUpdateRequest {
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
+        this.jobVisibility = jobVisibility;
+        this.subImgVisibility = subImgVisibility;
+        this.addressVisibility = addressVisibility;
     }
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Tag(name = "exhibiton", description = "전시회")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/exhibiton")
+@RequestMapping("/exhibition")
 public class ExhibitonController {
     private final ExhibitionRepository exhibitionRepository;
 

@@ -36,9 +36,8 @@ public class CommentController {
     private final CommentService commentService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
-
     @PostMapping("/{post_idx}")
-    @Operation(summary = "/comment/1/1", description = "댓글 작성")
+    @Operation(summary = "/comment/1", description = "댓글 작성")
     public ResponseEntity<Integer> createComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
         Comment comment = commentService.createComment(post_idx, loginMember.getId(), content);
@@ -46,11 +45,11 @@ public class CommentController {
     }
 
     // 대댓글 작성
-    @PostMapping("/replies/{comment_idx}/{member_idx}")
-    @Operation(summary = "/comment/replies/1/1", description = "댓글에 대한 대댓글 작성")
-    public ResponseEntity<Integer> createReply(@PathVariable int comment_idx, @PathVariable Long member_idx, @RequestBody CommentSaveDto commentSaveDto) {
+    @PostMapping("/replies/{comment_idx}")
+    @Operation(summary = "/comment/replies/1", description = "댓글에 대한 대댓글 작성")
+    public ResponseEntity<Integer> createReply(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int comment_idx, @RequestBody CommentSaveDto commentSaveDto) {
         String content = commentSaveDto.getContent();
-        Comment reply = commentService.createReply(comment_idx, member_idx, content);
+        Comment reply = commentService.createReply(comment_idx, loginMember.getId(), content);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply.getIdx());
     }
 
@@ -97,15 +96,18 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
     //댓글 좋아요
-    @GetMapping("/like/{comment_idx}/{member_idx}")
-    @Operation(summary = "/comment/like/1/1", description = "댓글 좋아요")
-    public ResponseEntity<Comment> likeComment(@PathVariable int comment_idx, @PathVariable Long member_idx){
+    @GetMapping("/like/{comment_idx}")
+    @Operation(summary = "/comment/like/1", description = "댓글 좋아요")
+    public ResponseEntity<Comment> likeComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int comment_idx){
 
-        Member member= memberRepository.getById(member_idx);
-
+        Member member= memberRepository.getById(loginMember.getId());
         Comment comment = commentService.likeComment(comment_idx, member.getNickname());
         return ResponseEntity.ok(comment);
     }
+
+
+
 
 }

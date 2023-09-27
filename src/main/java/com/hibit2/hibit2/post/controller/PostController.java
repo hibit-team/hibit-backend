@@ -47,22 +47,22 @@ public class PostController {
     private final PostRepository postRepository;
 
 
-    @PostMapping("/write/{member_idx}")
-    @Operation(summary = "post/write/{member_idx}", description = "매칭 게시글 작성")
+    @PostMapping("/write")
+    @Operation(summary = "post/write", description = "매칭 게시글 작성")
     @Parameters({@Parameter(name = "title", description = "제목", example = "디뮤지엄 전시 보러가요"),
-                @Parameter(name = "content", description = "내용", example =  "본문내용"),
-                @Parameter(name = "number", description = "관람 인원", example =  "3"),
-                @Parameter(name = "openchat", description = "오픈채팅 url", example =  "http://kakao"),
-                @Parameter(name = "what_do", description = "전시보고뭐할래", example =  "EAT"),
-                @Parameter(name = "dateTimeSlots", description = "날짜", example =  "[\n" + "{\n" +
-                        "    \"date\": \"2023-05-31\",\n" +
-                        "    \"timeSlot\": \"AM\"\n" +
-                        "  }" +"\n]"),
-               @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
-               @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
+            @Parameter(name = "content", description = "내용", example =  "본문내용"),
+            @Parameter(name = "number", description = "관람 인원", example =  "3"),
+            @Parameter(name = "openchat", description = "오픈채팅 url", example =  "http://kakao"),
+            @Parameter(name = "what_do", description = "전시보고뭐할래", example =  "EAT"),
+            @Parameter(name = "dateTimeSlots", description = "날짜", example =  "[\n" + "{\n" +
+                    "    \"date\": \"2023-05-31\",\n" +
+                    "    \"timeSlot\": \"AM\"\n" +
+                    "  }" +"\n]"),
+            @Parameter(name = "mainimg", description = "대표이미지url", example ="hibitbucket"),
+            @Parameter(name = "subimg", description = "서브이미지URL 리스트", example ="hibitbucket")
     })
-    public ResponseEntity<Post> save(@RequestBody PostSaveDto requestDto,@PathVariable Long member_idx){
-        Post post = postService.save(requestDto, member_idx);
+    public ResponseEntity<Post> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @RequestBody PostSaveDto requestDto){
+        Post post = postService.save(requestDto, loginMember.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
     //기본 게시글 리스트
@@ -165,11 +165,12 @@ public class PostController {
 
     }
 
+
     //게시글 좋아요
-    @GetMapping("/{post_idx}/{member_idx}/like")
+    @GetMapping("/{post_idx}/like")
     @Operation(summary = "post/{post_idx}/{member_idx}/like", description = "좋아요 누르기, 테스트할려면 유저 signup에서 b로 회원가입하기")
-    public ResponseEntity<PostResponseDto> likeComment(@PathVariable int post_idx, @PathVariable Long member_idx){
-        Post post = postService.likePost(post_idx, member_idx);
+    public ResponseEntity<PostResponseDto> likeComment(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx){
+        Post post = postService.likePost(post_idx, loginMember.getId());
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return ResponseEntity.ok(postResponseDto);
     }

@@ -53,12 +53,22 @@ public class ProfileRegisterRequest {
     @Schema(description = "시/군/구", example = "용산구")
     private AddressDistrict addressDistrict;
 
+    @Schema(description = "직업 공개 여부", example = "1")
+    private int jobVisibility;
+
+    @Schema(description = "서브 이미지 공개 여부", example = "1")
+    private int subImgVisibility;
+
+    @Schema(description = "주소 공개 여부", example = "1")
+    private int addressVisibility;
+
     public ProfileRegisterRequest() {
     }
 
     public ProfileRegisterRequest(String nickname, int age, int gender, List<PersonalityType> personality,
                                   String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-                                  AddressDistrict addressDistrict) {
+                                  AddressDistrict addressDistrict,
+                                  int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
@@ -69,9 +79,12 @@ public class ProfileRegisterRequest {
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
+        this.jobVisibility = jobVisibility;
+        this.subImgVisibility = subImgVisibility;
+        this.addressVisibility = addressVisibility;
     }
 
     public Profile toEntity(final Member member) {
-        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict);
+        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict, jobVisibility, subImgVisibility, addressVisibility);
     }
 }
