@@ -27,7 +27,6 @@ public class Member {
     @Column(name = "id")
     private Long id;
 
-
     @Column(name = "nickname", nullable = true)
     @Schema(description = "닉네임", example = "아아아")
     private String nickname;
@@ -54,6 +53,10 @@ public class Member {
     @Column(nullable = false, columnDefinition = "integer default 0")
     @Schema(description = "신고 수", example = "0")
     private int report;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    @Schema(description = "프로필 작성", example = "0")
+    private boolean isProfile;
 
 
     protected Member() {
@@ -113,5 +116,6 @@ public class Member {
     }
 
     public void AddReport(){this.report += 1;}
-
+    public boolean getIsprofile(){ return isProfile;}
+    public void setIsprofile(){this.isProfile=true;}
 }

@@ -66,6 +66,7 @@ public class ProfileService {
     private void updateMemberInfo(Member member, Profile profile) {
         member.setNickname(profile.getNickname());
         member.setMainImg(profile.getMainImg());
+        member.setIsprofile();
         memberRepository.save(member);
     }
 
