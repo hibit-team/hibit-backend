@@ -2,7 +2,6 @@ package com.hibit2.hibit2.member.dto;
 
 
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.user.domain.Users;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

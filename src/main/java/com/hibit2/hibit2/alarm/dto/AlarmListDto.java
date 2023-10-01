@@ -3,12 +3,9 @@ package com.hibit2.hibit2.alarm.dto;
 
 import com.hibit2.hibit2.alarm.domain.Alarm;
 import com.hibit2.hibit2.alarm.domain.AlarmType;
-import com.hibit2.hibit2.comment.dto.CommentListDto;
-import com.hibit2.hibit2.user.dto.UserlistDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @NoArgsConstructor
 @Getter

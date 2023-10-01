@@ -1,10 +1,8 @@
 package com.hibit2.hibit2.postHistory.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.Post;
-import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;

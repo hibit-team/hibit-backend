@@ -4,13 +4,11 @@ import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.post.domain.DateTimeSlot;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.domain.What_do;
-import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import java.util.List;
 
 
