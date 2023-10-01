@@ -130,7 +130,7 @@ public class CommentService {
                 .orElseThrow(() -> new NotFoundCommentException());
 
         Optional<Member> existingLike = comment.getLikeUsers().stream()
-                .filter(likeUser -> likeUser.getId().equals(member))
+                .filter(likeUser -> likeUser.getId().equals(member.getId()))
                 .findFirst();
 
         if (!existingLike.isPresent()) {

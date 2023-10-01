@@ -91,7 +91,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
     //댓글 좋아요
     @GetMapping("/like/{comment_idx}")
     @Operation(summary = "/comment/like/1", description = "댓글 좋아요")
@@ -101,8 +100,4 @@ public class CommentController {
         Comment comment = commentService.likeComment(comment_idx, member.getNickname());
         return ResponseEntity.ok(comment);
     }
-
-
-
-
 }
