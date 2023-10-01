@@ -73,7 +73,7 @@ public class SetupController {
             int numSlots = random.nextInt(3) + 1;
             List<DateTimeSlot> dateTimeSlots = new ArrayList<>();
             for (int j = 0; j < numSlots; j++) {
-                int month = random.nextInt(2) + 6;  // 6 or 7
+                int month = random.nextInt(2) + 9;  // 6 or 7
                 int day = random.nextInt(30) + 1;   // 1 to 30
                 LocalDate date = LocalDate.of(2023, month, day);
                 TimeSlot timeSlot = random.nextBoolean() ? TimeSlot.AM : TimeSlot.PM;
