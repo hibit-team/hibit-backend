@@ -9,8 +9,6 @@ import com.hibit2.hibit2.declaration.repository.DeclarationRepository;
 import com.hibit2.hibit2.declaration.service.DeclarationService;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "declaration", description = "신고")
 @RestController

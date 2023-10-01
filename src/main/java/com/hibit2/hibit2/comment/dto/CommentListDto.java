@@ -4,8 +4,6 @@ package com.hibit2.hibit2.comment.dto;
 import com.hibit2.hibit2.comment.domain.Comment;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.dto.MemberListDto;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.dto.UserlistDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

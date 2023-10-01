@@ -12,16 +12,12 @@ import com.hibit2.hibit2.post.domain.What_do;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

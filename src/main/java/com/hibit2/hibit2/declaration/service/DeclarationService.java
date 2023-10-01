@@ -7,11 +7,10 @@ import com.hibit2.hibit2.declaration.domain.Declaration;
 import com.hibit2.hibit2.declaration.dto.DeclarationSaveDto;
 import com.hibit2.hibit2.declaration.repository.DeclarationRepository;
 import com.hibit2.hibit2.member.domain.Member;
+import com.hibit2.hibit2.member.exception.NotFoundMemberException;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
 import com.hibit2.hibit2.post.repository.PostRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +21,16 @@ import javax.transaction.Transactional;
 public class DeclarationService {
     private final DeclarationRepository declarationRepository;
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
 
     public Declaration createDeclaration(DeclarationSaveDto declarationSaveDto) {
 
         Member member= memberRepository.findByNickname(declarationSaveDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundMemberException());
 
         Member reportMember= memberRepository.findByNickname(declarationSaveDto.getReportId())
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundMemberException());
 
 
         Post post = null;

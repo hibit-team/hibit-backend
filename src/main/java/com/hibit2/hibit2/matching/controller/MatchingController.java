@@ -5,7 +5,6 @@ import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.matching.service.MatchingService;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.dto.MemberListDto;
-import com.hibit2.hibit2.user.dto.UserlistDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

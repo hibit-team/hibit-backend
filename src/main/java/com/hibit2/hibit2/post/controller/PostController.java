@@ -15,8 +15,6 @@ import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.post.service.PostService;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
