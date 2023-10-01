@@ -35,7 +35,7 @@ public class AlarmScheduler {
             List<DateTimeSlot> dateTimeSlots = post.getDateTimeSlots();
             for (DateTimeSlot dateTimeSlot : dateTimeSlots) {
                 if (dateTimeSlot.getDate().equals(targetDate)) {
-                    //alarmService.createRemind(post.getUser());
+                    alarmService.createRemind(post.getMember());
                     break; //오전,오후 하나만 보내기
                 }
             }

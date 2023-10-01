@@ -4,7 +4,7 @@ import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.dto.MemberIdxDto;
-import com.hibit2.hibit2.member.exception.NoSuchMemberException;
+import com.hibit2.hibit2.member.exception.NotFoundMemberException;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.member.service.MemberService;
 import com.hibit2.hibit2.member.dto.MemberResponse;
@@ -36,7 +36,7 @@ public class MemberController {
     @GetMapping("/find")
     public ResponseEntity<MemberIdxDto> findIdx(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember){
         Member member = memberRepository.findById(loginMember.getId())
-                .orElseThrow(NoSuchMemberException::new);
+                .orElseThrow(NotFoundMemberException::new);
 
         MemberIdxDto memberIdxDto = new MemberIdxDto(member);
         return ResponseEntity.ok(memberIdxDto);

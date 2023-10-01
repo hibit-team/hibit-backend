@@ -73,7 +73,7 @@ public class AlarmService {
 
 
         String content;
-        content = "전시회 다녀오셨나요? 추후 변경";
+        content = "전시회 다녀오셨나요?";
         Alarm alarm = new Alarm();
         alarm.setReceiver(member);
         alarm.setSender(sender);
