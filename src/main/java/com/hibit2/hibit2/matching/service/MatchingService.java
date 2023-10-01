@@ -5,17 +5,17 @@ import com.hibit2.hibit2.alarm.domain.Alarm;
 import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.repository.AlarmRepository;
 import com.hibit2.hibit2.alarm.service.AlarmService;
-import com.hibit2.hibit2.mail.service.EmailService;
 import com.hibit2.hibit2.matching.domain.MatchStatus;
 import com.hibit2.hibit2.matching.domain.Matching;
+import com.hibit2.hibit2.matching.exception.NotFoundMatchingException;
 import com.hibit2.hibit2.matching.repository.MatchingRepository;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
 import com.hibit2.hibit2.post.domain.Post;
+import com.hibit2.hibit2.post.exception.NotFoundPostException;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +28,7 @@ import java.util.List;
 public class MatchingService {
     private final MatchingRepository matchingRepository;
     private final PostRepository postRepository;
-    private final UsersRepository usersRepository;
     private final AlarmService alarmService;
-    private final EmailService emailService;
     private final postHistoryRepository postHistoryRepository;
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
@@ -44,21 +42,21 @@ public class MatchingService {
     //매칭 신청자 리스트
     public List<Matching> getMatchRequestsByPost(int post_idx) {
         Post post = postRepository.findById(post_idx)
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException());
         return matchingRepository.findByPost(post);
     }
     //초대장 발송
     @Transactional
     public void sendInvitations(int postIdx, List<Long> memberIds) {
         Post post = postRepository.findById(postIdx)
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException());
         post.increaseRound();
         for (Long memberId : memberIds) {
             Member member= memberRepository.getById(memberId);
 
             Matching matchRequest = matchingRepository.findByMemberAndPost(member, post);
             if (matchRequest == null) {
-                throw new RuntimeException("매칭 요청을 찾을 수 없습니다.");
+                throw new NotFoundMatchingException();
             }
             //댓글을 달고 처음 초대하는 경우
             if (matchRequest.getStatus() == MatchStatus.HOLDING)
@@ -90,7 +88,7 @@ public class MatchingService {
     //매칭 수락 (알림에서 수락 누른 경우)
     public void okMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
-                .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundMatchingException());
         matching.setStatus(MatchStatus.OK);
         postHistory postHistory = postHistoryRepository.findByPostIdx(matching.getPost().getIdx());
         postHistory.increaseOk();
@@ -118,7 +116,7 @@ public class MatchingService {
     //매칭 거절 (알림에서 거절 누른 경우)
     public void noMatch(int matching_idx) {
         Matching matching = matchingRepository.findById(matching_idx)
-                .orElseThrow(() -> new RuntimeException("매칭 신청을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundMatchingException());
         matching.setStatus(MatchStatus.NO);
         postHistory postHistory = postHistoryRepository.findByPostIdx(matching.getPost().getIdx());
         postHistory.increaseNo();
@@ -155,7 +153,7 @@ public class MatchingService {
     @Transactional
     public void saveOkuser(int postIdx, List<Long> memberIds) {
         Post post = postRepository.findById(postIdx)
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException());
         postHistory postHistory = postHistoryRepository.findByPostIdx(postIdx);
         List<Member> realUsers = new ArrayList<>();
 
