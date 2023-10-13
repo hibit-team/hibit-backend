@@ -11,7 +11,7 @@ import com.hibit2.hibit2.auth.exception.InvalidTokenException;
 
 public class AuthorizationExtractor {
 
-    private static final String BEARER_TYPE = "Bearer ";
+    private static final String BEARER_TYPE = ""; // 클라이언트에서 Bearer 처리하므로 Bearer 없이 ""으로 수정
 
     public static String extract(final HttpServletRequest request) {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
