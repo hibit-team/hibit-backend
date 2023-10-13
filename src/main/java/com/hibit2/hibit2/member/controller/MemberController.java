@@ -34,7 +34,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/find")
-    public ResponseEntity<MemberIdxDto> findIdx(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember){
+    public ResponseEntity<MemberIdxDto> findIdx(@AuthenticationPrincipal final LoginMember loginMember){
         Member member = memberRepository.findById(loginMember.getId())
                 .orElseThrow(NotFoundMemberException::new);
 
