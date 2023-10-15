@@ -109,6 +109,10 @@ public class PostService {
         Member member= memberRepository.getById(member_idx);
         String userId = member.getNickname();
 
+        if (post.getMember().getId().equals(member.getId())) {
+            return post;
+        }
+
         Optional<Member> existingLike = post.getLikeUsers().stream()
                 .filter(likeUser -> likeUser.getNickname().equals(userId))
                 .findFirst();

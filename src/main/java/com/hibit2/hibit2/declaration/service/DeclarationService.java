@@ -25,35 +25,34 @@ public class DeclarationService {
     private final MemberRepository memberRepository;
 
     public Declaration createDeclaration(DeclarationSaveDto declarationSaveDto) {
+        Declaration declaration = new Declaration();
 
         Member member= memberRepository.findByNickname(declarationSaveDto.getUserId())
                 .orElseThrow(() -> new NotFoundMemberException());
-
-        Member reportMember= memberRepository.findByNickname(declarationSaveDto.getReportId())
-                .orElseThrow(() -> new NotFoundMemberException());
-
 
         Post post = null;
         if (declarationSaveDto.getPostIdx() != null) {
             post = postRepository.findById(declarationSaveDto.getPostIdx())
                     .orElse(null);
+            Member reportMember= post.getMember();
+            declaration.setReport(reportMember);
         }
 
         Comment comment = null;
         if (declarationSaveDto.getCommentIdx() != null) {
             comment = commentRepository.findById(declarationSaveDto.getCommentIdx())
                     .orElse(null);
+            Member reportMember= comment.getMember();
+            declaration.setReport(reportMember);
         }
 
 
         // Declaration 객체를 생성하여 리턴
-        Declaration declaration = new Declaration();
         declaration.setDeclarationType(declarationSaveDto.getDeclarationType());
         declaration.setContent(declarationSaveDto.getContent());
 
         // postId, commentId 등의 정보를 이용하여 Declaration 객체에 필요한 설정 수행
         declaration.setMember(member);
-        declaration.setReport(reportMember);
         declaration.setPost(post);
         declaration.setComment(comment);
 

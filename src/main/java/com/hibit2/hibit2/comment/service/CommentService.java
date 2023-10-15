@@ -133,6 +133,11 @@ public class CommentService {
                 .filter(likeUser -> likeUser.getId().equals(member.getId()))
                 .findFirst();
 
+        if (comment.getMember().getId().equals(member.getId())) {
+            return comment;
+        }
+
+
         if (!existingLike.isPresent()) {
             // 좋아요 추가
             comment.getLikeUsers().add(member);
