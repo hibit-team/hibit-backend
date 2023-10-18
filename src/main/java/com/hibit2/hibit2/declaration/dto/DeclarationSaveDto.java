@@ -14,8 +14,6 @@ public class DeclarationSaveDto {
 
     @Schema(description = "신고를 작성하는 유저", example = "a")
     private String userId;
-    @Schema(description = "신고를 당하는 유저", example = "b")
-    private String reportId;
     @Schema(description = "게시글 ID (nullable)", example = "123")
     private Integer postIdx;
     @Schema(description = "댓글 ID (nullable)", example = "456")
