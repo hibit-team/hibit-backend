@@ -15,15 +15,14 @@ import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -72,7 +71,22 @@ public class PostService {
         LocalDate endLocalDate = LocalDate.parse(endDate);
         endLocalDate = endLocalDate.plusDays(1);
         Page<Post> postPage = postRepository.findByDateTimeRange(flag, startLocalDate, endLocalDate, pageable);
-        return postPage.map(PostListDto::new);
+
+
+        Set<Integer> uniquePostIds = new HashSet<>();
+        List<PostListDto> uniquePostList = new ArrayList<>();
+
+        for (Post post : postPage.getContent()) {
+            // Check if the post's ID is already in the set
+            if (uniquePostIds.add(post.getIdx())) {
+                // If it's not in the set, add it to the unique list
+                uniquePostList.add(new PostListDto(post));
+            }
+        }
+
+        return new PageImpl<>(uniquePostList, pageable, uniquePostList.size());
+
+        //return postPage.map(PostListDto::new);
     }
 
     //검색
