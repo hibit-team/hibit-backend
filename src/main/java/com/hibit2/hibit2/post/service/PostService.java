@@ -72,12 +72,11 @@ public class PostService {
         endLocalDate = endLocalDate.plusDays(1);
         Page<Post> postPage = postRepository.findByDateTimeRange(flag, startLocalDate, endLocalDate, pageable);
 
-
         Set<Integer> uniquePostIds = new HashSet<>();
         List<PostListDto> uniquePostList = new ArrayList<>();
 
         for (Post post : postPage.getContent()) {
-            if (uniquePostIds.add(post.getIdx())) {
+            if (uniquePostIds.add(post.getIdx())&& uniquePostList.size() < 6) {
                 uniquePostList.add(new PostListDto(post));
             }
         }
@@ -166,7 +165,7 @@ public class PostService {
     }
 
     @Transactional
-    public void canclePost(int post_idx, Long member_idx) {
+    public void cancelPost(int post_idx, Long member_idx) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new NotFoundPostException());
 
@@ -174,7 +173,6 @@ public class PostService {
         String userId = member.getNickname();
 
         if (post.getMember().getId().equals(member.getId())) {
-
             postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
             postHistory.cancle();
             postHistory.setFinishTimeCurrent();
