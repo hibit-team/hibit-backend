@@ -77,16 +77,13 @@ public class PostService {
         List<PostListDto> uniquePostList = new ArrayList<>();
 
         for (Post post : postPage.getContent()) {
-            // Check if the post's ID is already in the set
             if (uniquePostIds.add(post.getIdx())) {
-                // If it's not in the set, add it to the unique list
                 uniquePostList.add(new PostListDto(post));
             }
         }
 
         return new PageImpl<>(uniquePostList, pageable, uniquePostList.size());
 
-        //return postPage.map(PostListDto::new);
     }
 
     //검색
@@ -169,16 +166,25 @@ public class PostService {
     }
 
     @Transactional
-    public void canclePost(int post_idx) {
+    public void canclePost(int post_idx, Long member_idx) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new NotFoundPostException());
-        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
-        postHistory.cancle();
-        postHistory.setFinishTimeCurrent();
-        post.cancle();
-        postRepository.save(post);
-        postHistoryRepository.save(postHistory);
 
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
+
+        if (post.getMember().getId().equals(member.getId())) {
+
+            postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+            postHistory.cancle();
+            postHistory.setFinishTimeCurrent();
+            post.cancle();
+            postRepository.save(post);
+            postHistoryRepository.save(postHistory);
+        }
+        else{
+            new NotFoundPostException("게시글 작성자가 아닙니다.");
+        }
     }
 
 }

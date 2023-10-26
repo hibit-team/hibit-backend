@@ -188,9 +188,9 @@ public class PostController {
 
     //게시글 취소 변경
     @PutMapping("/{post_idx}/cancle")
-    @Operation(summary = "/post/1/cancle", description = "게시글 모집 완료")
-    public ResponseEntity<String> canclePost(@PathVariable int post_idx) {
-        postService.canclePost(post_idx);
+    @Operation(summary = "/post/1/cancle", description = "게시글 모집 취소")
+    public ResponseEntity<String> canclePost(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,@PathVariable int post_idx) {
+        postService.canclePost(post_idx, loginMember.getId());
         return ResponseEntity.ok().build();
     }
 
