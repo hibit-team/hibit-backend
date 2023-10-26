@@ -19,7 +19,7 @@ public class ProfileResponse {
     private List<PersonalityType> personality;
     private String introduce;
     private String mainImg;
-    private String subImg;
+    private List<String> subImg;
 
     // 선택 노출 정보
     private int age;
@@ -32,7 +32,7 @@ public class ProfileResponse {
     public ProfileResponse() {
     }
 
-    public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, String subImg
+    public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, List<String> subImg
             , int age, AddressCity addressCity, AddressDistrict addressDistrict, String job
             , int jobVisibility, int subImgVisibility, int addressVisibility) {
         this.nickname = nickname;
@@ -56,7 +56,7 @@ public class ProfileResponse {
                 profile.getPersonality(),
                 profile.getIntroduce(),
                 profile.getMainImg(),
-                profile.getSubImg().toString(),
+                profile.getSubImg(),
                 profile.getAge(),
                 profile.getAddressCity(),
                 profile.getAddressDistrict(),

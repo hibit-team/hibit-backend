@@ -142,23 +142,30 @@ public class PostService {
     }
 
     @Transactional
-    public void completePost(int post_idx) {
+    public void completePost(int post_idx, Long member_idx) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
-        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
 
-        postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
-        postHistory.complete();
-        postHistory.setFinishTimeCurrent();
+        if (post.getMember().getId().equals(member.getId())) {
+            postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
 
-        List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
-        postHistory.setOkUsers(matchedUsers);
+            postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
+            postHistory.complete();
+            postHistory.setFinishTimeCurrent();
 
+            List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+            postHistory.setOkUsers(matchedUsers);
 
-        post.complete();
-        postRepository.save(post);
-        postHistoryRepository.save(postHistory);
+            post.complete();
+            postRepository.save(post);
+            postHistoryRepository.save(postHistory);
+        }
+        else{
+            new NotFoundPostException("게시글 작성자가 아닙니다.");
+        }
     }
 
     @Transactional

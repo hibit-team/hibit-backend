@@ -176,12 +176,12 @@ public class PostController {
     //게시글 상태 변경
     @PutMapping("/{post_idx}/complete")
     @Operation(summary = "/post/1/complete", description = "게시글 모집 완료")
-    public ResponseEntity<String> completePost(@PathVariable int post_idx) {
+    public ResponseEntity<String> completePost(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx) {
         postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
         if (postHistory.getOkNum() == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("매칭이 진행되지 않았습니다. 매칭 진행 이후 모집 완료를 눌러주세요.");
         }
-        postService.completePost(post_idx);
+        postService.completePost(post_idx, loginMember.getId());
 
         return ResponseEntity.ok().build();
     }
