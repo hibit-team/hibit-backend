@@ -110,10 +110,10 @@ public class ProfileController {
     @Operation(summary = "/me/1", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
-        // 닉네임이 이미 존재하는 경우라면 예외 처리 발생
-        if (profileService.existsOtherProfileWithNickname(loginMember.getId(), profileUpdateRequest.getNickname())) {
-            throw new NicknameAlreadyTakenException();
-        }
+//        // 닉네임이 이미 존재하는 경우라면 예외 처리 발생
+//        if (profileService.existsOtherProfileWithNickname(loginMember.getId(), profileUpdateRequest.getNickname())) {
+//            throw new NicknameAlreadyTakenException();
+//        }
 
         profileService.updateProfile(loginMember.getId(), profileUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

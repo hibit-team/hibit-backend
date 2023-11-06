@@ -40,7 +40,8 @@ public class ControllerAdvice {
     @ExceptionHandler({ // 클라이언트 에러: 400
             InvalidMemberException.class,
             InvalidPersonalityException.class,
-            InvalidProfileInfoException.class
+            InvalidProfileInfoException.class,
+            NicknameAlreadyTakenException.class
     })
     public ResponseEntity<ErrorResponse> handleInvalidData(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
