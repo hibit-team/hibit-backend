@@ -60,8 +60,6 @@ public class ControllerAdvice {
 
     @ExceptionHandler({ // 클라이언테 에러: 403
             InvalidOtherProfileException.class,
-            NicknameAlreadyTakenException.class,
-
     })
     public ResponseEntity<ErrorResponse> handleForbidden(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
