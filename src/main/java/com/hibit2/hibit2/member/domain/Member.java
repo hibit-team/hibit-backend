@@ -110,6 +110,10 @@ public class Member {
 
     public void setNickname(String nickname) {this.nickname = nickname;}
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void setMainImg(String mainImg) {this.mainImg = mainImg;}
     public String getMainImg() {
         return mainImg;

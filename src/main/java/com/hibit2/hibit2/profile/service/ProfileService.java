@@ -1,6 +1,5 @@
 package com.hibit2.hibit2.profile.service;
 
-import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.profile.dto.response.*;
 import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
@@ -70,11 +69,6 @@ public class ProfileService {
         memberRepository.save(member);
     }
 
-    public ProfileResponse findProfileByIdAndMemberId(LoginMember loginMember, Long profileId) {
-        Profile profile = profileRepository.getByMemberIdAndProfileId(loginMember.getId(), profileId);
-        return new ProfileResponse(profile);
-    }
-
     public ProfilesResponse findProfilesByIdAndMemberId() {
         List<ProfileResponse> profileResponses = profileRepository.findAll()
                 .stream()
@@ -83,12 +77,13 @@ public class ProfileService {
         return new ProfilesResponse(profileResponses);
     }
 
-    public Profile findProfileById(Long profileId) {
-        return profileRepository.findById(profileId)
-                .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
-    }
-
     public void updateProfile(final Long memberId, final ProfileUpdateRequest request) {
+
+        Member member = memberRepository.getById(memberId);
+
+        member.updateNickname(request.getNickname());
+        memberRepository.save(member);
+
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
@@ -106,11 +101,6 @@ public class ProfileService {
         profile.updateSubImgVisible(request.getSubImgVisibility());
         profile.updateAddressVisible(request.getAddressVisibility());
         profileRepository.save(profile);
-    }
-
-    public boolean existsOtherProfileWithNickname(Long memberId, String nickname) {
-        // 해당 멤버의 다른 프로필 중 닉네임이 같은 것이 있는지 확인
-        return profileRepository.existsByMemberIdAndNickname(memberId, nickname);
     }
 
     public ProfileResponse findProfileByMemberId(Long memberId) {
