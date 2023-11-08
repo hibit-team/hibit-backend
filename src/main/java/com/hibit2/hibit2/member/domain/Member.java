@@ -119,6 +119,9 @@ public class Member {
         return mainImg;
     }
 
+    public void updateMainImg(String mainImg) {
+        this.mainImg = mainImg;
+    }
     public void AddReport(){this.report += 1;}
     public boolean getIsprofile(){ return isProfile;}
     public void setIsprofile(){this.isProfile=true;}

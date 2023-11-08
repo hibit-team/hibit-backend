@@ -82,6 +82,7 @@ public class ProfileService {
         Member member = memberRepository.getById(memberId);
 
         member.updateNickname(request.getNickname());
+        member.updateMainImg(request.getMainImg());
         memberRepository.save(member);
 
         Profile profile = profileRepository.findByMemberId(memberId)
