@@ -32,7 +32,7 @@ public class ProfileOtherResponse {
     public ProfileOtherResponse() {
     }
 
-    public ProfileOtherResponse(Profile profile) {
+    public ProfileOtherResponse(final Profile profile) {
         this(profile.getNickname(),
                 profile.getGender(),
                 profile.getPersonality(),
@@ -60,9 +60,9 @@ public class ProfileOtherResponse {
         }
     }
 
-    public ProfileOtherResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, List<String> subImg,
-                                int age, AddressCity addressCity, AddressDistrict addressDistrict, String job,
-                                int jobVisibility, int subImgVisibility, int addressVisibility) {
+    public ProfileOtherResponse(final String nickname, final int gender, final List<PersonalityType> personality, final String introduce, final String mainImg, final List<String> subImg,
+                                final int age, final AddressCity addressCity, final AddressDistrict addressDistrict, final String job,
+                                final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;

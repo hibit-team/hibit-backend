@@ -317,7 +317,7 @@ public enum AddressDistrict {
     }
 
     @JsonCreator
-    public static AddressDistrict from(String value) {
+    public static AddressDistrict from(final String value) {
         for (AddressDistrict status : AddressDistrict.values()) {
             if (status.getDistrictName().equals(value)) {
                 return status;

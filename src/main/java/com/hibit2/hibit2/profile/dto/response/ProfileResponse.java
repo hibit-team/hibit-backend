@@ -7,7 +7,6 @@ import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
@@ -32,9 +31,10 @@ public class ProfileResponse {
     public ProfileResponse() {
     }
 
-    public ProfileResponse(String nickname, int gender, List<PersonalityType> personality, String introduce, String mainImg, List<String> subImg
-            , int age, AddressCity addressCity, AddressDistrict addressDistrict, String job
-            , int jobVisibility, int subImgVisibility, int addressVisibility) {
+    public ProfileResponse(final String nickname, final int gender, final List<PersonalityType> personality
+            , final String introduce, final String mainImg, final List<String> subImg
+            , final int age, final AddressCity addressCity, final AddressDistrict addressDistrict, final String job
+            , final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.nickname = nickname;
         this.gender = gender;
         this.personality = personality;

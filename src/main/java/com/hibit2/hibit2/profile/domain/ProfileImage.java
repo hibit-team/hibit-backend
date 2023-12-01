@@ -27,7 +27,7 @@ public class ProfileImage {
     protected ProfileImage() {
     }
 
-    public ProfileImage(Profile profile, String imageUrl) {
+    public ProfileImage(final Profile profile, final String imageUrl) {
         this.profile = profile;
         this.imageUrl = imageUrl;
     }

@@ -4,11 +4,11 @@ import com.hibit2.hibit2.profile.domain.AddressCity;
 import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.domain.Profile;
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
 import java.util.List;
 
-
+@Getter
 public class ProfileRegisterResponse {
 
     private Long id;
@@ -26,7 +26,11 @@ public class ProfileRegisterResponse {
     private int subImgVisibility;
     private int addressVisibility;
 
-    public ProfileRegisterResponse(Long id, String nickname, int age, int gender, List<PersonalityType> personality, String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict, int jobVisibility, int subImgVisibility, int addressVisibility) {
+    public ProfileRegisterResponse(final Long id, final String nickname, final int age, final int gender
+            , final List<PersonalityType> personality, final String introduce
+            , final String mainImg, final List<String> subImg, final String job
+            , final AddressCity addressCity, final AddressDistrict addressDistrict
+            , final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.id = id;
         this.nickname = nickname;
         this.age = age;
@@ -43,7 +47,7 @@ public class ProfileRegisterResponse {
         this.addressVisibility = addressVisibility;
     }
 
-    public ProfileRegisterResponse(Profile saveProfile) {
+    public ProfileRegisterResponse(final Profile saveProfile) {
         this.id = saveProfile.getId();
         this.nickname = saveProfile.getNickname();
         this.age = saveProfile.getAge();
@@ -58,61 +62,5 @@ public class ProfileRegisterResponse {
         this.jobVisibility = saveProfile.getJobVisible();
         this.subImgVisibility = saveProfile.getSubImgVisible();
         this.addressVisibility = saveProfile.getAddressVisible();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public List<PersonalityType> getPersonality() {
-        return personality;
-    }
-
-    public String getIntroduce() {
-        return introduce;
-    }
-
-    public String getMainImg() {
-        return mainImg;
-    }
-
-    public List<String> getSubImg() {
-        return subImg;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public AddressCity getAddressCity() {
-        return addressCity;
-    }
-
-    public AddressDistrict getAddressDistrict() {
-        return addressDistrict;
-    }
-
-    public int getJobVisibility() {
-        return jobVisibility;
-    }
-
-    public int getSubImgVisibility() {
-        return subImgVisibility;
-    }
-
-    public int getAddressVisibility() {
-        return addressVisibility;
     }
 }
