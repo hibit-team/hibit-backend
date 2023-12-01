@@ -5,11 +5,9 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.profile.domain.AddressCity;
 import com.hibit2.hibit2.profile.domain.AddressDistrict;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
-import com.hibit2.hibit2.profile.domain.Profile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -82,9 +80,5 @@ public class ProfileRegisterRequest {
         this.jobVisibility = jobVisibility;
         this.subImgVisibility = subImgVisibility;
         this.addressVisibility = addressVisibility;
-    }
-
-    public Profile toEntity(final Member member) {
-        return new Profile(member, nickname, age, gender, personality, introduce, mainImg, subImg, job, addressCity, addressDistrict, jobVisibility, subImgVisibility, addressVisibility);
     }
 }
