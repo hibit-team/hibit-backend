@@ -36,9 +36,9 @@ public class ProfileController {
 
     @PostMapping
     @Operation(description = "본인 프로필을 등록한다.")
-    public ResponseEntity<ProfileRegisterResponse> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<ProfileRegisterResponse> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                                         @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
-        ProfileRegisterResponse response = profileService.saveProfile(loginMember.getId(), profileRegisterRequest);
+        ProfileRegisterResponse response = profileService.saveMyProfile(loginMember.getId(), profileRegisterRequest);
         return ResponseEntity.created(URI.create("/api/profiles/" + response.getId())).body(response);
     }
 

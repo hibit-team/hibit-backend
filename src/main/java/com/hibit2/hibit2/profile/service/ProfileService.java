@@ -29,7 +29,7 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    public ProfileRegisterResponse saveProfile(final Long memberId, final ProfileRegisterRequest request) {
+    public ProfileRegisterResponse saveMyProfile(final Long memberId, final ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
 
         // 닉네임 중복 여부 검사하여 예외 메시지 추가
