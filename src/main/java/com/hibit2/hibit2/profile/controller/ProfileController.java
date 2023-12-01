@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import com.hibit2.hibit2.auth.presentation.AuthenticationPrincipal;
 import com.hibit2.hibit2.profile.domain.PersonalityType;
 import com.hibit2.hibit2.profile.dto.response.*;
-import com.hibit2.hibit2.profile.exception.InvalidPersonalityException;
 import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

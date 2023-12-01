@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.List;
 
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.profile.exception.InvalidProfileInfoException;
 
 @Table(name = "profiles")
 @Entity
