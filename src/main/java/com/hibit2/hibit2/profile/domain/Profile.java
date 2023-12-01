@@ -16,7 +16,7 @@ import com.hibit2.hibit2.profile.exception.InvalidProfileInfoException;
 @Entity
 public class Profile extends BaseTimeEntity {
 
-    private static final int MAX_NICK_NAME_LENGTH = 10;
+    private static final int MAX_NICK_NAME_LENGTH = 20;
     private static final int PERSONALITY_SIZE = 5;
 
     @Id
@@ -78,9 +78,9 @@ public class Profile extends BaseTimeEntity {
     }
 
     @Builder
-    public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
-                   String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-                   AddressDistrict addressDistrict, int jobVisible, int subImgVisible, int addressVisible) {
+    public Profile(final Member member, final String nickname, final int age, final int gender, final List<PersonalityType> personality,
+                   final String introduce, final String mainImg, final List<String> subImg, final String job, final AddressCity addressCity,
+                   final AddressDistrict addressDistrict, final int jobVisible, final int subImgVisible, final int addressVisible) {
         validateNickName(nickname);
         validatePersonality(personality);
         this.member = member;
@@ -175,52 +175,54 @@ public class Profile extends BaseTimeEntity {
         return addressVisible;
     }
 
-    public void updateNickname(String nickname) {
+    public void updateNickname(final String nickname) {
+        validateNickName(nickname);
         this.nickname = nickname;
     }
 
-    public void updateAge(int age) {
+    public void updateAge(final int age) {
         this.age = age;
     }
 
-    public void updateGender(int gender) {
+    public void updateGender(final int gender) {
         this.gender = gender;
     }
 
-    public void updatePersonality(List<PersonalityType> personality) {
+    public void updatePersonality(final List<PersonalityType> personality) {
+        validatePersonality(personality);
         this.personality = personality;
     }
 
-    public void updateIntroduce(String introduce) {
+    public void updateIntroduce(final String introduce) {
         this.introduce = introduce;
     }
 
-    public void updateMainImg(String mainImg) {
+    public void updateMainImg(final String mainImg) {
         this.mainImg = mainImg;
     }
 
-    public void updateSubImg(List<String> subImg) {
+    public void updateSubImg(final List<String> subImg) {
         this.subImg = subImg;
     }
 
-    public void updateJob(String job) {
+    public void updateJob(final String job) {
         this.job = job;
     }
 
-    public void updateAddressCity(AddressCity addressCity) {
+    public void updateAddressCity(final AddressCity addressCity) {
         this.addressCity = addressCity;
     }
 
-    public void updateAddressDistinct(AddressDistrict addressDistrict) {
+    public void updateAddressDistinct(final AddressDistrict addressDistrict) {
         this.addressDistrict = addressDistrict;
     }
-    public void updateJobVisible(int jobVisible) {
+    public void updateJobVisible(final int jobVisible) {
         this.jobVisible = jobVisible;
     }
-    public void updateSubImgVisible(int subImgVisible) {
+    public void updateSubImgVisible(final int subImgVisible) {
         this.subImgVisible = subImgVisible;
     }
-    public void updateAddressVisible(int addressVisible) {
+    public void updateAddressVisible(final int addressVisible) {
         this.addressVisible = addressVisible;
     }
 }
