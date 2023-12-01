@@ -2,6 +2,8 @@ package com.hibit2.hibit2.profile.domain;
 
 
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.profile.exception.InvalidNicknameException;
+import com.hibit2.hibit2.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
 
 import javax.persistence.*;
@@ -13,6 +15,9 @@ import com.hibit2.hibit2.profile.exception.InvalidProfileInfoException;
 @Table(name = "profiles")
 @Entity
 public class Profile extends BaseTimeEntity {
+
+    private static final int MAX_NICK_NAME_LENGTH = 10;
+    private static final int PERSONALITY_SIZE = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +81,8 @@ public class Profile extends BaseTimeEntity {
     public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
                    String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
                    AddressDistrict addressDistrict, int jobVisible, int subImgVisible, int addressVisible) {
+        validateNickName(nickname);
+        validatePersonality(personality);
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -90,6 +97,18 @@ public class Profile extends BaseTimeEntity {
         this.jobVisible = jobVisible;
         this.subImgVisible = subImgVisible;
         this.addressVisible = addressVisible;
+    }
+
+    private void validateNickName(final String nickname) {
+        if(nickname.isEmpty() || nickname.length() > MAX_NICK_NAME_LENGTH) {
+            throw new InvalidNicknameException(String.format("이름은 1자 이상 1자 %d 이하여야 합니다.", MAX_NICK_NAME_LENGTH));
+        }
+    }
+
+    private void validatePersonality(final List<PersonalityType> personality) {
+        if(personality.isEmpty() || personality.size() > PERSONALITY_SIZE) {
+            throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", PERSONALITY_SIZE));
+        }
     }
 
     public Member getMember() {
