@@ -50,9 +50,8 @@ class ProfileTest {
     void 닉네임이_한글자_이상_20글자가_넘지_않으면_성공한다(final String nickname) {
         // given & when & then
         Member member = 팬시();
-        assertThatCode(() -> new Profile(member, nickname, 팬시_나이, 팬시_성별, 팬시_성격들, 팬시_자기소개
-                , 팬시_메인_이미지, 팬시_서브_이미지, 팬시_직업, 팬시_도시, 팬시_도시_구, 팬시_직업_선택여부, 팬시_서브_이미지_선택여부,팬시_주소_선택여부 ))
-                .doesNotThrowAnyException();
+        assertDoesNotThrow(() -> new Profile(member, nickname, 팬시_나이, 팬시_성별, 팬시_성격들, 팬시_자기소개
+                , 팬시_메인_이미지, 팬시_서브_이미지, 팬시_직업, 팬시_도시, 팬시_도시_구, 팬시_직업_선택여부, 팬시_서브_이미지_선택여부,팬시_주소_선택여부 ));
     }
 
     @DisplayName("프로필에서 닉네임을 변경한다.")
