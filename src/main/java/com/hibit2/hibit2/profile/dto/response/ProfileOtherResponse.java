@@ -9,7 +9,6 @@ import lombok.*;
 import java.util.List;
 
 @Getter
-@Setter
 public class ProfileOtherResponse {
     // 필수 노출 정보
     private String nickname;

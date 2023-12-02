@@ -1,7 +1,6 @@
 package com.hibit2.hibit2.profile.domain;
 
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.member.domain.SocialType;
 import com.hibit2.hibit2.profile.exception.InvalidNicknameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.hibit2.hibit2.common.fixtures.MemberFixtures.팬시;
 import static com.hibit2.hibit2.common.fixtures.ProfileFixtures.팬시_프로필;
-import static com.hibit2.hibit2.common.fixtures.ProfileFixtures.팬시_닉네임;
 import static com.hibit2.hibit2.common.fixtures.ProfileFixtures.팬시_나이;
 import static com.hibit2.hibit2.common.fixtures.ProfileFixtures.팬시_성별;
 import static com.hibit2.hibit2.common.fixtures.ProfileFixtures.팬시_성격들;
