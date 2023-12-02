@@ -32,7 +32,6 @@ public class ProfileService {
     public ProfileRegisterResponse saveMyProfile(final Long memberId, final ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
 
-        // 닉네임 중복 여부 검사하여 예외 메시지 추가
         if (profileRepository.existsByNickname(request.getNickname())) {
             throw new NicknameAlreadyTakenException("이미 사용 중인 닉네임입니다.");
         }
@@ -63,9 +62,9 @@ public class ProfileService {
     }
 
     private void updateMemberInfo(final Member member, final Profile profile) {
-        member.setNickname(profile.getNickname());
-        member.setMainImg(profile.getMainImg());
-        member.setIsprofile();
+        member.updateNickname(profile.getNickname());
+        member.updateMainImg(profile.getMainImg());
+        member.updateIsprofile();
         memberRepository.save(member);
     }
 

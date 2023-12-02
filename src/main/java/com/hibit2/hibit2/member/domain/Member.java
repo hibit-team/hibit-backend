@@ -124,5 +124,5 @@ public class Member {
     }
     public void AddReport(){this.report += 1;}
     public boolean getIsprofile(){ return isProfile;}
-    public void setIsprofile(){this.isProfile=true;}
+    public void updateIsprofile(){this.isProfile=true;}
 }

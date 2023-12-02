@@ -27,9 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/api/profiles")
 public class ProfileController {
-
     private final ProfileService profileService;
-
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
@@ -67,9 +65,7 @@ public class ProfileController {
     @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
     public ResponseEntity<ProfileOtherResponse> findOtherProfileByMemberId(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                                                      @PathVariable final Long otherMemberId) {
-      
         ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
-
         return ResponseEntity.ok(response);
     }
 
