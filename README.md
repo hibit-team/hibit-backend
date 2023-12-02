@@ -23,7 +23,7 @@
 
 - 자주 사용하는 소셜미디어 중 하나인 `구글` 계정으로 로그인/회원가입을 할 수 있어요.
 
-![](/docs/readme/pc_signup.png)
+![](/docs/readme/hibit-login-page.png)
 
 ### 🧷 기능 2: `매칭` - 본인이 원하는 상대방과 연결해줘요.
 
@@ -31,7 +31,7 @@
 - 모집자 & 신청자로서 댓글을 작성/수정/삭제하면서 쌍방향 소통할 수 있어요.
 - 모집자로서 댓글을 남긴 유저 중 함께 전시회를 가고 싶은 유저에게 초대장을 보낼 수 있어요.
 
-![](/docs/readme/pc_matching_board.png)
+![](/docs/readme/hibit-board-page-only.png)
 
 ### 🧷 기능 3: `프로필` - 상대방의 프로필 정보를 확인할 수 있어요.
 
@@ -44,7 +44,7 @@
 
 - 알림 목록에서 매칭 신청에 대한 결과, 댓글/대댓글 등의 알림을 수신할 수 있어요.
 
-![](/docs/readme/pc_alarm_popup_1.png)
+![](/docs/readme/hibit-alarm-page.png)
 
 ### 🧷 기능 5: `신고` - 불건전한 내용을 신고할 수 있어요.
 
@@ -52,6 +52,8 @@
 - 신고 페이지에서는, 신고 종류를 선택한다 (ex: 광고성, 불건전한 등등) + 세부적인 내용 작성이 가능해요.
 - 자신이 이미 신고한 게시글/댓글/대댓글이라면 중복 신고는 불가능해요.
 - 신고가 접수되면, 관리자가 해당 신고 내용을 검토한다. 이후 신고내용이 타당하다면 회원 테이블(or 프로필 테이블)에 신고 횟수를 증가시켜줘요.
+
+![](/docs/readme/hibit-declaration.png)
 
 ## 👩🏻‍🎨🧑🏻‍🎨 팀원 소개
 
@@ -148,10 +150,10 @@
 
 ### 인프라
 
-![](docs/readme/hibit_infra_stack.png)
+![](docs/readme/hibit-tech-infra.png)
 
 **Infra |** AWS EC2, AWS RDS, AWS S3, Nginx
 
 **DB |** H2, MySQL 8
 
-**CI/CD |** Git, GitHub Action, Docker, Jenkins
+**CI/CD |** Git, GitHub Action, Docker
