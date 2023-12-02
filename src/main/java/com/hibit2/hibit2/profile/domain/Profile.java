@@ -16,7 +16,7 @@ import com.hibit2.hibit2.member.domain.Member;
 public class Profile extends BaseTimeEntity {
 
     private static final int MAX_NICK_NAME_LENGTH = 20;
-    private static final int PERSONALITY_SIZE = 5;
+    private static final int MAX_PERSONALITY_COUNT = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,8 +105,8 @@ public class Profile extends BaseTimeEntity {
     }
 
     private void validatePersonality(final List<PersonalityType> personality) {
-        if(personality.isEmpty() || personality.size() > PERSONALITY_SIZE) {
-            throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", PERSONALITY_SIZE));
+        if(personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
+            throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", MAX_PERSONALITY_COUNT));
         }
     }
 
