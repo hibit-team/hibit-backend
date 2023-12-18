@@ -2,17 +2,21 @@ package com.hibit2.hibit2.profile.domain;
 
 
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
+import com.hibit2.hibit2.profile.exception.InvalidNicknameException;
+import com.hibit2.hibit2.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
 
 import javax.persistence.*;
 import java.util.List;
 
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.profile.exception.InvalidProfileInfoException;
 
 @Table(name = "profiles")
 @Entity
 public class Profile extends BaseTimeEntity {
+
+    private static final int MAX_NICK_NAME_LENGTH = 20;
+    private static final int MAX_PERSONALITY_COUNT = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,9 +77,11 @@ public class Profile extends BaseTimeEntity {
     }
 
     @Builder
-    public Profile(Member member, String nickname, int age, int gender, List<PersonalityType> personality,
-                   String introduce, String mainImg, List<String> subImg, String job, AddressCity addressCity,
-                   AddressDistrict addressDistrict, int jobVisible, int subImgVisible, int addressVisible) {
+    public Profile(final Member member, final String nickname, final int age, final int gender, final List<PersonalityType> personality,
+                   final String introduce, final String mainImg, final List<String> subImg, final String job, final AddressCity addressCity,
+                   final AddressDistrict addressDistrict, final int jobVisible, final int subImgVisible, final int addressVisible) {
+        validateNickName(nickname);
+        validatePersonality(personality);
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -90,6 +96,18 @@ public class Profile extends BaseTimeEntity {
         this.jobVisible = jobVisible;
         this.subImgVisible = subImgVisible;
         this.addressVisible = addressVisible;
+    }
+
+    private void validateNickName(final String nickname) {
+        if(nickname.isEmpty() || nickname.length() > MAX_NICK_NAME_LENGTH) {
+            throw new InvalidNicknameException(String.format("이름은 1자 이상 1자 %d 이하여야 합니다.", MAX_NICK_NAME_LENGTH));
+        }
+    }
+
+    private void validatePersonality(final List<PersonalityType> personality) {
+        if(personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
+            throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", MAX_PERSONALITY_COUNT));
+        }
     }
 
     public Member getMember() {
@@ -156,52 +174,54 @@ public class Profile extends BaseTimeEntity {
         return addressVisible;
     }
 
-    public void updateNickname(String nickname) {
+    public void updateNickname(final String nickname) {
+        validateNickName(nickname);
         this.nickname = nickname;
     }
 
-    public void updateAge(int age) {
+    public void updateAge(final int age) {
         this.age = age;
     }
 
-    public void updateGender(int gender) {
+    public void updateGender(final int gender) {
         this.gender = gender;
     }
 
-    public void updatePersonality(List<PersonalityType> personality) {
+    public void updatePersonality(final List<PersonalityType> personality) {
+        validatePersonality(personality);
         this.personality = personality;
     }
 
-    public void updateIntroduce(String introduce) {
+    public void updateIntroduce(final String introduce) {
         this.introduce = introduce;
     }
 
-    public void updateMainImg(String mainImg) {
+    public void updateMainImg(final String mainImg) {
         this.mainImg = mainImg;
     }
 
-    public void updateSubImg(List<String> subImg) {
+    public void updateSubImg(final List<String> subImg) {
         this.subImg = subImg;
     }
 
-    public void updateJob(String job) {
+    public void updateJob(final String job) {
         this.job = job;
     }
 
-    public void updateAddressCity(AddressCity addressCity) {
+    public void updateAddressCity(final AddressCity addressCity) {
         this.addressCity = addressCity;
     }
 
-    public void updateAddressDistinct(AddressDistrict addressDistrict) {
+    public void updateAddressDistinct(final AddressDistrict addressDistrict) {
         this.addressDistrict = addressDistrict;
     }
-    public void updateJobVisible(int jobVisible) {
+    public void updateJobVisible(final int jobVisible) {
         this.jobVisible = jobVisible;
     }
-    public void updateSubImgVisible(int subImgVisible) {
+    public void updateSubImgVisible(final int subImgVisible) {
         this.subImgVisible = subImgVisible;
     }
-    public void updateAddressVisible(int addressVisible) {
+    public void updateAddressVisible(final int addressVisible) {
         this.addressVisible = addressVisible;
     }
 }

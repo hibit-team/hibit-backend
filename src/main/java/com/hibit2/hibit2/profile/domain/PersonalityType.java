@@ -32,12 +32,12 @@ public enum PersonalityType {
 
     private final String contents;
 
-    PersonalityType(String contents) {
+    PersonalityType(final String contents) {
         this.contents = contents;
     }
 
     @JsonCreator
-    public static PersonalityType from(String value) {
+    public static PersonalityType from(final String value) {
         for (PersonalityType status : PersonalityType.values()) {
             if (status.getContents().equals(value)) {
                 return status;

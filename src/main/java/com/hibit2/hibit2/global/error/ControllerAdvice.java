@@ -39,6 +39,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({ // 클라이언트 에러: 400
             InvalidMemberException.class,
+            InvalidNicknameException.class,
             InvalidPersonalityException.class,
             InvalidProfileInfoException.class,
             NicknameAlreadyTakenException.class

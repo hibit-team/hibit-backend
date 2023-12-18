@@ -63,10 +63,10 @@ public class ProfileUpdateRequest {
     public ProfileUpdateRequest() {
     }
 
-    public ProfileUpdateRequest(String nickname, int age, int gender, List<PersonalityType> personality,
-                                String introduce,
-                                String mainImg, List<String> subImg, String job, AddressCity addressCity, AddressDistrict addressDistrict,
-                                int jobVisibility, int subImgVisibility, int addressVisibility) {
+    public ProfileUpdateRequest(final String nickname, final int age, final int gender, final List<PersonalityType> personality,
+                                final String introduce,
+                                final String mainImg, final List<String> subImg, final String job, final AddressCity addressCity, final AddressDistrict addressDistrict,
+                                final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.nickname = nickname;
         this.age = age;
         this.gender = gender;
