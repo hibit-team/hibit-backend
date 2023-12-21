@@ -12,16 +12,12 @@ import com.hibit2.hibit2.post.domain.What_do;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +69,7 @@ public class SetupController {
             int numSlots = random.nextInt(3) + 1;
             List<DateTimeSlot> dateTimeSlots = new ArrayList<>();
             for (int j = 0; j < numSlots; j++) {
-                int month = random.nextInt(2) + 6;  // 6 or 7
+                int month = random.nextInt(2) + 9;  // 6 or 7
                 int day = random.nextInt(30) + 1;   // 1 to 30
                 LocalDate date = LocalDate.of(2023, month, day);
                 TimeSlot timeSlot = random.nextBoolean() ? TimeSlot.AM : TimeSlot.PM;

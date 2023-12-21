@@ -1,7 +1,5 @@
 package com.hibit2.hibit2.auth.domain;
 
-import com.hibit2.hibit2.auth.exception.NoSuchTokenException;
-
 public class AuthToken {
 
     private Long id;

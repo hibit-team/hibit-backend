@@ -4,6 +4,8 @@ package com.hibit2.hibit2.comment.service;
 import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.service.AlarmService;
 import com.hibit2.hibit2.comment.domain.Comment;
+import com.hibit2.hibit2.comment.exception.NotFoundCommentException;
+import com.hibit2.hibit2.post.exception.NotFoundPostException;
 import com.hibit2.hibit2.comment.repository.CommentRepository;
 import com.hibit2.hibit2.matching.domain.Matching;
 import com.hibit2.hibit2.matching.repository.MatchingRepository;
@@ -14,8 +16,6 @@ import com.hibit2.hibit2.post.domain.Post;
 
 
 import com.hibit2.hibit2.post.repository.PostRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class CommentService {
     @Transactional
     public Comment createComment(int post_idx, Long member_idx, String content) {
         Post post = postRepository.findById(post_idx)
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException());
         Member member= memberRepository.getById(member_idx);
 
         Comment comment = new Comment();
@@ -58,9 +58,9 @@ public class CommentService {
     @Transactional
     public Comment createReply(int comment_idx, Long member_idx, String content) {
         Comment parentComment = commentRepository.findById(comment_idx)
-                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundCommentException());
         Post post = postRepository.findById(parentComment.getPost().getIdx())
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException());
         Member member= memberRepository.getById(member_idx);
 
 
@@ -94,7 +94,7 @@ public class CommentService {
     // 댓글 수정
     public Comment updateComment(int comment_idx, String newContent) {
         Comment comment = commentRepository.findById(comment_idx)
-                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundCommentException());
         comment.setContent(newContent);
         return commentRepository.save(comment);
     }
@@ -102,7 +102,7 @@ public class CommentService {
     // 댓글 삭제
     public void deleteComment(int comment_idx) {
         Comment comment = commentRepository.findById(comment_idx)
-                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundCommentException());
         if (comment.getParentComment() != null) {
             // 대댓글 삭제 -> -1
             Comment parentComment = comment.getParentComment();
@@ -125,13 +125,18 @@ public class CommentService {
     //댓글 좋아요
     public Comment likeComment(int comment_idx, String nickname){
         Comment comment = commentRepository.findById(comment_idx)
-                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundCommentException());
         Member member= memberRepository.findByNickname(nickname)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundCommentException());
 
         Optional<Member> existingLike = comment.getLikeUsers().stream()
-                .filter(likeUser -> likeUser.getId().equals(member))
+                .filter(likeUser -> likeUser.getId().equals(member.getId()))
                 .findFirst();
+
+        if (comment.getMember().getId().equals(member.getId())) {
+            return comment;
+        }
+
 
         if (!existingLike.isPresent()) {
             // 좋아요 추가

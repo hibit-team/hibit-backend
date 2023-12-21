@@ -15,8 +15,6 @@ import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.post.service.PostService;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -178,21 +176,21 @@ public class PostController {
     //게시글 상태 변경
     @PutMapping("/{post_idx}/complete")
     @Operation(summary = "/post/1/complete", description = "게시글 모집 완료")
-    public ResponseEntity<String> completePost(@PathVariable int post_idx) {
+    public ResponseEntity<String> completePost(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @PathVariable int post_idx) {
         postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
         if (postHistory.getOkNum() == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("매칭이 진행되지 않았습니다. 매칭 진행 이후 모집 완료를 눌러주세요.");
         }
-        postService.completePost(post_idx);
+        postService.completePost(post_idx, loginMember.getId());
 
         return ResponseEntity.ok().build();
     }
 
     //게시글 취소 변경
-    @PutMapping("/{post_idx}/cancle")
-    @Operation(summary = "/post/1/cancle", description = "게시글 모집 완료")
-    public ResponseEntity<String> canclePost(@PathVariable int post_idx) {
-        postService.canclePost(post_idx);
+    @PutMapping("/{post_idx}/cancel")
+    @Operation(summary = "/post/1/cancel", description = "게시글 모집 취소")
+    public ResponseEntity<String> cancelPost(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,@PathVariable int post_idx) {
+        postService.cancelPost(post_idx, loginMember.getId());
         return ResponseEntity.ok().build();
     }
 

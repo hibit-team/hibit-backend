@@ -1,6 +1,5 @@
 package com.hibit2.hibit2.profile.service;
 
-import com.hibit2.hibit2.auth.dto.LoginMember;
 import com.hibit2.hibit2.profile.dto.response.*;
 import com.hibit2.hibit2.profile.exception.NicknameAlreadyTakenException;
 import com.hibit2.hibit2.profile.exception.NotFoundProfileException;
@@ -25,15 +24,14 @@ public class ProfileService {
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
 
-    public ProfileService(MemberRepository memberRepository, ProfileRepository profileRepository) {
+    public ProfileService(final MemberRepository memberRepository, final ProfileRepository profileRepository) {
         this.memberRepository = memberRepository;
         this.profileRepository = profileRepository;
     }
 
-    public ProfileRegisterResponse saveProfile(Long memberId, ProfileRegisterRequest request) {
+    public ProfileRegisterResponse saveMyProfile(final Long memberId, final ProfileRegisterRequest request) {
         Member foundMember = memberRepository.getById(memberId);
 
-        // 닉네임 중복 여부 검사하여 예외 메시지 추가
         if (profileRepository.existsByNickname(request.getNickname())) {
             throw new NicknameAlreadyTakenException("이미 사용 중인 닉네임입니다.");
         }
@@ -44,7 +42,7 @@ public class ProfileService {
         return new ProfileRegisterResponse(newProfile);
     }
 
-    private Profile createProfile(Member member, ProfileRegisterRequest request) {
+    private Profile createProfile(final Member member, final ProfileRegisterRequest request) {
         return profileRepository.save(Profile.builder()
                 .member(member)
                 .nickname(request.getNickname())
@@ -63,15 +61,11 @@ public class ProfileService {
                 .build());
     }
 
-    private void updateMemberInfo(Member member, Profile profile) {
-        member.setNickname(profile.getNickname());
-        member.setMainImg(profile.getMainImg());
+    private void updateMemberInfo(final Member member, final Profile profile) {
+        member.updateNickname(profile.getNickname());
+        member.updateMainImg(profile.getMainImg());
+        member.updateIsprofile();
         memberRepository.save(member);
-    }
-
-    public ProfileResponse findProfileByIdAndMemberId(LoginMember loginMember, Long profileId) {
-        Profile profile = profileRepository.getByMemberIdAndProfileId(loginMember.getId(), profileId);
-        return new ProfileResponse(profile);
     }
 
     public ProfilesResponse findProfilesByIdAndMemberId() {
@@ -82,12 +76,14 @@ public class ProfileService {
         return new ProfilesResponse(profileResponses);
     }
 
-    public Profile findProfileById(Long profileId) {
-        return profileRepository.findById(profileId)
-                .orElseThrow(() -> new NotFoundProfileException("ID : " + profileId + " 에 해당하는 사용자가 없습니다."));
-    }
-
     public void updateProfile(final Long memberId, final ProfileUpdateRequest request) {
+
+        Member member = memberRepository.getById(memberId);
+
+        member.updateNickname(request.getNickname());
+        member.updateMainImg(request.getMainImg());
+        memberRepository.save(member);
+
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
@@ -107,26 +103,21 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public boolean existsOtherProfileWithNickname(Long memberId, String nickname) {
-        // 해당 멤버의 다른 프로필 중 닉네임이 같은 것이 있는지 확인
-        return profileRepository.existsByMemberIdAndNickname(memberId, nickname);
-    }
-
-    public ProfileResponse findProfileByMemberId(Long memberId) {
+    public ProfileResponse findProfileByMemberId(final Long memberId) {
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
         return new ProfileResponse(profile);
     }
 
-    public ProfileOtherResponse findOtherProfileByMemberId(Long otherMemberId) {
+    public ProfileOtherResponse findOtherProfileByMemberId(final Long otherMemberId) {
         Profile profile = profileRepository.findByMemberId(otherMemberId)
                 .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
 
         return new ProfileOtherResponse(profile);
     }
 
-    public void validateUniqueNickname(String nickname) {
+    public void validateUniqueNickname(final String nickname) {
         if (profileRepository.existsByNickname(nickname)) {
             throw new NicknameAlreadyTakenException("이미 사용중인 닉네임 입니다.");
         }

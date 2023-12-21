@@ -1,9 +1,6 @@
 package com.hibit2.hibit2.post.service;
 
 
-import com.hibit2.hibit2.matching.domain.MatchStatus;
-import com.hibit2.hibit2.matching.domain.Matching;
-import com.hibit2.hibit2.matching.repository.MatchingRepository;
 import com.hibit2.hibit2.matching.service.MatchingService;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
@@ -12,31 +9,26 @@ import com.hibit2.hibit2.post.dto.PostListDto;
 import com.hibit2.hibit2.post.dto.PostResponseDto;
 import com.hibit2.hibit2.post.dto.PostSaveDto;
 import com.hibit2.hibit2.post.dto.PostUpdateDto;
+import com.hibit2.hibit2.post.exception.NotFoundPostException;
 import com.hibit2.hibit2.post.repository.PostRepository;
 import com.hibit2.hibit2.postHistory.domain.postHistory;
 import com.hibit2.hibit2.postHistory.repository.postHistoryRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final MatchingRepository matchingRepository;
     private final postHistoryRepository postHistoryRepository;
     private final MatchingService matchingService;
     private final MemberRepository memberRepository;
@@ -79,7 +71,18 @@ public class PostService {
         LocalDate endLocalDate = LocalDate.parse(endDate);
         endLocalDate = endLocalDate.plusDays(1);
         Page<Post> postPage = postRepository.findByDateTimeRange(flag, startLocalDate, endLocalDate, pageable);
-        return postPage.map(PostListDto::new);
+
+        Set<Integer> uniquePostIds = new HashSet<>();
+        List<PostListDto> uniquePostList = new ArrayList<>();
+
+        for (Post post : postPage.getContent()) {
+            if (uniquePostIds.add(post.getIdx())&& uniquePostList.size() < 6) {
+                uniquePostList.add(new PostListDto(post));
+            }
+        }
+
+        return new PageImpl<>(uniquePostList, pageable, uniquePostList.size());
+
     }
 
     //검색
@@ -91,7 +94,7 @@ public class PostService {
 
     @Transactional
     public PostResponseDto findById(int idx){
-        Post entity= postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
+        Post entity= postRepository.findById(idx).orElseThrow(()-> new NotFoundPostException("해당 게시글이 없습니다. id="+idx));
         entity.increaseView();
         System.out.print(entity.getSubimg());
         return new PostResponseDto(entity);
@@ -99,22 +102,26 @@ public class PostService {
 
     @Transactional
     public Post update(int idx, PostUpdateDto requestDto){
-        Post post = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
+        Post post = postRepository.findById(idx).orElseThrow(()-> new NotFoundPostException("해당 게시글이 없습니다. id="+idx));
         post.update(requestDto.getTitle(),requestDto.getContent(),  requestDto.getExhibiton(),requestDto.getNumber(), requestDto.getOpenchat(), requestDto.getWhat_do(),requestDto.getDateTimeSlots(),requestDto.getMainimg(), requestDto.getSubimg());
         return post;
     }
 
     @Transactional
     public void delete(int idx){
-        Post entity = postRepository.findById(idx).orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. id="+idx));
+        Post entity = postRepository.findById(idx).orElseThrow(()-> new NotFoundPostException("해당 게시글이 없습니다. id="+idx));
         entity.delete();
     }
     @Transactional
     public Post likePost(int post_idx, Long member_idx){
         Post post = postRepository.findById(post_idx)
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundPostException());
         Member member= memberRepository.getById(member_idx);
         String userId = member.getNickname();
+
+        if (post.getMember().getId().equals(member.getId())) {
+            return post;
+        }
 
         Optional<Member> existingLike = post.getLikeUsers().stream()
                 .filter(likeUser -> likeUser.getNickname().equals(userId))
@@ -131,36 +138,51 @@ public class PostService {
     }
 
     @Transactional
-    public void completePost(int post_idx) {
+    public void completePost(int post_idx, Long member_idx) {
         Post post = postRepository.findById(post_idx)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
-        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
 
-        postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
-        postHistory.complete();
-        postHistory.setFinishTimeCurrent();
+        if (post.getMember().getId().equals(member.getId())) {
+            postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
 
-        List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
-        postHistory.setOkUsers(matchedUsers);
+            postHistory.calculatePercent(postHistory.getOkNum(), postHistory.getNoNum());
+            postHistory.complete();
+            postHistory.setFinishTimeCurrent();
 
+            List<Member> matchedUsers = matchingService.getMatchUserByPost(post_idx);
+            postHistory.setOkUsers(matchedUsers);
 
-        post.complete();
-        postRepository.save(post);
-        postHistoryRepository.save(postHistory);
+            post.complete();
+            postRepository.save(post);
+            postHistoryRepository.save(postHistory);
+        }
+        else{
+            new NotFoundPostException("게시글 작성자가 아닙니다.");
+        }
     }
 
     @Transactional
-    public void canclePost(int post_idx) {
+    public void cancelPost(int post_idx, Long member_idx) {
         Post post = postRepository.findById(post_idx)
-                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
-        postHistory.cancle();
-        postHistory.setFinishTimeCurrent();
-        post.cancle();
-        postRepository.save(post);
-        postHistoryRepository.save(postHistory);
+                .orElseThrow(() -> new NotFoundPostException());
 
+        Member member= memberRepository.getById(member_idx);
+        String userId = member.getNickname();
+
+        if (post.getMember().getId().equals(member.getId())) {
+            postHistory postHistory = postHistoryRepository.findByPostIdx(post_idx);
+            postHistory.cancle();
+            postHistory.setFinishTimeCurrent();
+            post.cancle();
+            postRepository.save(post);
+            postHistoryRepository.save(postHistory);
+        }
+        else{
+            new NotFoundPostException("게시글 작성자가 아닙니다.");
+        }
     }
 
 }

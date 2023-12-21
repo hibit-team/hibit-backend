@@ -36,7 +36,7 @@ public enum AddressCity {
     }
 
     @JsonCreator
-    public static AddressCity from(String value) {
+    public static AddressCity from(final String value) {
         for (AddressCity status : AddressCity.values()) {
             if (status.getName().equals(value)) {
                 return status;

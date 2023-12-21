@@ -10,21 +10,16 @@ import com.hibit2.hibit2.comment.repository.CommentRepository;
 import com.hibit2.hibit2.comment.service.CommentService;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
-import com.hibit2.hibit2.post.domain.Post;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 @Tag(name = "comment", description = "댓글 및 대댓글")
 
 @RestController
@@ -96,7 +91,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
     //댓글 좋아요
     @GetMapping("/like/{comment_idx}")
     @Operation(summary = "/comment/like/1", description = "댓글 좋아요")
@@ -106,8 +100,4 @@ public class CommentController {
         Comment comment = commentService.likeComment(comment_idx, member.getNickname());
         return ResponseEntity.ok(comment);
     }
-
-
-
-
 }

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.dto.MemberResponse;
 import com.hibit2.hibit2.member.repository.MemberRepository;
-import com.hibit2.hibit2.member.exception.NoSuchMemberException;
+import com.hibit2.hibit2.member.exception.NotFoundMemberException;
 
 @Transactional(readOnly = true)
 @Service
@@ -24,7 +24,7 @@ public class MemberService {
 
     public Member findByEmail(final String email) {
         return memberRepository.findByEmail(email)
-            .orElseThrow(NoSuchMemberException::new);
+            .orElseThrow(NotFoundMemberException::new);
     }
 
     public boolean existByEmail(final String email) {
@@ -32,7 +32,7 @@ public class MemberService {
     }
     public MemberResponse findById(final Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(NoSuchMemberException::new);
+                .orElseThrow(NotFoundMemberException::new);
 
         return new MemberResponse(member);
     }

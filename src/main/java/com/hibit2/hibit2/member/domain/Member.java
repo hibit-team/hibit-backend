@@ -21,12 +21,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Entity
 public class Member {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
-    private static final int MAX_DISPLAY_NAME_LENGTH = 100;
+    private static final int MAX_DISPLAY_NAME_LENGTH = 20;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
 
     @Column(name = "nickname", nullable = true)
     @Schema(description = "닉네임", example = "아아아")
@@ -54,6 +53,10 @@ public class Member {
     @Column(nullable = false, columnDefinition = "integer default 0")
     @Schema(description = "신고 수", example = "0")
     private int report;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    @Schema(description = "프로필 작성", example = "0")
+    private boolean isProfile;
 
 
     protected Member() {
@@ -107,11 +110,17 @@ public class Member {
 
     public void setNickname(String nickname) {this.nickname = nickname;}
 
-    public void setMainImg(String mainImg) {this.mainImg = mainImg;}
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
     public String getMainImg() {
         return mainImg;
     }
 
+    public void updateMainImg(String mainImg) {
+        this.mainImg = mainImg;
+    }
     public void AddReport(){this.report += 1;}
-
+    public boolean getIsprofile(){ return isProfile;}
+    public void updateIsprofile(){this.isProfile=true;}
 }

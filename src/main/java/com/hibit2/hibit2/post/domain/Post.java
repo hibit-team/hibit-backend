@@ -1,18 +1,14 @@
 package com.hibit2.hibit2.post.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hibit2.hibit2.global.config.BaseTimeEntity;
 import com.hibit2.hibit2.member.domain.Member;
-import com.hibit2.hibit2.user.domain.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -165,6 +161,10 @@ public class Post extends BaseTimeEntity {
         this.comment_number++;
     }
     public void decreaseCommentNumber(int count){
+        if(comment_number <= 0) {
+            count = 0;
+            this.comment_number = this.comment_number - count;
+        }
         this.comment_number= this.comment_number-count;
     }
     public void increaseRound(){

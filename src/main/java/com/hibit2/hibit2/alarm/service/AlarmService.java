@@ -3,14 +3,8 @@ package com.hibit2.hibit2.alarm.service;
 import com.hibit2.hibit2.alarm.domain.Alarm;
 import com.hibit2.hibit2.alarm.domain.AlarmType;
 import com.hibit2.hibit2.alarm.repository.AlarmRepository;
-import com.hibit2.hibit2.matching.domain.Matching;
-import com.hibit2.hibit2.matching.repository.MatchingRepository;
 import com.hibit2.hibit2.member.domain.Member;
 import com.hibit2.hibit2.member.repository.MemberRepository;
-import com.hibit2.hibit2.post.domain.Post;
-import com.hibit2.hibit2.post.repository.PostRepository;
-import com.hibit2.hibit2.user.domain.Users;
-import com.hibit2.hibit2.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +14,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
-    private final MatchingRepository matchingRepository;
-    private final PostRepository postRepository;
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
 
@@ -81,7 +73,7 @@ public class AlarmService {
 
 
         String content;
-        content = "전시회 다녀오셨나요? 추후 변경";
+        content = "전시회 다녀오셨나요?";
         Alarm alarm = new Alarm();
         alarm.setReceiver(member);
         alarm.setSender(sender);

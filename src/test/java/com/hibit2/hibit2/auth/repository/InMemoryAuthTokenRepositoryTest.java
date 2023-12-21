@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.hibit2.hibit2.auth.domain.InMemoryAuthTokenRepository;
 import com.hibit2.hibit2.auth.domain.TokenRepository;
-import com.hibit2.hibit2.auth.exception.NoSuchTokenException;
+import com.hibit2.hibit2.auth.exception.NotFoundTokenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,6 +86,6 @@ class InMemoryAuthTokenRepositoryTest {
 
         // when & then
         assertThatThrownBy(() -> tokenRepository.getToken(dummyMemberId))
-                .isInstanceOf(NoSuchTokenException.class);
+                .isInstanceOf(NotFoundTokenException.class);
     }
 }

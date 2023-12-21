@@ -1,6 +1,6 @@
 package com.hibit2.hibit2.auth.domain;
 
-import com.hibit2.hibit2.auth.exception.NoSuchTokenException;
+import com.hibit2.hibit2.auth.exception.NotFoundTokenException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -36,6 +36,6 @@ public class InMemoryAuthTokenRepository implements TokenRepository {
     @Override
     public String getToken(final Long memberId) {
         Optional<String> token = Optional.ofNullable(TOKEN_REPOSITORY.get(memberId));
-        return token.orElseThrow(() -> new NoSuchTokenException("일치하는 토큰이 존재하지 않습니다."));
+        return token.orElseThrow(() -> new NotFoundTokenException("일치하는 토큰이 존재하지 않습니다."));
     }
 }
