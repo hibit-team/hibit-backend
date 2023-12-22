@@ -161,10 +161,6 @@ public class Post extends BaseTimeEntity {
         this.comment_number++;
     }
     public void decreaseCommentNumber(int count){
-        if(comment_number <= 0) {
-            count = 0;
-            this.comment_number = this.comment_number - count;
-        }
         this.comment_number= this.comment_number-count;
     }
     public void increaseRound(){
