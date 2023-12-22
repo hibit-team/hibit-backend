@@ -44,6 +44,7 @@ public class CommentService {
         comment.setPost(post);
         comment.setMember(member);
         comment.setContent(content);
+        post.increaseCommentNumber();
         //댓글을 처음 단 상황인지 파악, 자신이 쓴 글은 매칭 추가 안함
         if (!matchingService.exitMatching(member, post) && member_idx != post.getMember().getId()) {
             Matching matching = new Matching(member, post);
